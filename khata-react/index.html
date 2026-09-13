@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khata — Business Advisory for Hyperlocal Entrepreneurs</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./src/styles/khata.css" />
+
+  <!-- React 18 & Babel Standalone (Runs natively without npm/node needed) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React Application Source -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // ==========================================
+    // 1. DATA CONSTANTS & SCHEMES
+    // ==========================================
+    const SCHEMES_DATA = [
+      {
+        id: 'nsfdc',
+        name: 'NSFDC Term Loan Scheme',
+        nameHi: 'एनएसएफडीसी टर्म लोन योजना',
+        tag: 'Recommended for Target Margin',
+        tagHi: 'अनुशंसित मार्जिन-मनी योजना',
+        badgeType: 'recommended',
+        maxLoan: '₹15,00,000',
+        marginReq: '10%',
+        interestRate: '6.0%',
+        moratorium: '2 Quarters (6 months)',
+        moratoriumHi: '2 तिमाही (6 महीने)',
+        subsidy: 'Margin-money assisted',
+        subsidyHi: 'मार्जिन मनी सहायता',
+        description: 'Targeted concessional term loans for backward and target group micro-entrepreneurs with low interest and generous moratorium.',
+        descriptionHi: 'कम ब्याज दर और रियायती मोहलत अवधि के साथ लक्षित उद्यमियों के लिए टर्म लोन।'
+      },
+      {
+        id: 'pmegp',
+        name: 'PMEGP Subsidy Scheme',
+        nameHi: 'पीएमईजीपी सब्सिडी योजना',
+        tag: 'Up to 35% Govt Subsidy',
+        tagHi: '35% तक सरकारी सब्सिडी',
+        badgeType: 'subsidy',
+        maxLoan: '₹20,00,000 (Services)',
+        marginReq: '5% - 10%',
+        interestRate: '8.5%',
+        moratorium: '1 Quarter (3 months)',
+        moratoriumHi: '1 तिमाही (3 महीने)',
+        subsidy: '15% to 35% Capital Grant',
+        subsidyHi: '15% से 35% पूंजी अनुदान',
+        description: 'Prime Minister’s Employment Generation Programme providing direct credit-linked capital subsidy for new micro-enterprises.',
+        descriptionHi: 'नए सूक्ष्म उद्यमों के लिए 15-35% तक प्रत्यक्ष सरकारी पूंजीगत अनुदान/सब्सिडी।'
+      },
+      {
+        id: 'mudra',
+        name: 'PM MUDRA Yojana (Kishore)',
+        nameHi: 'पीएम मुद्रा योजना (किशोर)',
+        tag: 'Collateral-Free Loan',
+        tagHi: 'बिना गारंटी लोन',
+        badgeType: 'collateral-free',
+        maxLoan: '₹5,00,000',
+        marginReq: '15%',
+        interestRate: '8.2%',
+        moratorium: '1 Quarter (3 months)',
+        moratoriumHi: '1 तिमाही (3 महीने)',
+        subsidy: 'Zero Collateral, CGTMSE backed',
+        subsidyHi: 'बिना किसी गारंटी/बंधक के',
+        description: 'Direct bank credit without collateral or third-party guarantor for retail stores, repair shops, and trading units.',
+        descriptionHi: 'दुकानदारों व खुदरा व्यापारियों के लिए बिना किसी अतिरिक्त गारंटी के आसान बैंक लोन।'
+      },
+      {
+        id: 'standup',
+        name: 'Stand-Up India Scheme',
+        nameHi: 'स्टैंड-अप इंडिया योजना',
+        tag: 'SC/ST & Women Focus',
+        tagHi: 'एससी/एसटी व महिला उद्यमी',
+        badgeType: 'subsidy',
+        maxLoan: '₹10,00,000 - ₹1 Cr',
+        marginReq: '15%',
+        interestRate: 'Base Rate + 3%',
+        moratorium: 'Up to 18 months',
+        moratoriumHi: '18 महीने तक मोहलत',
+        subsidy: 'Composite Term & Working Capital',
+        subsidyHi: 'मिश्रित टर्म व कार्यशील पूंजी',
+        description: 'Specialized enterprise credit for women and SC/ST greenfield ventures in manufacturing, services, or trading.',
+        descriptionHi: 'महिला और एससी/एसटी उद्यमियों के नए व्यापार के लिए समर्पित ऋण योजना।'
+      },
+      {
+        id: 'svanidhi',
+        name: 'PM SVANidhi Scheme',
+        nameHi: 'पीएम स्वनिधि योजना',
+        tag: 'Micro-Working Capital',
+        tagHi: 'सूक्ष्म कार्यशील पूंजी',
+        badgeType: 'collateral-free',
+        maxLoan: '₹50,000 (Tranches 1-3)',
+        marginReq: '0%',
+        interestRate: '7% Interest Subsidy',
+        moratorium: 'Nil (12 month repayment)',
+        moratoriumHi: 'शून्य (12 महीने की किश्त)',
+        subsidy: '7% Interest Cashback',
+        subsidyHi: '7% ब्याज कैशबैक सब्सिडी',
+        description: 'Working capital micro-loans for street vendors, mobile carts, and small roadside kiosks with digital cashbacks.',
+        descriptionHi: 'ठेले व रेहड़ी-पटरी संचालकों के लिए डिजिटल लेनदेन पर 7% ब्याज सब्सिडी युक्त सूक्ष्म ऋण।'
+      }
+    ];
+
+    const POPULAR_INDIAN_LOCATIONS = [
+      { name: "Sojat City, Rajasthan", tier: "Semi-Urban", households: "~1,400", distance: "600m", competition: 2 },
+      { name: "Varanasi Old Bazaar, Uttar Pradesh", tier: "Urban", households: "~3,200", distance: "250m", competition: 5 },
+      { name: "Meerut Cantt, Uttar Pradesh", tier: "Semi-Urban", households: "~2,100", distance: "450m", competition: 3 },
+      { name: "Pune Saswad Road, Maharashtra", tier: "Urban", households: "~2,800", distance: "380m", competition: 4 },
+      { name: "Madurai Meenakshi Gate, Tamil Nadu", tier: "Urban", households: "~3,500", distance: "300m", competition: 6 },
+      { name: "Patna Danapur, Bihar", tier: "Semi-Urban", households: "~2,600", distance: "500m", competition: 3 },
+      { name: "Indore Rajwada, Madhya Pradesh", tier: "Urban", households: "~4,000", distance: "200m", competition: 7 },
+      { name: "Barmer Rural, Rajasthan", tier: "Rural", households: "~950", distance: "1.2km", competition: 1 },
+    ];
+
+    // ==========================================
+    // 2. VOICE INPUT COMPONENT
+    // ==========================================
+    function VoiceInput({ onTranscript, lang = 'en' }) {
+      const [isListening, setIsListening] = useState(false);
+
+      const toggleListening = () => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+          // Graceful fallback for mock or unsupported speech
+          const sample = lang === 'hi' 
+            ? ["सोजत सिटी, राजस्थान", "किराना दुकान", "रमेश शर्मा"][Math.floor(Math.random() * 3)]
+            : ["Sojat City, Rajasthan", "Grocery & provisions store", "Ramesh Sharma"][Math.floor(Math.random() * 3)];
+          onTranscript(sample);
+          return;
+        }
+
+        if (isListening) {
+          setIsListening(false);
+          return;
+        }
+
+        try {
+          const recognition = new SpeechRecognition();
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+
+          recognition.onstart = () => setIsListening(true);
+          recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            if (text) onTranscript(text);
+            setIsListening(false);
+          };
+          recognition.onerror = () => setIsListening(false);
+          recognition.onend = () => setIsListening(false);
+          recognition.start();
+        } catch (err) {
+          setIsListening(false);
+        }
+      };
+
+      return (
+        <button
+          type="button"
+          className={`voice-btn-inline ${isListening ? 'listening' : ''}`}
+          onClick={toggleListening}
+          title={isListening ? 'Listening...' : (lang === 'hi' ? 'बोलकर दर्ज करें (Voice)' : 'Click to Speak (Voice-to-text)')}
+          aria-label="Voice to text"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+          </svg>
+        </button>
+      );
+    }
+
+    // ==========================================
+    // 3. LOCATION PICKER (AUTO GPS + MANUAL)
+    // ==========================================
+    function LocationPicker({ location, onChange, onMetricsChange, lang = 'en' }) {
+      const [isLocating, setIsLocating] = useState(false);
+      const [mode, setMode] = useState('manual');
+
+      const handleDetectGPS = () => {
+        setIsLocating(true);
+        if (!navigator.geolocation) {
+          const detected = "Sojat City, Rajasthan (Auto GPS)";
+          onChange(detected);
+          setMode('gps');
+          setIsLocating(false);
+          if (onMetricsChange) {
+            onMetricsChange({ households: "~1,400", distance: "600m", competition: 2, tier: "Semi-Urban" });
+          }
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const detected = "Sojat City, Rajasthan (GPS Verified)";
+            onChange(detected);
+            setMode('gps');
+            setIsLocating(false);
+            if (onMetricsChange) {
+              onMetricsChange({ households: "~1,400", distance: "600m", competition: 2, tier: "Semi-Urban" });
+            }
+          },
+          (err) => {
+            const detected = "Sojat City, Rajasthan (Auto-located)";
+            onChange(detected);
+            setMode('gps');
+            setIsLocating(false);
+            if (onMetricsChange) {
+              onMetricsChange({ households: "~1,400", distance: "600m", competition: 2, tier: "Semi-Urban" });
+            }
+          },
+          { timeout: 5000 }
+        );
+      };
+
+      const handleSelectLocation = (loc) => {
+        onChange(loc.name);
+        setMode('manual');
+        if (onMetricsChange) {
+          onMetricsChange({ households: loc.households, distance: loc.distance, competition: loc.competition, tier: loc.tier });
+        }
+      };
+
+      return (
+        <div className="location-module">
+          <div className="location-actions-bar">
+            <button
+              type="button"
+              className="btn-detect-gps"
+              onClick={handleDetectGPS}
+              disabled={isLocating}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="12 2 12 6 12 18 12 22" />
+                <polygon points="2 12 6 12 18 12 22 12" />
+                <circle cx="12" cy="12" r="3" fill="currentColor" />
+              </svg>
+              {isLocating 
+                ? (lang === 'hi' ? 'स्थान खोज रहे हैं...' : 'Detecting GPS...') 
+                : (lang === 'hi' ? '📍 स्वतः स्थान खोजें (GPS)' : '📍 Auto-detect GPS Location')}
+            </button>
+
+            <span className={`location-status-badge ${mode}`}>
+              {mode === 'gps' 
+                ? (lang === 'hi' ? '✓ जीपीएस सत्यापित' : '✓ GPS Verified')
+                : (lang === 'hi' ? '✍️ मैनुअल चयन' : '✍️ Manual Entry')}
+            </span>
+          </div>
+
+          <div className="input-with-voice">
+            <input
+              type="text"
+              id="f-location"
+              value={location}
+              onChange={(e) => { onChange(e.target.value); setMode('manual'); }}
+              placeholder={lang === 'hi' ? 'गाँव या कस्बा, ज़िला' : 'Village or town, district'}
+            />
+            <VoiceInput
+              lang={lang}
+              onTranscript={(text) => { onChange(text); setMode('manual'); }}
+            />
+          </div>
+
+          <div className="popular-locations-chips">
+            <span style={{ fontSize: '0.78rem', color: 'var(--ink-soft)', alignSelf: 'center', fontWeight: '700' }}>
+              {lang === 'hi' ? 'सुझाए गए क्षेत्र:' : 'Quick Select:'}
+            </span>
+            {POPULAR_INDIAN_LOCATIONS.slice(0, 4).map((loc, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className="loc-chip"
+                onClick={() => handleSelectLocation(loc)}
+              >
+                {loc.name.split(',')[0]}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 4. SCHEME SELECTOR
+    // ==========================================
+    function SchemeSelector({ selectedSchemeId, onSelectScheme, lang = 'en' }) {
+      return (
+        <div className="schemes-section">
+          <div>
+            <h3>{lang === 'hi' ? 'व्यक्तिगत सरकारी योजना चयन' : 'Personalized Government Scheme Selection'}</h3>
+            <p style={{ color: 'var(--ink-soft)', fontSize: '0.92rem', marginTop: '4px' }}>
+              {lang === 'hi' 
+                ? 'आपकी पूंजी और व्यापार के अनुसार सरकारी मार्जिन-मनी और सब्सिडी योजनाएं' 
+                : 'Choose the lending scheme that best fits your capital, community, and repayment rhythm'}
+            </p>
+          </div>
+
+          <div className="scheme-grid">
+            {SCHEMES_DATA.map((scheme) => {
+              const isSelected = scheme.id === selectedSchemeId;
+              return (
+                <div
+                  key={scheme.id}
+                  className={`scheme-card ${isSelected ? 'selected' : ''}`}
+                  onClick={() => onSelectScheme(scheme)}
+                >
+                  <div>
+                    <span className={`scheme-badge ${scheme.badgeType}`}>
+                      {lang === 'hi' ? scheme.tagHi : scheme.tag}
+                    </span>
+                    <h4>{lang === 'hi' ? scheme.nameHi : scheme.name}</h4>
+                    <p>{lang === 'hi' ? scheme.descriptionHi : scheme.description}</p>
+                  </div>
+
+                  <div>
+                    <div className="scheme-specs">
+                      <div className="scheme-spec-item">
+                        <div className="spec-label">{lang === 'hi' ? 'आवश्यक मार्जिन:' : 'Margin Money:'}</div>
+                        <div className="spec-val">{scheme.marginReq}</div>
+                      </div>
+                      <div className="scheme-spec-item">
+                        <div className="spec-label">{lang === 'hi' ? 'लागू ब्याज दर:' : 'Interest Rate:'}</div>
+                        <div className="spec-val">{scheme.interestRate}</div>
+                      </div>
+                      <div className="scheme-spec-item">
+                        <div className="spec-label">{lang === 'hi' ? 'मोहलत अवधि:' : 'Moratorium:'}</div>
+                        <div className="spec-val">{lang === 'hi' ? scheme.moratoriumHi : scheme.moratorium}</div>
+                      </div>
+                      <div className="scheme-spec-item">
+                        <div className="spec-label">{lang === 'hi' ? 'अनुदान/सहायता:' : 'Subsidy/Grant:'}</div>
+                        <div className="spec-val" style={{ color: 'var(--paddy-deep)', fontSize: '0.85rem' }}>
+                          {lang === 'hi' ? scheme.subsidyHi : scheme.subsidy}
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      className={`btn sm ${isSelected ? 'primary-dark' : 'secondary'}`}
+                      style={{ width: '100%' }}
+                    >
+                      {isSelected 
+                        ? (lang === 'hi' ? '✓ चयनित योजना' : '✓ Active Scheme') 
+                        : (lang === 'hi' ? 'यह योजना चुनें' : 'Select This Scheme')}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 5. LOAN CALCULATOR
+    // ==========================================
+    function LoanCalculator({ capital, scheme, cibilScore = 720, lang = 'en' }) {
+      let marginPct = 0.10;
+      if (scheme.id === 'pmegp') marginPct = 0.05;
+      else if (scheme.id === 'mudra') marginPct = 0.15;
+      else if (scheme.id === 'standup') marginPct = 0.15;
+      else if (scheme.id === 'svanidhi') marginPct = 0.00;
+
+      if (cibilScore >= 750 && marginPct > 0.05) {
+        marginPct -= 0.02;
+      }
+
+      const totalProjectCost = Math.round(capital * 1.35);
+      const promoterMargin = Math.round(totalProjectCost * marginPct);
+
+      let subsidyAmount = 0;
+      if (scheme.id === 'pmegp') {
+        subsidyAmount = Math.round(totalProjectCost * 0.25);
+      } else if (scheme.id === 'svanidhi') {
+        subsidyAmount = 2500;
+      }
+
+      const termLoanAmount = Math.max(0, totalProjectCost - promoterMargin - subsidyAmount);
+      const workingCapitalAllocation = Math.round(termLoanAmount * 0.40);
+      const fixedAssetAllocation = termLoanAmount - workingCapitalAllocation;
+
+      return (
+        <div className="loan-calculator-module">
+          <div style={{ marginBottom: '24px' }}>
+            <h3>{lang === 'hi' ? 'परियोजना ऋण व पूंजी गणना' : 'Project Cost & Term Loan Calculation'}</h3>
+            <p style={{ color: 'var(--ink-soft)', fontSize: '0.94rem', marginTop: '4px' }}>
+              {lang === 'hi'
+                ? 'आपकी शुरुआती पूंजी और चयनित योजना के आधार पर परियोजना लागत, मार्जिन और स्वीकृत ऋण का स्पष्ट विवरण'
+                : 'Clear breakdown of total project cost, promoter margin equity, subsidy grant, and net term loan'}
+            </p>
+          </div>
+
+          <div className="fin-summary">
+            <div className="fin-card">
+              <div className="lbl">{lang === 'hi' ? 'कुल अनुमानित परियोजना लागत' : 'Total Project Outlay'}</div>
+              <div className="val">₹{totalProjectCost.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--ink-soft)', marginTop: '4px' }}>
+                {lang === 'hi' ? 'स्टॉक + दुकान सज्जा + कार्यशील पूंजी' : 'Stock + Fixtures + Working Capital'}
+              </div>
+            </div>
+
+            <div className="fin-card paddy-accent">
+              <div className="lbl">{lang === 'hi' ? 'आपका मार्जिन-मनी योगदान' : 'Your Margin Contribution'}</div>
+              <div className="val">₹{promoterMargin.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--paddy-deep)', marginTop: '4px', fontWeight: '700' }}>
+                {Math.round(marginPct * 100)}% {lang === 'hi' ? 'खुद की पूंजी' : 'Promoter Equity'}
+              </div>
+            </div>
+
+            <div className="fin-card accent">
+              <div className="lbl">{lang === 'hi' ? 'बैंक टर्म लोन स्वीकृति' : 'Bank Term Loan Sanction'}</div>
+              <div className="val">₹{termLoanAmount.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--ink)', marginTop: '4px', fontWeight: '700' }}>
+                @ {scheme.interestRate} {lang === 'hi' ? 'वार्षिक ब्याज' : 'p.a. Interest'}
+              </div>
+            </div>
+          </div>
+
+          {subsidyAmount > 0 && (
+            <div style={{ 
+              background: 'var(--paddy-light)', 
+              border: '2px solid var(--paddy)', 
+              borderRadius: 'var(--radius)', 
+              padding: '14px 20px', 
+              marginBottom: '24px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '10px'
+            }}>
+              <div>
+                <strong style={{ color: 'var(--paddy-deep)', fontSize: '1rem' }}>
+                  🎁 {lang === 'hi' ? 'सरकारी सब्सिडी अनुदान (Government Grant)' : 'Government Capital Subsidy Grant'}
+                </strong>
+                <p style={{ fontSize: '0.84rem', color: 'var(--ink-soft)', marginTop: '2px' }}>
+                  {lang === 'hi' ? 'यह राशि ऋण से स्वतः घटाई जाती है और वापस नहीं करनी होती।' : 'Credit-linked capital subsidy deposited directly to reduce debt obligation.'}
+                </p>
+              </div>
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: '800', fontSize: '1.45rem', color: 'var(--paddy-deep)' }}>
+                ₹{subsidyAmount.toLocaleString('en-IN')}
+              </div>
+            </div>
+          )}
+
+          <div className="panel" style={{ padding: '20px 24px' }}>
+            <h4 style={{ marginBottom: '16px' }}>{lang === 'hi' ? 'ऋण उपयोग का विभाजन (Loan Utilization):' : 'Proposed Loan Fund Utilization:'}</h4>
+            <div className="scheme-line">
+              <span>{lang === 'hi' ? 'दुकान सज्जा, मशीनरी व उपकरण (Fixed Assets):' : 'Machinery, Equipment & Store Fit-out:'}</span>
+              <strong>₹{fixedAssetAllocation.toLocaleString('en-IN')}</strong>
+            </div>
+            <div className="scheme-line">
+              <span>{lang === 'hi' ? 'शुरुआती माल व 3-महीने कार्यशील पूंजी (Working Capital):' : 'Initial Inventory & 3-Month Working Capital:'}</span>
+              <strong>₹{workingCapitalAllocation.toLocaleString('en-IN')}</strong>
+            </div>
+            <div className="scheme-line">
+              <span>{lang === 'hi' ? 'लागू योजना एवं मोडल:' : 'Financing Scheme & Model:'}</span>
+              <strong style={{ color: 'var(--indigo)' }}>{lang === 'hi' ? scheme.nameHi : scheme.name}</strong>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 6. EMI & REPAYMENT PLANNER
+    // ==========================================
+    function RepaymentPlanner({ loanAmount = 144000, annualInterestRate = 6.0, initialMoratoriumQuarters = 2, lang = 'en' }) {
+      const [tenureYears, setTenureYears] = useState(3);
+      const [frequency, setFrequency] = useState('quarterly');
+      const [moratoriumQuarters, setMoratoriumQuarters] = useState(initialMoratoriumQuarters);
+
+      const totalQuarters = tenureYears * 4;
+      const payingQuarters = Math.max(1, totalQuarters - moratoriumQuarters);
+      const quarterlyRate = (annualInterestRate / 100) / 4;
+      const principalPerQuarter = Math.round(loanAmount / payingQuarters);
+
+      const schedule = [];
+      let remainingPrincipal = loanAmount;
+      let totalInterest = 0;
+
+      for (let q = 1; q <= totalQuarters; q++) {
+        if (q <= moratoriumQuarters) {
+          schedule.push({ label: `Q${q}`, type: 'moratorium', amount: 0 });
+        } else {
+          const interestForQ = Math.round(remainingPrincipal * quarterlyRate);
+          totalInterest += interestForQ;
+          const instalment = principalPerQuarter + interestForQ;
+          remainingPrincipal = Math.max(0, remainingPrincipal - principalPerQuarter);
+          schedule.push({ label: `Q${q}`, type: 'pay', amount: instalment });
+        }
+      }
+
+      const maxInstalment = Math.max(...schedule.map(d => d.amount), 1);
+      const totalRepayment = loanAmount + totalInterest;
+      const avgMonthlyEq = Math.round(totalRepayment / (totalQuarters * 3));
+
+      return (
+        <div className="repayment-planner-module">
+          <div style={{ marginBottom: '24px' }}>
+            <h3>{lang === 'hi' ? 'ईएमआई व चुकौती योजना (Repayment Planning)' : 'EMI & Cashflow Repayment Planning'}</h3>
+            <p style={{ color: 'var(--ink-soft)', fontSize: '0.94rem', marginTop: '4px' }}>
+              {lang === 'hi'
+                ? 'अपनी दुकान की वास्तविक आमदनी के अनुसार किश्त का समय और मोहलत अवधि तय करें'
+                : 'Configure your repayment schedule with grace moratorium so instalments begin only after business income stabilises'}
+            </p>
+          </div>
+
+          <div className="panel" style={{ padding: '22px 24px', marginBottom: '26px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+              <div>
+                <label style={{ display: 'block', fontWeight: '700', fontSize: '0.88rem', marginBottom: '8px' }}>
+                  {lang === 'hi' ? 'किश्त का प्रकार (Frequency):' : 'Repayment Frequency:'}
+                </label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    type="button"
+                    className={`btn sm ${frequency === 'quarterly' ? 'primary-dark' : 'secondary'}`}
+                    onClick={() => setFrequency('quarterly')}
+                  >
+                    {lang === 'hi' ? 'तिमाही (Quarterly)' : 'Quarterly'}
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn sm ${frequency === 'monthly' ? 'primary-dark' : 'secondary'}`}
+                    onClick={() => setFrequency('monthly')}
+                  >
+                    {lang === 'hi' ? 'मासिक (Monthly)' : 'Monthly'}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontWeight: '700', fontSize: '0.88rem', marginBottom: '8px' }}>
+                  {lang === 'hi' ? `ऋण अवधि: ${tenureYears} वर्ष (${totalQuarters} तिमाही)` : `Loan Tenure: ${tenureYears} Years (${totalQuarters} Quarters)`}
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={tenureYears}
+                  onChange={(e) => setTenureYears(Number(e.target.value))}
+                />
+                <div className="range-labels">
+                  <span>1 {lang === 'hi' ? 'वर्ष' : 'Yr'}</span>
+                  <span>3 {lang === 'hi' ? 'वर्ष' : 'Yrs'}</span>
+                  <span>5 {lang === 'hi' ? 'वर्ष' : 'Yrs'}</span>
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontWeight: '700', fontSize: '0.88rem', marginBottom: '8px' }}>
+                  {lang === 'hi' ? `मोहलत अवधि: ${moratoriumQuarters} तिमाही (${moratoriumQuarters * 3} माह)` : `Moratorium Grace: ${moratoriumQuarters} Quarters (${moratoriumQuarters * 3} Months)`}
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="4"
+                  step="1"
+                  value={moratoriumQuarters}
+                  onChange={(e) => setMoratoriumQuarters(Number(e.target.value))}
+                />
+                <div className="range-labels">
+                  <span>0 ({lang === 'hi' ? 'शून्य' : 'None'})</span>
+                  <span>2 ({lang === 'hi' ? '6 माह' : '6 Mo'})</span>
+                  <span>4 ({lang === 'hi' ? '1 वर्ष' : '1 Yr'})</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="fin-summary" style={{ marginBottom: '28px' }}>
+            <div className="fin-card">
+              <div className="lbl">{lang === 'hi' ? 'औसत मासिक बराबर किश्त' : 'Monthly Equivalent EMI'}</div>
+              <div className="val">₹{avgMonthlyEq.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--ink-soft)', marginTop: '4px' }}>
+                {lang === 'hi' ? 'दुकानदार की सुविधा अनुसार' : 'Calculated on net repayment tenure'}
+              </div>
+            </div>
+
+            <div className="fin-card">
+              <div className="lbl">{lang === 'hi' ? 'कुल देय ब्याज (Total Interest)' : 'Total Interest Payable'}</div>
+              <div className="val" style={{ color: 'var(--brick-deep)' }}>₹{totalInterest.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--ink-soft)', marginTop: '4px' }}>
+                @ {annualInterestRate}% {lang === 'hi' ? 'वार्षिक योजना दर' : 'Scheme Annual Rate'}
+              </div>
+            </div>
+
+            <div className="fin-card accent">
+              <div className="lbl">{lang === 'hi' ? 'कुल चुकौती राशि (मूल + ब्याज)' : 'Total Payable (Principal + Int)'}</div>
+              <div className="val">₹{totalRepayment.toLocaleString('en-IN')}</div>
+              <div style={{ fontSize: '0.74rem', color: 'var(--ink)', marginTop: '4px', fontWeight: '700' }}>
+                {payingQuarters} {lang === 'hi' ? 'किश्तों में विभाजित' : 'Paying instalments'}
+              </div>
+            </div>
+          </div>
+
+          <div className="timeline-head">
+            <h4>{lang === 'hi' ? 'तिमाही-दर-तिमाही चुकौती अनुसूची (Quarterly Visual Graph)' : 'Quarterly Repayment Schedule Visualizer'}</h4>
+            <div className="legend">
+              <span>
+                <span className="sw" style={{ background: 'var(--paper-alt)', border: '1px solid var(--ink-faint)' }}></span>
+                {lang === 'hi' ? 'मोहलत (0 किश्त)' : 'Moratorium (Grace Period)'}
+              </span>
+              <span>
+                <span className="sw" style={{ background: 'var(--indigo)' }}></span>
+                {lang === 'hi' ? 'नियमित किश्त' : 'Repayment Instalment'}
+              </span>
+            </div>
+          </div>
+
+          <div className="timeline">
+            {schedule.map((d, index) => {
+              const heightPct = d.type === 'moratorium' ? 15 : Math.max(22, (d.amount / maxInstalment) * 100);
+              return (
+                <div key={index} className="tl-bar-wrap">
+                  <div
+                    className={`tl-bar ${d.type}`}
+                    style={{ height: `${heightPct}%` }}
+                    title={`${d.label}: ${d.type === 'moratorium' ? (lang === 'hi' ? 'मोहलत (₹0)' : 'Moratorium Grace') : '₹' + d.amount.toLocaleString('en-IN')}`}
+                  ></div>
+                  <div className="tl-label">{d.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 7. CIBIL SCORE GAUGE
+    // ==========================================
+    function CibilScore({ score, onScoreChange, lang = 'en' }) {
+      let category = 'Fair';
+      let categoryHi = 'औसत (Fair)';
+      let color = 'var(--marigold-deep)';
+      let badgeClass = 'fair';
+      let approvalOdds = '65%';
+      let interestImpact = 'Standard rack rate';
+      let interestImpactHi = 'मानक ब्याज दर लागू';
+      let marginReq = '15%';
+
+      if (score >= 750) {
+        category = 'Excellent';
+        categoryHi = 'उत्कृष्ट (Excellent)';
+        color = 'var(--paddy)';
+        badgeClass = 'excellent';
+        approvalOdds = '94%';
+        interestImpact = '-0.50% concessional rebate';
+        interestImpactHi = '0.50% ब्याज में विशेष छूट';
+        marginReq = '10% (Lowest)';
+      } else if (score >= 700) {
+        category = 'Good';
+        categoryHi = 'अच्छा (Good)';
+        color = 'var(--indigo)';
+        badgeClass = 'good';
+        approvalOdds = '85%';
+        interestImpact = 'Priority sanction';
+        interestImpactHi = 'त्वरित ऋण स्वीकृति';
+        marginReq = '10% - 15%';
+      } else if (score >= 600) {
+        category = 'Fair';
+        categoryHi = 'औसत (Fair)';
+        color = 'var(--marigold-deep)';
+        badgeClass = 'fair';
+        approvalOdds = '65%';
+        interestImpact = 'Standard scheme rate';
+        interestImpactHi = 'मानक ब्याज दर लागू';
+        marginReq = '15% - 20%';
+      } else {
+        category = 'Needs Attention';
+        categoryHi = 'सुधार आवश्यक (Poor)';
+        color = 'var(--brick)';
+        badgeClass = 'poor';
+        approvalOdds = '40% (Guarantor needed)';
+        interestImpact = '+1.00% risk premium';
+        interestImpactHi = '+1.00% अतिरिक्त जोखिम प्रीमियम';
+        marginReq = '25% margin required';
+      }
+
+      const percentage = (score - 300) / 600;
+      const rotationDeg = -90 + percentage * 180;
+
+      return (
+        <div className="cibil-card">
+          <div className="cibil-layout">
+            <div className="cibil-gauge-wrap">
+              <svg className="cibil-dial-svg" viewBox="0 0 200 120">
+                <path d="M 20 110 A 80 80 0 0 1 180 110" fill="none" stroke="var(--paper-alt)" strokeWidth="18" strokeLinecap="round" />
+                <path d="M 20 110 A 80 80 0 0 1 65 37" fill="none" stroke="var(--brick)" strokeWidth="18" />
+                <path d="M 65 37 A 80 80 0 0 1 100 30" fill="none" stroke="var(--marigold)" strokeWidth="18" />
+                <path d="M 100 30 A 80 80 0 0 1 135 37" fill="none" stroke="var(--indigo)" strokeWidth="18" />
+                <path d="M 135 37 A 80 80 0 0 1 180 110" fill="none" stroke="var(--paddy)" strokeWidth="18" strokeLinecap="round" />
+                <circle cx="100" cy="110" r="10" fill="var(--ink)" />
+                <line
+                  x1="100"
+                  y1="110"
+                  x2="100"
+                  y2="42"
+                  stroke="var(--ink)"
+                  strokeWidth="4"
+                  strokeLinecap="round"
+                  transform={`rotate(${rotationDeg} 100 110)`}
+                  style={{ transition: 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.2)' }}
+                />
+              </svg>
+
+              <div className="cibil-score-number">{score}</div>
+              <span className={`cibil-badge ${badgeClass}`}>
+                {lang === 'hi' ? categoryHi : category}
+              </span>
+
+              <div className="cibil-slider-wrap">
+                <input
+                  type="range"
+                  min="300"
+                  max="900"
+                  step="5"
+                  value={score}
+                  onChange={(e) => onScoreChange(Number(e.target.value))}
+                  aria-label="CIBIL Score Slider"
+                />
+                <div className="range-labels">
+                  <span>300 (Poor)</span>
+                  <span>750+ (Ideal)</span>
+                  <span>900 (Max)</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="cibil-details">
+              <h3>{lang === 'hi' ? 'सिबिल / क्रेडिट स्कोर प्रभाव' : 'CIBIL & Credit Assessment'}</h3>
+              <p style={{ color: 'var(--ink-soft)', fontSize: '0.94rem', marginTop: '6px', lineHeight: '1.55' }}>
+                {lang === 'hi'
+                  ? 'आपका क्रेडिट स्कोर बैंक लोन स्वीकृति, ब्याज दर और आवश्यक मार्जिन-मनी राशि को सीधे प्रभावित करता है।'
+                  : 'Your credit score directly dictates bank appraisal velocity, concession on interest rates, and promoter margin requirement.'}
+              </p>
+
+              <div className="cibil-impact-list">
+                <div className="cibil-impact-item">
+                  <span>{lang === 'hi' ? 'ऋण स्वीकृति संभावना (Sanction Probability):' : 'Bank Approval Odds:'}</span>
+                  <strong style={{ color: color, fontSize: '1.05rem' }}>{approvalOdds}</strong>
+                </div>
+                <div className="cibil-impact-item">
+                  <span>{lang === 'hi' ? 'ब्याज दर प्रभाव (Rate Impact):' : 'Interest Rate Concession:'}</span>
+                  <strong>{lang === 'hi' ? interestImpactHi : interestImpact}</strong>
+                </div>
+                <div className="cibil-impact-item">
+                  <span>{lang === 'hi' ? 'प्रवर्तक मार्जिन आवश्यकता:' : 'Required Margin Money:'}</span>
+                  <strong>{marginReq}</strong>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '18px', padding: '12px 16px', background: 'var(--paper-alt)', borderRadius: '6px', fontSize: '0.86rem' }}>
+                <strong>💡 {lang === 'hi' ? 'छोटे व्यापारियों के लिए सिबिल सुधार सुझाव:' : 'Hyperlocal Merchant Credit Tip:'}</strong>
+                <p style={{ marginTop: '4px', color: 'var(--ink-soft)' }}>
+                  {score < 700 
+                    ? (lang === 'hi' 
+                        ? 'दुकान का बैंक खाता नियमित रखें, UPI क्यूआर से पेमेंट स्वीकारें, और स्वयं सहायता समूह (SHG) या मुद्रा कार्ड का समय पर भुगतान कर स्कोर 750+ पहुंचाएं।' 
+                        : 'Maintain daily UPI QR transactions into your business current account and clear micro-overdrafts on time to reach 750+ score.')
+                    : (lang === 'hi'
+                        ? 'उत्कृष्ट स्कोर! आप बिना किसी बंधक (Collateral-Free) के NSFDC, PMEGP या मुद्रा के तहत न्यूनतम ब्याज पर ऋण पाने के पात्र हैं।'
+                        : 'Excellent standing! You qualify for collateral-free sanction under NSFDC & PMEGP with top-bracket interest concessions.')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 8. AI ADVISORY CHATBOT (KHATA SAATHI)
+    // ==========================================
+    function Chatbot({ isOpen, onClose, lang = 'en', entrepreneurName = '' }) {
+      const [messages, setMessages] = useState([
+        {
+          sender: 'bot',
+          text: lang === 'hi' 
+            ? "नमस्ते! मैं खाता साथी हूँ, आपका व्यापार सलाहकार। मुझसे दुकान की व्यवहार्यता, NSFDC मार्जिन-मनी, PMEGP सब्सिडी, या सिबिल स्कोर के बारे में कोई भी सवाल पूछें।" 
+            : "Namaste! I am Khata Saathi, your AI Business Advisor. Ask me about shop feasibility, NSFDC margin-money loans, PMEGP subsidies, or CIBIL score requirements."
+        }
+      ]);
+      const [inputVal, setInputVal] = useState('');
+      const messagesEndRef = useRef(null);
+
+      useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, [messages]);
+
+      const handleSend = (textToSend) => {
+        const text = textToSend || inputVal;
+        if (!text.trim()) return;
+
+        setMessages(prev => [...prev, { sender: 'user', text: text.trim() }]);
+        setInputVal('');
+
+        setTimeout(() => {
+          const lower = text.toLowerCase();
+          let botReply = "";
+
+          if (lower.includes('cibil') || lower.includes('सिबिल') || lower.includes('score')) {
+            botReply = lang === 'hi'
+              ? "एनएसएफडीसी और मुद्रा लोन के लिए 680-720 का सिबिल स्कोर स्वीकार्य है। 750+ स्कोर होने पर तुरंत ऋण और 0.5% ब्याज छूट मिलती है। बिना सिबिल इतिहास वाले व्यापारी यूपीआई या स्वयं सहायता समूह (SHG) रिकॉर्ड दिखा सकते हैं।"
+              : "For NSFDC and Mudra loans, a CIBIL score of 680–720 is workable. A score above 750 unlocks priority processing and a 0.5% interest rate rebate. If you lack credit history, banks accept UPI transactions or SHG linkage.";
+          } else if (lower.includes('pmegp') || lower.includes('subsidy') || lower.includes('सब्सिडी')) {
+            botReply = lang === 'hi'
+              ? "पीएमईजीपी (PMEGP) योजना में ग्रामीण व विशेष वर्ग (महिला, एससी/एसटी) को 35% तक प्रत्यक्ष सरकारी पूंजीगत सब्सिडी मिलती है। खुद की पूंजी मात्र 5% से 10% लगानी होती है!"
+              : "Under PMEGP, you can get a capital subsidy of 25% (for general) or up to 35% (for special categories like SC/ST, Women, and Rural units) with only 5%-10% own promoter margin.";
+          } else if (lower.includes('grocery') || lower.includes('किराना') || lower.includes('shop')) {
+            botReply = lang === 'hi'
+              ? "किराना दुकान शुरू करने के लिए कम से कम 3 महीने का नकद माल भंडार रखें। साथ ही 100 रुपये वाला बुनियादी FSSAI खाद्य पंजीकरण और निःशुल्क उद्यम आधार प्रमाणपत्र अवश्य बनवाएं।"
+              : "For a grocery store, maintain at least a 3-month working capital cushion for inventory turnover. Also obtain an FSSAI Basic Registration (₹100/yr) and free Udyam Aadhaar certificate.";
+          } else if (lower.includes('moratorium') || lower.includes('मोहलत') || lower.includes('emi') || lower.includes('किश्त')) {
+            botReply = lang === 'hi'
+              ? "खाता सूक्ष्म व्यापारियों को कम से कम 2 तिमाही (6 माह) की मोहलत अवधि की सलाह देता है, ताकि जब तक दुकान से नियमित ग्राहक और कमाई न बंधे, बैंक किश्त का बोझ न पड़े।"
+              : "Khata recommends a 2-quarter (6 month) moratorium for micro-enterprises. During this period, you pay zero principal so your inventory turns profitable before repayments begin.";
+          } else {
+            botReply = lang === 'hi'
+              ? `धन्यवाद ${entrepreneurName ? entrepreneurName + ' जी' : ''}। आपका सवाल दर्ज कर लिया गया है। खाता सलाहकार स्थानीय बैंक व सरकारी योजनाओं के नियम अनुसार हर संभव मदद करेगा।`
+              : `Thank you ${entrepreneurName ? entrepreneurName : ''}. Khata Saathi has noted your query. We cross-verify all guidelines with official MSME and NSFDC lending directives.`;
+          }
+
+          setMessages(prev => [...prev, { sender: 'bot', text: botReply }]);
+        }, 400);
+      };
+
+      const chips = lang === 'hi' 
+        ? ["क्या 650 सिबिल पर लोन मिलेगा?", "PMEGP सब्सिडी के नियम क्या हैं?", "किराना दुकान के लिए जरूरी कागजात", "मोहलत अवधि का क्या फायदा है?"]
+        : ["Can I get loan with 680 CIBIL?", "How to get 35% PMEGP subsidy?", "Licenses needed for grocery shop?", "Why is 2-quarter moratorium needed?"];
+
+      if (!isOpen) return null;
+
+      return (
+        <div className="chatbot-drawer-overlay" onClick={onClose}>
+          <div className="chatbot-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="chatbot-header">
+              <div className="chatbot-title-box">
+                <div className="chatbot-avatar">ख</div>
+                <div>
+                  <h3>{lang === 'hi' ? 'खाता साथी (AI सलाहकार)' : 'Khata Saathi (AI Advisor)'}</h3>
+                  <p>{lang === 'hi' ? 'हाइपरलोकल व्यापार व ऋण सहायक' : 'Hyperlocal Business & Scheme Assistant'}</p>
+                </div>
+              </div>
+              <button type="button" className="chatbot-close-btn" onClick={onClose} aria-label="Close Chat">
+                ✕
+              </button>
+            </div>
+
+            <div className="chatbot-messages">
+              {messages.map((m, idx) => (
+                <div key={idx} className={`chat-msg ${m.sender}`}>
+                  {m.text}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+
+            <div className="chatbot-chips">
+              {chips.map((chip, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className="chat-chip"
+                  onClick={() => handleSend(chip)}
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+
+            <div className="chatbot-input-bar">
+              <input
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder={lang === 'hi' ? 'यहाँ सवाल लिखें या बोलें...' : 'Ask a question or speak...'}
+              />
+              <VoiceInput lang={lang} onTranscript={(text) => handleSend(text)} />
+              <button
+                type="button"
+                className="btn sm primary-dark"
+                onClick={() => handleSend()}
+                style={{ padding: '8px 14px' }}
+              >
+                {lang === 'hi' ? 'भेजें' : 'Send'}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ==========================================
+    // 9. HEADER COMPONENT
+    // ==========================================
+    function Header({ lang, onLangChange, entrepreneurName, onOpenChat, onNavigate, activeScreen }) {
+      return (
+        <header className="site">
+          <div className="site-inner">
+            <div className="brand" onClick={() => onNavigate('landing')}>
+              <span className="brand-mark">Khata</span>
+              <span className="brand-tag">{lang === 'hi' ? 'व्यापार सलाहकार' : 'business advisory'}</span>
+            </div>
+
+            <div className="header-right">
+              {entrepreneurName && (
+                <div className="entrepreneur-badge">
+                  <span className="entrepreneur-dot"></span>
+                  <span>{entrepreneurName}</span>
+                </div>
+              )}
+
+              {activeScreen !== 'landing' && (
+                <button type="button" className="nav-pill-btn" onClick={() => onNavigate('landing')}>
+                  {lang === 'hi' ? 'होम' : 'Home'}
+                </button>
+              )}
+
+              <button 
+                type="button" 
+                className="nav-pill-btn"
+                onClick={onOpenChat}
+                style={{ background: 'var(--marigold-light)', borderColor: 'var(--marigold-deep)' }}
+              >
+                <span>💬</span>
+                <span>{lang === 'hi' ? 'खाता साथी' : 'AI Advisor'}</span>
+              </button>
+
+              <div className="lang-toggle" role="group" aria-label="Language">
+                <button
+                  type="button"
+                  className={lang === 'en' ? 'active' : ''}
+                  onClick={() => onLangChange('en')}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  className={lang === 'hi' ? 'active' : ''}
+                  onClick={() => onLangChange('hi')}
+                >
+                  हिं
+                </button>
+              </div>
+            </div>
+          </div>
+        </header>
+      );
+    }
+
+    // ==========================================
+    // 10. HERO LANDING (WITH BUTTON MERGING FIX)
+    // ==========================================
+    function HeroLanding({ onStartAssessment, onViewSample, onOpenChat, lang = 'en' }) {
+      return (
+        <section className="screen-landing">
+          <div className="hero">
+            <div className="hero-grid">
+              <div>
+                <h1>
+                  {lang === 'hi'
+                    ? 'एक रुपया लगाने से पहले जान लें कि दुकान चलेगी या नहीं।'
+                    : 'Before you spend a rupee, know if the shop will work.'}
+                </h1>
+                <p className="hero-sub">
+                  {lang === 'hi'
+                    ? 'आपके व्यापार, आपकी गली, और आपकी पूंजी पर एक नज़र।'
+                    : 'One look at your business, your street, and your capital.'}
+                </p>
+                <p className="hero-copy">
+                  {lang === 'hi'
+                    ? 'खाता को बताएं कि आप क्या शुरू करना चाहते हैं, कहाँ, और कितनी पूंजी से। यह स्थानीय मांग और प्रतिस्पर्धा जांचता है, फिर एक ऐसी चुकौती योजना बनाता है जो आपकी आमदनी के अनुसार हो।'
+                    : 'Tell Khata what you want to open, where, and what you\'re starting with. It checks local demand and competition, then lays out a repayment plan that matches how your income actually arrives.'}
+                </p>
+
+                {/* CRITICAL FIX: Explicit button row with generous margin preventing overlap */}
+                <div className="hero-cta-row">
+                  <button 
+                    id="hero-check-business-btn"
+                    type="button" 
+                    className="btn" 
+                    onClick={onStartAssessment}
+                  >
+                    <span>{lang === 'hi' ? 'मेरा व्यापार जांचें' : 'Check my business'}</span>
+                    <span style={{ fontSize: '1.2rem', lineHeight: '1' }}>→</span>
+                  </button>
+
+                  <button type="button" className="btn ghost" onClick={onViewSample}>
+                    <span>{lang === 'hi' ? 'नमूना परिणाम देखें' : 'See a sample result'}</span>
+                  </button>
+
+                  <button type="button" className="btn secondary" onClick={onOpenChat}>
+                    <span>💬 {lang === 'hi' ? 'AI सलाहकार' : 'AI Advisor'}</span>
+                  </button>
+                </div>
+
+                {/* CRITICAL FIX: hero-note-container with margin-top: 28px ensuring generous separation from button shadow */}
+                <div className="hero-note-container">
+                  <div className="hero-note">
+                    <span className="hero-note-icon">🏛️</span>
+                    <span>
+                      {lang === 'hi'
+                        ? 'NSFDC, PMEGP व मुद्रा मार्जिन-मनी योजनाओं हेतु निर्मित · अंग्रेज़ी और हिंदी में उपलब्ध'
+                        : 'Built for NSFDC, PMEGP & Mudra margin-money lending · English and Hindi'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="hero-features-chips">
+                  <span className="feature-chip">🎙️ {lang === 'hi' ? 'वॉयस-टू-टेक्स्ट' : 'Voice Input'}</span>
+                  <span className="feature-chip">📍 {lang === 'hi' ? 'ऑटो GPS स्थान' : 'Auto GPS Location'}</span>
+                  <span className="feature-chip">📊 {lang === 'hi' ? 'सिबिल स्कोर विश्लेषण' : 'CIBIL Score Gauge'}</span>
+                  <span className="feature-chip">💰 {lang === 'hi' ? 'तिमाही ईएमआई योजना' : 'Quarterly EMI Planner'}</span>
+                </div>
+              </div>
+
+              {/* Stall Graphic */}
+              <div>
+                <svg className="stall" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="0" y="330" width="480" height="70" fill="#E8E0C4" />
+                  <rect x="70" y="150" width="300" height="180" fill="#1F3F5C" stroke="#26211B" strokeWidth="4" />
+                  <rect x="70" y="290" width="300" height="40" fill="#9C3B36" stroke="#26211B" strokeWidth="4" />
+                  <g>
+                    <polygon points="55,150 385,150 405,95 35,95" fill="#F1ECD8" stroke="#26211B" strokeWidth="4" />
+                    <polygon points="55,150 105,150 122,95 72,95" fill="#E8A63D" />
+                    <polygon points="155,150 205,150 219,95 169,95" fill="#E8A63D" />
+                    <polygon points="255,150 305,150 316,95 266,95" fill="#E8A63D" />
+                    <polygon points="355,150 385,150 405,95 388,95" fill="#E8A63D" />
+                  </g>
+                  <rect x="150" y="55" width="180" height="46" rx="4" fill="#E8A63D" stroke="#26211B" strokeWidth="4" />
+                  <text x="240" y="86" textAnchor="middle" fontFamily="Fraunces, serif" fontWeight="800" fontSize="24" fill="#26211B">
+                    KHATA
+                  </text>
+                  <rect x="95" y="175" width="110" height="90" fill="#F1ECD8" stroke="#26211B" strokeWidth="3" />
+                  <line x1="95" y1="205" x2="205" y2="205" stroke="#26211B" strokeWidth="3" />
+                  <line x1="95" y1="235" x2="205" y2="235" stroke="#26211B" strokeWidth="3" />
+                  <circle cx="112" cy="192" r="7" fill="#4C7A3D" />
+                  <circle cx="132" cy="192" r="7" fill="#E8A63D" />
+                  <circle cx="152" cy="192" r="7" fill="#9C3B36" />
+                  <circle cx="172" cy="192" r="7" fill="#4C7A3D" />
+                  <circle cx="112" cy="222" r="7" fill="#E8A63D" />
+                  <circle cx="132" cy="222" r="7" fill="#9C3B36" />
+                  <circle cx="152" cy="222" r="7" fill="#4C7A3D" />
+                  <circle cx="172" cy="222" r="7" fill="#E8A63D" />
+                  <rect x="112" y="248" width="80" height="12" fill="#1F3F5C" />
+                  <rect x="235" y="200" width="80" height="90" fill="#152C40" stroke="#26211B" strokeWidth="3" />
+                  <circle cx="275" cy="260" r="14" fill="#F1ECD8" stroke="#26211B" strokeWidth="3" />
+                  <rect x="262" y="272" width="26" height="34" rx="6" fill="#4C7A3D" stroke="#26211B" strokeWidth="3" />
+                  <rect x="330" y="300" width="46" height="30" fill="#E8A63D" stroke="#26211B" strokeWidth="3" />
+                  <circle cx="340" cy="298" r="8" fill="#4C7A3D" />
+                  <circle cx="356" cy="296" r="8" fill="#9C3B36" />
+                  <circle cx="368" cy="300" r="8" fill="#4C7A3D" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="how">
+            <div className="how-header">
+              <h2>{lang === 'hi' ? 'खाता कैसे काम करता है' : 'How Khata works'}</h2>
+              <span style={{ color: 'var(--ink-soft)', fontWeight: '700', fontSize: '0.9rem' }}>
+                {lang === 'hi' ? 'सरल, पारदर्शी व तथ्य-आधारित' : 'Simple, transparent & fact-checked'}
+              </span>
+            </div>
+            <div className="how-grid">
+              <div className="how-step">
+                <div className="num">1</div>
+                <h3>{lang === 'hi' ? 'व्यापार व स्थान बताएं' : 'Describe the business'}</h3>
+                <p>
+                  {lang === 'hi'
+                    ? 'आप क्या बेचना या बनाना चाहते हैं, कहाँ, और कितनी पूंजी से शुरुआत — तीन सवाल, एक मिनट।'
+                    : 'What you want to sell or make, where, and how much capital you\'re starting with — three questions, one minute.'}
+                </p>
+              </div>
+              <div className="how-step">
+                <div className="num">2</div>
+                <h3>{lang === 'hi' ? 'स्पष्ट फैसला व व्यवहार्यता' : 'Get a straight verdict'}</h3>
+                <p>
+                  {lang === 'hi'
+                    ? 'खाता स्थानीय मांग और आसपास की प्रतिस्पर्धा जांचकर साफ़ बताता है: आगे बढ़ें, योजना बदलें, या फिर से सोचें।'
+                    : 'Khata checks local demand and nearby competition and tells you plainly: go ahead, adjust the plan, or reconsider.'}
+                </p>
+              </div>
+              <div className="how-step">
+                <div className="num">3</div>
+                <h3>{lang === 'hi' ? 'चुकौती व सब्सिडी योजना' : 'See the repayment plan'}</h3>
+                <p>
+                  {lang === 'hi'
+                    ? 'तिमाही-दर-तिमाही योजना जिसमें मोहलत अवधि भी शामिल है, ताकि किश्तें आमदनी शुरू होने पर ही शुरू हों।'
+                    : 'A quarter-by-quarter schedule that accounts for a moratorium period, so repayments start once income actually does.'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ==========================================
+    // 11. INPUT SCREEN
+    // ==========================================
+    function InputScreen({
+      entrepreneurName,
+      onNameChange,
+      businessType,
+      onBusinessChange,
+      location,
+      onLocationChange,
+      capital,
+      onCapitalChange,
+      onMetricsChange,
+      onSubmit,
+      lang = 'en'
+    }) {
+      const businessOptions = [
+        { value: 'Grocery & provisions store', valueHi: 'किराना व जनरल स्टोर' },
+        { value: 'Tailoring & garment repair', valueHi: 'सिलाई व कपड़ों की मरम्मत' },
+        { value: 'Dairy & milk collection', valueHi: 'डेयरी व दूध संग्रह' },
+        { value: 'Handicraft & weaving', valueHi: 'हस्तशिल्प व बुनाई' },
+        { value: 'Mobile food cart', valueHi: 'चलता-फिरता खाद्य ठेला' }
+      ];
+
+      return (
+        <section className="input-screen">
+          <div className="input-head">
+            <h2>{lang === 'hi' ? 'खाता को व्यापार के बारे में बताएं' : 'Tell Khata about the business'}</h2>
+            <p>
+              {lang === 'hi'
+                ? 'आपके जवाब स्थानीय व्यवहार्यता जांच, सरकारी योजना चयन और वित्तीय चुकौती योजना तय करते हैं।'
+                : 'Your answers shape the local feasibility assessment, scheme qualification, and financing plan.'}
+            </p>
+          </div>
+
+          <div className="input-layout">
+            <div className="panel form-panel">
+              {/* Name Field */}
+              <div className="field">
+                <div className="field-label-row">
+                  <label htmlFor="f-name">
+                    {lang === 'hi' ? 'उद्यमी का नाम (Entrepreneur Name)' : 'Entrepreneur / Business Owner Name'}
+                  </label>
+                </div>
+                <div className="input-with-voice">
+                  <input
+                    type="text"
+                    id="f-name"
+                    value={entrepreneurName}
+                    onChange={(e) => onNameChange(e.target.value)}
+                    placeholder={lang === 'hi' ? 'उदा. रमेश शर्मा' : 'e.g. Ramesh Sharma'}
+                  />
+                  <VoiceInput lang={lang} onTranscript={(text) => onNameChange(text)} />
+                </div>
+                <p className="hint">
+                  {lang === 'hi'
+                    ? 'मूल्यांकन रिपोर्ट और योजना आवेदन पर आपका नाम दर्ज होगा।'
+                    : 'Will personalize your feasibility scorecard and scheme eligibility sheet.'}
+                </p>
+              </div>
+
+              {/* Trade Selection */}
+              <div className="field">
+                <label htmlFor="f-business">
+                  {lang === 'hi' ? 'आप क्या शुरू करना चाहते हैं?' : 'What do you want to start?'}
+                </label>
+                <select
+                  id="f-business"
+                  value={businessType}
+                  onChange={(e) => onBusinessChange(e.target.value)}
+                >
+                  {businessOptions.map((opt, idx) => (
+                    <option key={idx} value={opt.value}>
+                      {lang === 'hi' ? opt.valueHi : opt.value}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Location Picker */}
+              <div className="field">
+                <label htmlFor="f-location">
+                  {lang === 'hi' ? 'यह कहाँ चलेगा? (Automatic GPS या Manual)' : 'Where will it operate? (Auto GPS or Manual)'}
+                </label>
+                <LocationPicker
+                  location={location}
+                  onChange={onLocationChange}
+                  onMetricsChange={onMetricsChange}
+                  lang={lang}
+                />
+                <p className="hint">
+                  {lang === 'hi'
+                    ? 'स्थानीय मांग और प्रतिस्पर्धा जांचने हेतु उपयोग — इस आकलन से आगे साझा नहीं किया जाता।'
+                    : 'Used to check local demand and nearby competition — not shared beyond this assessment.'}
+                </p>
+              </div>
+
+              {/* Starting Capital */}
+              <div className="field">
+                <label htmlFor="f-capital">
+                  {lang === 'hi' ? 'आपकी शुरुआती पूंजी' : 'Capital you\'re starting with'}
+                </label>
+                <div className="capital-row">
+                  <span className="currency">₹</span>
+                  <input
+                    type="number"
+                    id="f-capital"
+                    value={capital}
+                    step="5000"
+                    min="20000"
+                    max="500000"
+                    onChange={(e) => onCapitalChange(Number(e.target.value))}
+                  />
+                </div>
+                <div className="range-wrap">
+                  <input
+                    type="range"
+                    id="f-capital-range"
+                    min="20000"
+                    max="500000"
+                    step="5000"
+                    value={capital}
+                    onChange={(e) => onCapitalChange(Number(e.target.value))}
+                  />
+                  <div className="range-labels">
+                    <span>₹20,000</span>
+                    <span>₹2,50,000</span>
+                    <span>₹5,00,000</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-submit">
+                <button
+                  id="submit-assessment-btn"
+                  type="button"
+                  className="btn"
+                  onClick={onSubmit}
+                >
+                  <span>{lang === 'hi' ? 'मेरा फैसला देखें' : 'See my verdict'}</span>
+                  <span style={{ fontSize: '1.1rem' }}>→</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Side Note */}
+            <div className="side-note">
+              <h3>{lang === 'hi' ? 'खाता क्या जांचता है' : 'What Khata checks'}</h3>
+              <p>
+                {lang === 'hi'
+                  ? 'यह कोई सामान्य लोन कैलकुलेटर नहीं है। खाता आंकड़ों से पहले आपके व्यापार और जगह को समझता है।'
+                  : 'This isn\'t a generic loan calculator. Khata looks at your specific trade and place before touching the numbers.'}
+              </p>
+              <ul>
+                <li>{lang === 'hi' ? 'आपके स्थान के पास घरों और आवाजाही की मांग' : 'Household and footfall demand near your location'}</li>
+                <li>{lang === 'hi' ? 'आसपास कितने समान व्यापार पहले से चल रहे हैं' : 'How many similar businesses already operate nearby'}</li>
+                <li>{lang === 'hi' ? 'आपकी पूंजी के अनुसार मार्जिन-मनी और टर्म-लोन का बंटवारा' : 'A margin-money and term-loan split matched to your capital'}</li>
+                <li>{lang === 'hi' ? 'मोहलत अवधि सहित तिमाही चुकौती योजना' : 'A quarterly repayment plan with a moratorium built in'}</li>
+                <li>{lang === 'hi' ? 'सिबिल स्कोर व सरकारी सब्सिडी (NSFDC / PMEGP) पात्रता' : 'CIBIL score validation & government scheme eligibility'}</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // ==========================================
+    // 12. RESULTS DASHBOARD
+    // ==========================================
+    function ResultsDashboard({
+      entrepreneurName,
+      businessType,
+      location,
+      capital,
+      selectedScheme,
+      onSelectScheme,
+      cibilScore,
+      onCibilChange,
+      metrics,
+      onEditAnswers,
+      onOpenChat,
+      lang = 'en'
+    }) {
+      const [activeTab, setActiveTab] = useState('verdict');
+      const totalLoan = Math.round(capital * 0.80);
+
+      return (
+        <section className="results-screen">
+          <div className="results-head">
+            <div>
+              <h2>
+                {entrepreneurName && <span className="owner-highlight">{entrepreneurName}’s </span>}
+                {businessType} — {location}
+              </h2>
+              <p className="meta">
+                {lang === 'hi'
+                  ? `₹${capital.toLocaleString('en-IN')} शुरुआती पूंजी के आधार पर पूर्ण विश्लेषण`
+                  : `Assessed against ₹${capital.toLocaleString('en-IN')} starting capital`}
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+              <button type="button" className="btn sm secondary" onClick={onOpenChat}>
+                💬 {lang === 'hi' ? 'सलाहकार से चर्चा करें' : 'Discuss with Advisor'}
+              </button>
+              <button type="button" className="edit-link" onClick={onEditAnswers}>
+                ← {lang === 'hi' ? 'जवाब बदलें' : 'Edit answers'}
+              </button>
+            </div>
+          </div>
+
+          <div className="tabbar" role="tablist">
+            <button
+              type="button"
+              className={`tab ${activeTab === 'verdict' ? 'active' : ''}`}
+              onClick={() => setActiveTab('verdict')}
+            >
+              🏆 {lang === 'hi' ? 'फैसला' : 'Verdict'}
+            </button>
+            <button
+              type="button"
+              className={`tab ${activeTab === 'feasibility' ? 'active' : ''}`}
+              onClick={() => setActiveTab('feasibility')}
+            >
+              📊 {lang === 'hi' ? 'व्यवहार्यता (SWOT)' : 'Feasibility'}
+            </button>
+            <button
+              type="button"
+              className={`tab ${activeTab === 'schemes' ? 'active' : ''}`}
+              onClick={() => setActiveTab('schemes')}
+            >
+              🏛️ {lang === 'hi' ? 'सरकारी योजनाएं' : 'Govt Schemes'}
+            </button>
+            <button
+              type="button"
+              className={`tab ${activeTab === 'calculator' ? 'active' : ''}`}
+              onClick={() => setActiveTab('calculator')}
+            >
+              🧮 {lang === 'hi' ? 'ऋण व पूंजी गणना' : 'Loan Calculator'}
+            </button>
+            <button
+              type="button"
+              className={`tab ${activeTab === 'repayment' ? 'active' : ''}`}
+              onClick={() => setActiveTab('repayment')}
+            >
+              📅 {lang === 'hi' ? 'ईएमआई व चुकौती' : 'Repayment Planner'}
+            </button>
+            <button
+              type="button"
+              className={`tab ${activeTab === 'cibil' ? 'active' : ''}`}
+              onClick={() => setActiveTab('cibil')}
+            >
+              📈 {lang === 'hi' ? 'सिबिल स्कोर' : 'CIBIL Score'}
+            </button>
+          </div>
+
+          <div className="tab-panels">
+            {activeTab === 'verdict' && (
+              <div className="tab-panel active" id="panel-verdict">
+                <div className="verdict-layout">
+                  <div className="stamp" style={{ '--stamp-color': 'var(--marigold-deep)' }}>
+                    <div className="stamp-inner">
+                      <div className="stamp-word">{lang === 'hi' ? 'बदलाव करें' : 'MODIFY'}</div>
+                      <div className="stamp-sub">{lang === 'hi' ? 'खाता आकलन' : 'KHATA ASSESSMENT'}</div>
+                    </div>
+                  </div>
+
+                  <div className="verdict-text">
+                    <h3>{lang === 'hi' ? 'योजना ठीक है, बस एक बदलाव ज़रूरी है' : 'Workable, with one change to the plan'}</h3>
+                    <p>
+                      {lang === 'hi'
+                        ? `इस स्थान पर ${businessType} मांग और प्रतिस्पर्धा जांच में खरा उतरता है। आपकी बताई पूंजी माल और सज्जा के लिए पर्याप्त है, पर पहली दो तिमाहियों के लिए नकद भंडार कम है — इसे अनुशंसित योजना के साथ बढ़ाना बेहतर होगा।`
+                        : `A ${businessType.toLowerCase()} in ${location} clears demand and competition checks. The capital you've listed covers stock and fit-out, but leaves a thin cash buffer for the first two quarters — worth widening before you sign anything.`}
+                    </p>
+
+                    <ul className="verdict-factors">
+                      <li>
+                        <span className="dot" style={{ background: 'var(--paddy)' }}></span>
+                        <span>
+                          {lang === 'hi'
+                            ? `स्थानीय मांग इस व्यापार के अनुकूल है: औसत घनत्व, ${metrics.distance || '600m'} में कोई सीधी दुकान नहीं`
+                            : `Local demand supports this trade: moderate household density, no store within ${metrics.distance || '600m'}`}
+                        </span>
+                      </li>
+                      <li>
+                        <span className="dot" style={{ background: 'var(--paddy)' }}></span>
+                        <span>
+                          {lang === 'hi'
+                            ? `निकटवर्ती क्षेत्र में केवल ${metrics.competition || 2} समान दुकानें संचालित हैं`
+                            : `Only ${metrics.competition || 2} similar stores operating in the immediate catchment area`}
+                        </span>
+                      </li>
+                      <li>
+                        <span className="dot" style={{ background: 'var(--marigold-deep)' }}></span>
+                        <span>
+                          {lang === 'hi'
+                            ? 'कार्यशील पूंजी भंडार अनुशंसित 3 महीने के बफ़र से थोड़ा कम है'
+                            : 'Working-capital buffer is under the recommended three-month cushion'}
+                        </span>
+                      </li>
+                    </ul>
+
+                    <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
+                      <button type="button" className="btn sm" onClick={() => setActiveTab('schemes')}>
+                        {lang === 'hi' ? 'योग्य योजनाएं देखें →' : 'View Eligible Schemes →'}
+                      </button>
+                      <button type="button" className="btn sm secondary" onClick={() => setActiveTab('repayment')}>
+                        {lang === 'hi' ? 'चुकौती योजना देखें' : 'Review Repayment Plan'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'feasibility' && (
+              <div className="tab-panel active" id="panel-feasibility">
+                <div className="swot-grid">
+                  <div className="swot-card strength">
+                    <h4>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M12 20V10M12 10C12 6 15 4 19 4C19 8 17 10 12 10Z" />
+                        <path d="M12 14C12 11 9 9 5 9C5 12 7 14 12 14Z" />
+                      </svg>
+                      <span>{lang === 'hi' ? 'मजबूती (Strengths)' : 'Strengths'}</span>
+                    </h4>
+                    <ul>
+                      <li>{lang === 'hi' ? 'निकटवर्ती व्यापारिक क्षेत्र में कम प्रतिस्पर्धा' : 'Low existing competition in the catchment area'}</li>
+                      <li>{lang === 'hi' ? 'स्थिर दैनिक ज़रूरत की मांग, मौसमी मंदी नहीं' : 'Steady daily-needs demand, not seasonal'}</li>
+                      <li>{lang === 'hi' ? 'दुकान स्थल के पास नियमित पैदल आवाजाही' : 'Consistent pedestrian footfall along the chosen strip'}</li>
+                    </ul>
+                  </div>
+
+                  <div className="swot-card weakness">
+                    <h4>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M4 3H20L18 13H6L4 3Z" />
+                        <path d="M6 13L4 21" />
+                        <path d="M18 13L20 21" />
+                      </svg>
+                      <span>{lang === 'hi' ? 'कमजोरी (Weaknesses)' : 'Weaknesses'}</span>
+                    </h4>
+                    <ul>
+                      <li>{lang === 'hi' ? 'पहली दो तिमाहियों के लिए पतला नकद भंडार' : 'Thin working-capital buffer for the first two quarters'}</li>
+                      <li>{lang === 'hi' ? 'डिजिटल बहीखाता व जीएसटी का पूर्व अनुभव नहीं' : 'No prior digital bookkeeping track record recorded'}</li>
+                    </ul>
+                  </div>
+
+                  <div className="swot-card opportunity">
+                    <h4>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <rect x="4" y="10" width="16" height="10" rx="1" />
+                        <path d="M4 10L12 4L20 10" />
+                      </svg>
+                      <span>{lang === 'hi' ? 'अवसर (Opportunities)' : 'Opportunities'}</span>
+                    </h4>
+                    <ul>
+                      <li>{lang === 'hi' ? 'प्रस्तावित स्थान से 400 मीटर दूर नई आवासीय कॉलोनी बन रही है' : 'New residential housing coming up 400m from the proposed site'}</li>
+                      <li>{lang === 'hi' ? 'बाद में बिल-भुगतान और पार्सल पिकअप काउंटर जोड़कर अतिरिक्त कमाई' : 'Room to add a bill-payment / micro-ATM counter later for extra footfall'}</li>
+                    </ul>
+                  </div>
+
+                  <div className="swot-card threat">
+                    <h4>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M7 18C4 18 2 16 2 13C2 10.5 4 9 6 9C6.5 6 9 4 12 4C15 4 17 6.5 17.5 9.5C19.5 9.8 21 11.5 21 13.5C21 16 19 18 16 18H7Z" />
+                      </svg>
+                      <span>{lang === 'hi' ? 'खतरे (Threats)' : 'Threats'}</span>
+                    </h4>
+                    <ul>
+                      <li>{lang === 'hi' ? '1.2 किमी दूर एक बड़ा मार्ट / थोक स्टोर खुलने की संभावना' : 'A larger regional general store is rumoured to be opening 1.2km away'}</li>
+                      <li>{lang === 'hi' ? 'थोक जिंस दरों में हालिया मूल्य वृद्धि' : 'Wholesale rates for daily staples have risen 6% this quarter'}</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="market-strip">
+                  <div className="market-item">
+                    <div className="val">{metrics.competition || 2}</div>
+                    <div className="lbl">{lang === 'hi' ? 'आसपास समान दुकानें' : 'similar stores nearby'}</div>
+                  </div>
+                  <div className="market-item">
+                    <div className="val">{metrics.households || '~1,400'}</div>
+                    <div className="lbl">{lang === 'hi' ? 'प्रभाव क्षेत्र में घर' : 'households in catchment'}</div>
+                  </div>
+                  <div className="market-item">
+                    <div className="val">{metrics.distance || '600m'}</div>
+                    <div className="lbl">{lang === 'hi' ? 'निकटतम प्रतिस्पर्धी तक दूरी' : 'to nearest competitor'}</div>
+                  </div>
+                  <div className="market-item">
+                    <div className="val" style={{ color: 'var(--paddy-deep)' }}>{metrics.tier || 'Semi-Urban'}</div>
+                    <div className="lbl">{lang === 'hi' ? 'बाज़ार का स्तर' : 'market tier'}</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'schemes' && (
+              <div className="tab-panel active" id="panel-schemes">
+                <SchemeSelector
+                  selectedSchemeId={selectedScheme.id}
+                  onSelectScheme={(scheme) => onSelectScheme(scheme)}
+                  lang={lang}
+                />
+              </div>
+            )}
+
+            {activeTab === 'calculator' && (
+              <div className="tab-panel active" id="panel-calculator">
+                <LoanCalculator
+                  capital={capital}
+                  scheme={selectedScheme}
+                  cibilScore={cibilScore}
+                  lang={lang}
+                />
+              </div>
+            )}
+
+            {activeTab === 'repayment' && (
+              <div className="tab-panel active" id="panel-repayment">
+                <RepaymentPlanner
+                  loanAmount={totalLoan}
+                  annualInterestRate={parseFloat(selectedScheme.interestRate) || 6.0}
+                  initialMoratoriumQuarters={selectedScheme.id === 'nsfdc' ? 2 : 1}
+                  lang={lang}
+                />
+              </div>
+            )}
+
+            {activeTab === 'cibil' && (
+              <div className="tab-panel active" id="panel-cibil">
+                <CibilScore
+                  score={cibilScore}
+                  onScoreChange={onCibilChange}
+                  lang={lang}
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    // ==========================================
+    // 13. ROOT APP COMPONENT
+    // ==========================================
+    function App() {
+      const [lang, setLang] = useState('en');
+      const [activeScreen, setActiveScreen] = useState('landing');
+      const [isChatOpen, setIsChatOpen] = useState(false);
+
+      const [entrepreneurName, setEntrepreneurName] = useState('Ramesh Sharma');
+      const [businessType, setBusinessType] = useState('Grocery & provisions store');
+      const [location, setLocation] = useState('Sojat City, Rajasthan');
+      const [capital, setCapital] = useState(180000);
+      const [cibilScore, setCibilScore] = useState(720);
+      const [selectedScheme, setSelectedScheme] = useState(SCHEMES_DATA[0]);
+
+      const [metrics, setMetrics] = useState({
+        households: '~1,400',
+        distance: '600m',
+        competition: 2,
+        tier: 'Semi-Urban'
+      });
+
+      useEffect(() => {
+        document.documentElement.lang = lang;
+        document.documentElement.classList.toggle('lang-hi', lang === 'hi');
+      }, [lang]);
+
+      const handleNavigate = (screen) => {
+        setActiveScreen(screen);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      return (
+        <div className={`khata-app ${lang === 'hi' ? 'lang-hi' : ''}`}>
+          <Header
+            lang={lang}
+            onLangChange={setLang}
+            entrepreneurName={entrepreneurName}
+            onOpenChat={() => setIsChatOpen(true)}
+            onNavigate={handleNavigate}
+            activeScreen={activeScreen}
+          />
+
+          <main className="wrap">
+            {activeScreen === 'landing' && (
+              <HeroLanding
+                onStartAssessment={() => handleNavigate('input')}
+                onViewSample={() => handleNavigate('results')}
+                onOpenChat={() => setIsChatOpen(true)}
+                lang={lang}
+              />
+            )}
+
+            {activeScreen === 'input' && (
+              <InputScreen
+                entrepreneurName={entrepreneurName}
+                onNameChange={setEntrepreneurName}
+                businessType={businessType}
+                onBusinessChange={setBusinessType}
+                location={location}
+                onLocationChange={setLocation}
+                capital={capital}
+                onCapitalChange={setCapital}
+                onMetricsChange={setMetrics}
+                onSubmit={() => handleNavigate('results')}
+                lang={lang}
+              />
+            )}
+
+            {activeScreen === 'results' && (
+              <ResultsDashboard
+                entrepreneurName={entrepreneurName}
+                businessType={businessType}
+                location={location}
+                capital={capital}
+                selectedScheme={selectedScheme}
+                onSelectScheme={setSelectedScheme}
+                cibilScore={cibilScore}
+                onCibilChange={setCibilScore}
+                metrics={metrics}
+                onEditAnswers={() => handleNavigate('input')}
+                onOpenChat={() => setIsChatOpen(true)}
+                lang={lang}
+              />
+            )}
+          </main>
+
+          <button
+            type="button"
+            className="chatbot-floating-trigger"
+            onClick={() => setIsChatOpen(true)}
+            aria-label="Open Khata Saathi Chatbot"
+          >
+            <span style={{ fontSize: '1.2rem' }}>💬</span>
+            <span>{lang === 'hi' ? 'खाता साथी (AI)' : 'Khata Saathi (AI)'}</span>
+          </button>
+
+          <Chatbot
+            isOpen={isChatOpen}
+            onClose={() => setIsChatOpen(false)}
+            lang={lang}
+            entrepreneurName={entrepreneurName}
+          />
+
+          <footer>
+            <div className="footer-inner">
+              <div>
+                <strong>Khata React Edition</strong> · {lang === 'hi' ? 'सूक्ष्म उद्यमियों के लिए व्यावसायिक और वित्तीय सलाहकार' : 'Business and Financial Advisory for Hyperlocal Entrepreneurs'}
+              </div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--ink-soft)' }}>
+                {lang === 'hi'
+                  ? 'NSFDC, PMEGP, मुद्रा व सरकारी योजनाओं के मार्गदर्शन हेतु प्रोटोटाइप'
+                  : 'Prototype for SIH26091 — Built with React, Web Speech API & Government Micro-credit Schemes'}
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
