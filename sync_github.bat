@@ -4,7 +4,7 @@ cd /d "%~dp0"
 echo.
 echo ========================================================
 echo   MicroNiti / SIH 2026 - Automatic GitHub Sync Engine
-echo   Repository: https://github.com/SANYAMJAIN2309/SIH-2026
+echo   Repository: https://github.com/ORIGIN-LABS-SJ/SIH-2026
 echo ========================================================
 echo.
 
