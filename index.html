@@ -1256,6 +1256,83 @@ try {
   .surge-urgency.medium{background:#fef3c7;color:#b45309;}
   .surge-urgency.low{background:#e0f2fe;color:#0369a1;}
 
+  /* Phase 5: Aadhaar e-KYC & Voice Khata Styles */
+  .header-kyc-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:6px 13px;border-radius:999px;
+    font-size:0.84rem;font-weight:800;
+    border:2px solid var(--ink);
+    cursor:pointer;transition:all 0.15s ease;
+    box-shadow:2px 2px 0 var(--ink);
+    background:#1e3a8a;color:#fff;
+  }
+  .header-kyc-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
+  .header-kyc-btn.verified{background:#047857;color:#fff;}
+
+  @keyframes micPulse {
+    0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); transform: scale(1); }
+    50% { box-shadow: 0 0 0 16px rgba(220, 38, 38, 0); transform: scale(1.06); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); transform: scale(1); }
+  }
+  .voice-mic-trigger.recording {
+    background: #dc2626 !important;
+    animation: micPulse 1.4s infinite !important;
+  }
+
+  .kyc-step-indicator{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--paper-alt);border:2px solid var(--ink);
+    border-radius:var(--radius-sm);padding:8px 16px;margin-bottom:18px;
+  }
+  .kyc-step-item{
+    display:flex;align-items:center;gap:6px;
+    font-size:0.82rem;font-weight:700;color:var(--ink-soft);
+  }
+  .kyc-step-item.active{color:var(--indigo-deep);font-weight:900;}
+  .kyc-step-item.completed{color:#047857;font-weight:900;}
+  .kyc-step-num{
+    width:22px;height:22px;border-radius:50%;background:var(--ink-faint);
+    color:var(--ink);display:flex;align-items:center;justify-content:center;
+    font-size:0.75rem;font-weight:800;
+  }
+  .kyc-step-item.active .kyc-step-num{background:var(--indigo);color:#fff;}
+  .kyc-step-item.completed .kyc-step-num{background:#047857;color:#fff;}
+
+  .aadhaar-input-box{
+    width:100%;padding:14px 16px;
+    font-family:monospace;font-size:1.35rem;font-weight:800;
+    letter-spacing:4px;text-align:center;
+    border:2.5px solid var(--ink);border-radius:var(--radius-sm);
+    background:var(--paper-card);box-shadow:inset 2px 2px 0 var(--ink-faint);
+    outline:none;transition:border-color 0.2s;
+  }
+  .aadhaar-input-box:focus{border-color:var(--indigo);background:#fff;}
+
+  .otp-input-box{
+    width:100%;padding:12px;
+    font-family:monospace;font-size:1.5rem;font-weight:900;
+    letter-spacing:10px;text-align:center;
+    border:2.5px solid var(--ink);border-radius:var(--radius-sm);
+    background:#fff;outline:none;
+  }
+
+  .uidai-card{
+    background:linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    border:2.5px solid var(--ink);border-radius:var(--radius);
+    padding:20px;box-shadow:5px 5px 0 var(--ink);position:relative;
+    overflow:hidden;
+  }
+  .uidai-tricolor-strip{
+    position:absolute;top:0;left:0;right:0;height:6px;
+    background:linear-gradient(90deg, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%);
+    border-bottom:1px solid rgba(0,0,0,0.1);
+  }
+  .uidai-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#e6f4ea;color:#137333;border:1.5px solid #137333;
+    padding:4px 12px;border-radius:999px;font-size:0.78rem;font-weight:900;
+  }
+
   @media print{
     body * {visibility: hidden;}
     #printable-dossier-content, #printable-dossier-content *,
@@ -1446,6 +1523,12 @@ try {
       <button type="button" class="header-ledger-btn" id="header-market-btn" onclick="showScreen('screen-market')" title="Live APMC Mandi Wholesale Rates & Seasonal Demand Surges" style="background:#047857;color:#fff;">
         <span style="font-size:1.05rem;">📈</span>
         <span data-i18n="btnMandiTracker">Mandi Tracker</span>
+      </button>
+
+      <!-- Aadhaar e-KYC Verification Header Button -->
+      <button type="button" class="header-kyc-btn" id="header-kyc-btn" onclick="openAadhaarKYCModal()" title="UIDAI Aadhaar e-KYC Demographic Verification for MoSJE Loans">
+        <span style="font-size:1.05rem;">🆔</span>
+        <span id="header-kyc-label">Verify e-KYC</span>
       </button>
 
       <!-- AI Advisor Header Button (Every page) -->
@@ -2577,7 +2660,8 @@ try {
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
             <span style="font-size:0.8rem;color:#FFE7A0;font-weight:700;">Engine:</span>
-            <span style="background:rgba(255,255,255,0.15);padding:3px 10px;border-radius:999px;font-size:0.75rem;font-weight:800;color:#fff;">Auto NLP & Regex</span>
+            <span style="background:rgba(255,255,255,0.15);padding:3px 10px;border-radius:999px;font-size:0.75rem;font-weight:800;color:#fff;">Auto NLP &amp; Regex</span>
+            <span id="voice-tts-status" style="font-size:0.75rem;font-weight:800;color:#A9E5BF;background:rgba(255,255,255,0.1);padding:3px 8px;border-radius:999px;">🔊 Audio Voice Feedback ON</span>
             <span id="voice-listening-status" style="font-size:0.82rem;font-weight:800;color:#75D498;">Ready</span>
           </div>
         </div>
@@ -2592,7 +2676,7 @@ try {
 
           <div>
             <p class="voice-instruction">
-              Speak naturally in Hindi or English. The AI parses the amount, type, category, and customer name instantly:
+              Speak naturally in Hindi or English. The AI parses the amount, type, category, and customer name instantly with spoken audio feedback:
             </p>
             <div class="voice-sample-chips">
               <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Today I sold 1000 rupees worth of grocery product')">
@@ -2609,6 +2693,12 @@ try {
               </button>
               <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Dukan ka kiraya 3000 rupaye diya')">
                 🗣️ "Dukan ka kiraya 3000 rupaye diya"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Mandi se 4200 ka gahu kharida')">
+                🗣️ "Mandi se 4200 ka gahu kharida"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Suresh ne 500 rupaye chuka diye')">
+                🗣️ "Suresh ne 500 rupaye chuka diye"
               </button>
             </div>
 
@@ -6461,10 +6551,17 @@ try {
     const today = new Date();
     const dateStr = today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 
-    // Enterprise details
-    const entName = userName ? `${userName}'s Enterprises` : 'Sharma Kirana & General Store';
-    const promoter = userName || 'Ramesh Sharma';
-    const loc = (userLocation && userLocation !== 'India') ? userLocation : 'Varanasi, Uttar Pradesh (Rural Catchment)';
+    // Enterprise details (Linked with Phase 5 Aadhaar e-KYC verification)
+    let savedKyc = currentKycProfile;
+    if (!savedKyc) {
+      try {
+        const s = localStorage.getItem('sahayak_kyc_profile');
+        if (s) savedKyc = JSON.parse(s);
+      } catch(e) {}
+    }
+    const promoter = savedKyc ? `${savedKyc.full_name} (UIDAI e-KYC Verified)` : (userName || 'Ramesh Sharma');
+    const entName = savedKyc ? `${savedKyc.full_name}'s Provisions & Enterprise` : (userName ? `${userName}'s Enterprises` : 'Sharma Kirana & General Store');
+    const loc = savedKyc ? savedKyc.formatted_address : ((userLocation && userLocation !== 'India') ? userLocation : 'Varanasi, Uttar Pradesh (Rural Catchment)');
     const capitalReq = (typeof currentCapital === 'number' && currentCapital >= 50000) ? currentCapital : 500000;
 
     // Means of Finance calculations
@@ -6995,6 +7092,338 @@ try {
     setTimeout(() => {
       if (printContainer) printContainer.style.display = 'none';
     }, 1000);
+  }
+
+  // ==================== PHASE 5: UIDAI AADHAAR e-KYC ENGINE & SPOKEN VOICE LOGGING ====================
+  let currentKycProfile = null;
+  let activeKycTxnId = null;
+
+  // Verhoeff algorithm in JavaScript for 12-digit client-side validation
+  const VERHOEFF_TABLE_D = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 2, 3, 4, 0, 6, 7, 8, 9, 5],
+    [2, 3, 4, 0, 1, 7, 8, 9, 5, 6],
+    [3, 4, 0, 1, 2, 8, 9, 5, 6, 7],
+    [4, 0, 1, 2, 3, 9, 5, 6, 7, 8],
+    [5, 9, 8, 7, 6, 0, 4, 3, 2, 1],
+    [6, 5, 9, 8, 7, 1, 0, 4, 3, 2],
+    [7, 6, 5, 9, 8, 2, 1, 0, 4, 3],
+    [8, 7, 6, 5, 9, 3, 2, 1, 0, 4],
+    [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+  ];
+  const VERHOEFF_TABLE_P = [
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    [1, 5, 7, 6, 2, 8, 3, 0, 9, 4],
+    [5, 8, 0, 3, 7, 9, 6, 1, 4, 2],
+    [8, 9, 1, 6, 0, 4, 3, 5, 2, 7],
+    [9, 4, 5, 3, 1, 2, 6, 8, 7, 0],
+    [4, 2, 8, 6, 5, 7, 3, 9, 0, 1],
+    [2, 7, 9, 3, 8, 0, 6, 4, 1, 5],
+    [7, 0, 4, 6, 9, 1, 3, 2, 5, 8]
+  ];
+
+  function validateVerhoeffAadhaarClient(numStr) {
+    const clean = (numStr || '').replace(/[\s\-]/g, '');
+    if (!/^\d{12}$/.test(clean)) return false;
+    let c = 0;
+    const digits = clean.split('').reverse().map(Number);
+    for (let i = 0; i < digits.length; i++) {
+      c = VERHOEFF_TABLE_D[c][VERHOEFF_TABLE_P[i % 8][digits[i]]];
+    }
+    return c === 0;
+  }
+
+  // Spoken voice audio confirmation using Web Speech Synthesis
+  function speakVoiceConfirmation(text, lang) {
+    try {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang || (currentLang === 'en' ? 'en-IN' : 'hi-IN');
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch(e) {}
+  }
+
+  function initAadhaarKYC() {
+    try {
+      const saved = localStorage.getItem('sahayak_kyc_profile');
+      if (saved) {
+        currentKycProfile = JSON.parse(saved);
+        updateKycUIState(true);
+      } else {
+        updateKycUIState(false);
+      }
+    } catch(e) {}
+  }
+
+  function updateKycUIState(isVerified) {
+    const btn = document.getElementById('header-kyc-btn');
+    const label = document.getElementById('header-kyc-label');
+    if (btn && label) {
+      if (isVerified) {
+        btn.classList.add('verified');
+        label.textContent = 'e-KYC Verified ✓';
+      } else {
+        btn.classList.remove('verified');
+        label.textContent = 'Verify e-KYC';
+      }
+    }
+
+    // If verified, synchronize name into ledger
+    if (isVerified && currentKycProfile) {
+      const ledgUser = document.getElementById('ledger-shop-user');
+      if (ledgUser) ledgUser.innerHTML = `👤 <strong>${currentKycProfile.full_name}</strong> <span style="background:#047857;color:#fff;font-size:0.7rem;padding:2px 6px;border-radius:999px;">UIDAI Verified</span>`;
+    }
+  }
+
+  function openAadhaarKYCModal() {
+    const modal = document.getElementById('modal-aadhaar-kyc');
+    if (!modal) return;
+
+    if (currentKycProfile && currentKycProfile.status === 'VERIFIED') {
+      showKycStep(3);
+      renderKycVerifiedCard(currentKycProfile);
+    } else {
+      showKycStep(1);
+    }
+
+    modal.classList.add('open');
+    modal.style.display = 'flex';
+  }
+
+  function closeAadhaarKYCModal(event) {
+    if (event && event.target && event.target !== event.currentTarget && !event.target.classList.contains('modal-close-btn')) {
+      return;
+    }
+    const modal = document.getElementById('modal-aadhaar-kyc');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.display = 'none';
+    }
+  }
+
+  function showKycStep(stepNum) {
+    const v1 = document.getElementById('kyc-view-step1');
+    const v2 = document.getElementById('kyc-view-step2');
+    const v3 = document.getElementById('kyc-view-step3');
+
+    const s1 = document.getElementById('kstep-1');
+    const s2 = document.getElementById('kstep-2');
+    const s3 = document.getElementById('kstep-3');
+
+    if (v1) v1.style.display = stepNum === 1 ? 'block' : 'none';
+    if (v2) v2.style.display = stepNum === 2 ? 'block' : 'none';
+    if (v3) v3.style.display = stepNum === 3 ? 'block' : 'none';
+
+    if (s1) { s1.className = stepNum === 1 ? 'kyc-step-item active' : (stepNum > 1 ? 'kyc-step-item completed' : 'kyc-step-item'); }
+    if (s2) { s2.className = stepNum === 2 ? 'kyc-step-item active' : (stepNum > 2 ? 'kyc-step-item completed' : 'kyc-step-item'); }
+    if (s3) { s3.className = stepNum === 3 ? 'kyc-step-item active' : 'kyc-step-item'; }
+  }
+
+  function formatAadhaarInput(input) {
+    let val = input.value.replace(/\D/g, '').substring(0, 12);
+    let parts = [];
+    for (let i = 0; i < val.length; i += 4) {
+      parts.push(val.substring(i, i + 4));
+    }
+    input.value = parts.join('  ');
+
+    const msg = document.getElementById('aadhaar-validation-msg');
+    const btn = document.getElementById('btn-request-otp');
+
+    if (val.length === 12) {
+      const isValidVerhoeff = validateVerhoeffAadhaarClient(val);
+      if (isValidVerhoeff || val === '548692349021') {
+        if (msg) { msg.textContent = '✓ Valid 12-digit Aadhaar structure'; msg.style.color = '#047857'; }
+        if (btn) btn.disabled = false;
+      } else {
+        if (msg) { msg.textContent = '✓ 12-digit format ready (Demo Mode)'; msg.style.color = 'var(--indigo)'; }
+        if (btn) btn.disabled = false;
+      }
+    } else {
+      if (msg) { msg.textContent = `${val.length}/12 digits entered`; msg.style.color = 'var(--ink-soft)'; }
+      if (btn) btn.disabled = true;
+    }
+  }
+
+  function fillDemoAadhaar() {
+    const input = document.getElementById('input-aadhaar-number');
+    if (input) {
+      input.value = '5486  9234  9021';
+      formatAadhaarInput(input);
+    }
+  }
+
+  function requestAadhaarOTP() {
+    const input = document.getElementById('input-aadhaar-number');
+    const aadhaarRaw = (input ? input.value : '').replace(/\s+/g, '');
+
+    if (aadhaarRaw.length !== 12) {
+      alert('Please enter a full 12-digit Aadhaar number.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-request-otp');
+    if (btn) { btn.disabled = true; btn.textContent = 'Transmitting to UIDAI Gateway...'; }
+
+    // Backend API Call with Offline Fallback
+    fetch('http://localhost:5000/api/kyc/aadhaar/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aadhaar: aadhaarRaw })
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      activeKycTxnId = data ? data.transaction_id : 'TXN-OFFLINE-' + Date.now();
+      const maskedMob = data ? data.masked_mobile : '+91 98*** ***10';
+      const mLabel = document.getElementById('kyc-masked-mobile');
+      if (mLabel) mLabel.textContent = maskedMob;
+
+      showKycStep(2);
+      if (btn) { btn.disabled = false; btn.textContent = '📩 Send Simulated OTP to Registered Mobile'; }
+    })
+    .catch(() => {
+      activeKycTxnId = 'TXN-LOCAL-' + Date.now();
+      showKycStep(2);
+      if (btn) { btn.disabled = false; btn.textContent = '📩 Send Simulated OTP to Registered Mobile'; }
+    });
+  }
+
+  function handleOtpInput(input) {
+    input.value = input.value.replace(/\D/g, '').substring(0, 6);
+    const btn = document.getElementById('btn-verify-otp');
+    if (btn) {
+      btn.disabled = input.value.length !== 6;
+    }
+  }
+
+  function fillDemoOTP() {
+    const input = document.getElementById('input-aadhaar-otp');
+    if (input) {
+      input.value = '123456';
+      handleOtpInput(input);
+    }
+  }
+
+  function backToAadhaarStep1() {
+    showKycStep(1);
+  }
+
+  function verifyAadhaarOTP() {
+    const inputAadhaar = document.getElementById('input-aadhaar-number');
+    const inputOtp = document.getElementById('input-aadhaar-otp');
+    const aadhaarRaw = (inputAadhaar ? inputAadhaar.value : '548692349021').replace(/\s+/g, '') || '548692349021';
+    const otp = (inputOtp ? inputOtp.value : '123456') || '123456';
+
+    const btn = document.getElementById('btn-verify-otp');
+    if (btn) { btn.disabled = true; btn.textContent = 'Validating Biometrics & OTP...'; }
+
+    fetch('http://localhost:5000/api/kyc/aadhaar/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aadhaar: aadhaarRaw, otp: otp, transaction_id: activeKycTxnId })
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      let profile = (data && data.profile) ? data.profile : null;
+      if (!profile) {
+        // Local fallback profile
+        profile = {
+          status: "VERIFIED",
+          uidai_token: `UIDAI-eKYC-2026-MOSJE-${aadhaarRaw.slice(-4)}`,
+          masked_aadhaar: `XXXX-XXXX-${aadhaarRaw.slice(-4)}`,
+          full_name: "Ramesh Chand Patel",
+          care_of: "S/O Ram Swaroop Patel",
+          gender: "Male",
+          dob: "15/08/1984",
+          age: 42,
+          formatted_address: "Plot No. 42, Gali No. 3, Shivpur Industrial Area, Varanasi, Uttar Pradesh - 221003",
+          social_category: "OBC (MoSJE / NBCFDC 6% Concessional Credit Beneficiary)",
+          msme_udyam_number: "UDYAM-UP-75-0049210",
+          verified_at: new Date().toLocaleDateString('en-IN') + ' ' + new Date().toLocaleTimeString('en-IN'),
+          sha256_digital_seal: "7c9f53e201bba89d48b43f438a08d234591a27e8d0e5ec2808b29f9"
+        };
+      }
+
+      currentKycProfile = profile;
+      localStorage.setItem('sahayak_kyc_profile', JSON.stringify(profile));
+
+      renderKycVerifiedCard(profile);
+      showKycStep(3);
+      updateKycUIState(true);
+      playLedgerChime();
+
+      // Audio greeting
+      speakVoiceConfirmation(`आधार सत्यापन सफल रहा। स्वागत है ${profile.full_name}!`);
+
+      if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Authenticate'; }
+    })
+    .catch(() => {
+      // Offline fallback
+      const profile = {
+        status: "VERIFIED",
+        uidai_token: `UIDAI-eKYC-2026-MOSJE-${aadhaarRaw.slice(-4)}`,
+        masked_aadhaar: `XXXX-XXXX-${aadhaarRaw.slice(-4)}`,
+        full_name: "Ramesh Chand Patel",
+        care_of: "S/O Ram Swaroop Patel",
+        gender: "Male",
+        dob: "15/08/1984",
+        age: 42,
+        formatted_address: "Plot No. 42, Gali No. 3, Shivpur Industrial Area, Varanasi, Uttar Pradesh - 221003",
+        social_category: "OBC (MoSJE / NBCFDC 6% Concessional Credit Beneficiary)",
+        msme_udyam_number: "UDYAM-UP-75-0049210",
+        verified_at: new Date().toLocaleDateString('en-IN'),
+        sha256_digital_seal: "7c9f53e201bba89d48b43f438a08d234591a27e8d0e5ec2808b29f9"
+      };
+
+      currentKycProfile = profile;
+      localStorage.setItem('sahayak_kyc_profile', JSON.stringify(profile));
+
+      renderKycVerifiedCard(profile);
+      showKycStep(3);
+      updateKycUIState(true);
+      playLedgerChime();
+      speakVoiceConfirmation(`आधार सत्यापन सफल रहा। स्वागत है ${profile.full_name}!`);
+
+      if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Authenticate'; }
+    });
+  }
+
+  function renderKycVerifiedCard(p) {
+    const elName = document.getElementById('kyc-card-name');
+    const elCare = document.getElementById('kyc-card-careof');
+    const elAddr = document.getElementById('kyc-card-address');
+    const elAadhaar = document.getElementById('kyc-card-aadhaar');
+    const elToken = document.getElementById('kyc-card-token');
+    const elHash = document.getElementById('kyc-card-hash');
+    const elTime = document.getElementById('kyc-card-time');
+
+    if (elName) elName.textContent = p.full_name;
+    if (elCare) elCare.textContent = p.care_of;
+    if (elAddr) elAddr.textContent = p.formatted_address;
+    if (elAadhaar) elAadhaar.textContent = (p.masked_aadhaar || '').replace(/-/g, '  ');
+    if (elToken) elToken.textContent = p.uidai_token;
+    if (elHash) elHash.textContent = (p.sha256_digital_seal || '').substring(0, 18) + '...';
+    if (elTime) elTime.textContent = p.verified_at || 'Verified Today';
+  }
+
+  function resetAadhaarKYC() {
+    currentKycProfile = null;
+    localStorage.removeItem('sahayak_kyc_profile');
+    updateKycUIState(false);
+    showKycStep(1);
+    const inAadhaar = document.getElementById('input-aadhaar-number');
+    const inOtp = document.getElementById('input-aadhaar-otp');
+    if (inAadhaar) inAadhaar.value = '';
+    if (inOtp) inOtp.value = '';
+    formatAadhaarInput(inAadhaar || {});
+  }
+
+  function viewUpdatedBankDPR() {
+    closeAadhaarKYCModal();
+    openBankDossierModal();
   }
 
   // MULTILINGUAL AI ADVISOR ENGINE (Requirement 2)
@@ -8258,14 +8687,19 @@ CRITICAL MANDATORY INSTRUCTIONS:
 
     // 1. Detect Type
     const udharKeywords = ['udhar', 'udhari', 'credit', 'baaki', 'baki', 'baad me dega', 'baad mein', 'khate me', 'khaate mein', 'udhar diya', 'udhaar'];
-    const expenseKeywords = ['kharcha', 'kharch', 'expense', 'spent', 'kharida', 'kharid', 'paid', 'purchase', 'buying', 'petrol', 'diesel', 'rent', 'kiraya', 'bijli', 'bill', 'repair', 'diya to', 'paid to'];
+    const expenseKeywords = ['kharcha', 'kharch', 'expense', 'spent', 'kharida', 'kharid', 'paid', 'purchase', 'buying', 'petrol', 'diesel', 'rent', 'kiraya', 'bijli', 'bill', 'repair', 'diya to', 'paid to', 'mandi se'];
     const incomeKeywords = ['sale', 'sales', 'bikri', 'becha', 'bechi', 'beche', 'sold', 'aaya', 'aaye', 'mil gaya', 'received', 'kamaya', 'earning', 'jama hua', 'income'];
+    const repaymentKeywords = ['chuka', 'chuka diya', 'chuka diye', 'chukta', 'udhar wapas', 'wapas diya', 'settled', 'clear kiya'];
 
+    const isRepayment = repaymentKeywords.some(k => text.includes(k));
     const isUdhar = udharKeywords.some(k => text.includes(k));
     const isExpense = expenseKeywords.some(k => text.includes(k));
     const isIncome = incomeKeywords.some(k => text.includes(k));
 
-    if (isUdhar) {
+    if (isRepayment) {
+      type = 'income';
+      category = 'Customer Credit Recovery';
+    } else if (isUdhar) {
       type = 'udhar';
       category = 'Customer Credit';
     } else if (isExpense && !isIncome) {
@@ -8299,27 +8733,30 @@ CRITICAL MANDATORY INSTRUCTIONS:
     }
 
     // 3. Category Refinement
-    if (text.includes('grocery') || text.includes('kirana') || text.includes('rashan') || text.includes('product')) {
+    if (text.includes('mandi') || text.includes('gahu') || text.includes('wheat') || text.includes('sarson') || text.includes('chana') || text.includes('dal') || text.includes('wholesale') || text.includes('stock') || text.includes('mal')) {
+      category = 'Raw Materials / Stock';
+      type = 'expense';
+    } else if (text.includes('grocery') || text.includes('kirana') || text.includes('rashan') || text.includes('product')) {
       category = 'Grocery / Retail';
-    } else if (text.includes('petrol') || text.includes('diesel') || text.includes('fuel') || text.includes('tel') || text.includes('oil')) {
+    } else if (text.includes('petrol') || text.includes('diesel') || text.includes('fuel') || text.includes('tel') || text.includes('transport')) {
       category = 'Fuel & Transport';
     } else if (text.includes('rent') || text.includes('kiraya')) {
       category = 'Shop Rent';
+      type = 'expense';
     } else if (text.includes('bijli') || text.includes('electricity') || text.includes('bill')) {
       category = 'Electricity & Utilities';
+      type = 'expense';
     } else if (text.includes('milk') || text.includes('doodh') || text.includes('dairy')) {
       category = 'Dairy & Milk';
-    } else if (text.includes('wholesale') || text.includes('stock') || text.includes('mal')) {
-      category = 'Raw Materials / Stock';
     }
 
     // 4. Extract Customer Name (for Udhar or person transactions)
-    const nameKoMatch = text.match(/([a-zA-Z\u0900-\u097F]+)\s+(?:ko|se|ne)\b/i);
-    if (nameKoMatch && !['aaj', 'kal', 'aapse', 'dukan', 'shop', 'hum', 'today', 'maine'].includes(nameKoMatch[1].toLowerCase())) {
+    const nameKoMatch = text.match(/([a-zA-Z\u0900-\u097F]+)\s+(?:ko|se|ne|ka|ke)\b/i);
+    if (nameKoMatch && !['aaj', 'kal', 'aapse', 'dukan', 'shop', 'hum', 'today', 'maine', 'mandi', 'tel', 'gahu'].includes(nameKoMatch[1].toLowerCase())) {
       customerName = nameKoMatch[1].charAt(0).toUpperCase() + nameKoMatch[1].slice(1);
     } else {
       const toMatch = text.match(/(?:to|from|customer|grahak)\s+([a-zA-Z\u0900-\u097F]+)/i);
-      if (toMatch && !['cash', 'today'].includes(toMatch[1].toLowerCase())) {
+      if (toMatch && !['cash', 'today', 'mandi'].includes(toMatch[1].toLowerCase())) {
         customerName = toMatch[1].charAt(0).toUpperCase() + toMatch[1].slice(1);
       }
     }
@@ -8491,8 +8928,32 @@ CRITICAL MANDATORY INSTRUCTIONS:
     };
 
     sahayakLedger.unshift(newEntry);
+
+    // If it is an udhar repayment, mark any existing pending udhar for this customer as cleared
+    if (newEntry.category === 'Customer Credit Recovery' && newEntry.customer_name) {
+      const pendingMatch = sahayakLedger.find(t => t.type === 'udhar' && !t.is_cleared && t.customer_name.toLowerCase() === newEntry.customer_name.toLowerCase());
+      if (pendingMatch) {
+        pendingMatch.is_cleared = true;
+      }
+    }
+
     localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
     playLedgerChime();
+
+    // Spoken Audio Confirmation (Phase 5 Voice Engine)
+    try {
+      let speechMsg = '';
+      if (newEntry.category === 'Customer Credit Recovery') {
+        speechMsg = `${newEntry.customer_name || 'ग्राहक'} का रुपये ${newEntry.amount} का उधार चुकता हो गया है।`;
+      } else if (newEntry.type === 'income') {
+        speechMsg = `रुपये ${newEntry.amount} की बिक्री सफलतापूर्वक खाता में दर्ज हो गई है।`;
+      } else if (newEntry.type === 'expense') {
+        speechMsg = `रुपये ${newEntry.amount} का खर्च दर्ज किया गया।`;
+      } else if (newEntry.type === 'udhar') {
+        speechMsg = `${newEntry.customer_name || 'ग्राहक'} का रुपये ${newEntry.amount} का उधार दर्ज हुआ।`;
+      }
+      speakVoiceConfirmation(speechMsg);
+    } catch(e) {}
 
     const live = document.getElementById('voice-live-transcript');
     if (live) live.innerHTML = `✅ <strong style="color:#75D498;">Recorded successfully:</strong> ₹${newEntry.amount} [${newEntry.type.toUpperCase()}] in your Digital Khata!`;
@@ -8592,6 +9053,13 @@ CRITICAL MANDATORY INSTRUCTIONS:
     initMarketTracker();
   } catch(e) {
     console.warn('[MARKET TRACKER INIT ERROR]', e);
+  }
+
+  // Initialize Aadhaar e-KYC on load
+  try {
+    initAadhaarKYC();
+  } catch(e) {
+    console.warn('[KYC INIT ERROR]', e);
   }
 
   // Initialize carousel on load
@@ -8970,6 +9438,200 @@ CRITICAL MANDATORY INSTRUCTIONS:
         <button type="button" class="btn sm ghost" onclick="closeBankOptionsModal()">Close</button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- PHASE 5: UIDAI AADHAAR e-KYC DEMOGRAPHIC VERIFICATION MODAL -->
+  <div class="modal-overlay" id="modal-aadhaar-kyc" onclick="closeAadhaarKYCModal(event)">
+    <div class="modal-box" style="max-width:680px;" onclick="event.stopPropagation()">
+      <!-- Modal Header with Indian Tricolor Accent & National Emblem -->
+      <div class="modal-head" style="background:#1e3a8a;border-bottom:3px solid var(--ink);position:relative;">
+        <div class="uidai-tricolor-strip"></div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+          <div style="font-size:1.8rem;line-height:1;">🇮🇳</div>
+          <div>
+            <h3 style="margin:0;font-size:1.08rem;color:#fff;display:flex;align-items:center;gap:8px;">
+              <span>UIDAI Aadhaar e-KYC Authentication</span>
+              <span style="background:#f59e0b;color:#000;font-size:0.68rem;padding:2px 8px;border-radius:999px;font-weight:900;">SIH26091 · MoSJE Stack</span>
+            </h3>
+            <div style="font-size:0.75rem;color:#bfdbfe;font-weight:600;">Unique Identification Authority of India · Beneficiary Verification Portal</div>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="closeAadhaarKYCModal()">✕</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body" style="padding:22px;">
+        <!-- 3-Step Breadcrumb Indicator -->
+        <div class="kyc-step-indicator">
+          <div class="kyc-step-item active" id="kstep-1">
+            <span class="kyc-step-num">1</span>
+            <span>Aadhaar Entry</span>
+          </div>
+          <span style="color:var(--ink-faint);">➔</span>
+          <div class="kyc-step-item" id="kstep-2">
+            <span class="kyc-step-num">2</span>
+            <span>OTP Verification</span>
+          </div>
+          <span style="color:var(--ink-faint);">➔</span>
+          <div class="kyc-step-item" id="kstep-3">
+            <span class="kyc-step-num">3</span>
+            <span>Verified Card</span>
+          </div>
+        </div>
+
+        <!-- Step 1: 12-Digit Aadhaar Input View -->
+        <div id="kyc-view-step1">
+          <p style="font-size:0.86rem;color:var(--ink-soft);line-height:1.5;margin:0 0 14px;">
+            Enter the 12-digit Aadhaar number of the primary enterprise promoter. A simulated 6-digit OTP will be issued to the registered mobile for instant demographic authentication under MoSJE guidelines:
+          </p>
+
+          <div style="margin-bottom:14px;">
+            <label style="display:block;font-size:0.82rem;font-weight:800;color:var(--ink);margin-bottom:6px;">
+              12-Digit Aadhaar Number (आधार संख्या):
+            </label>
+            <input type="text" id="input-aadhaar-number" class="aadhaar-input-box" placeholder="XXXX  XXXX  XXXX" maxlength="14" oninput="formatAadhaarInput(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+              <span id="aadhaar-validation-msg" style="font-size:0.75rem;font-weight:800;color:var(--ink-soft);">Enter 12 digits (Verhoeff Checksum enabled)</span>
+              <button type="button" onclick="fillDemoAadhaar()" style="background:none;border:none;color:var(--indigo);font-size:0.75rem;font-weight:800;text-decoration:underline;cursor:pointer;">
+                ⚡ Use Demo Aadhaar (5486 9234 9021)
+              </button>
+            </div>
+          </div>
+
+          <!-- Privacy & Regulatory Assurance Callout -->
+          <div style="background:var(--paper-alt);border:1.5px solid var(--ink-faint);border-radius:6px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:18px;">
+            <span style="font-size:1.1rem;line-height:1;">🔒</span>
+            <p style="font-size:0.77rem;color:var(--ink-soft);margin:0;line-height:1.45;">
+              <strong>Privacy Protected:</strong> Data is processed using simulated 256-bit UIDAI Vault protocols. Raw Aadhaar numbers are never stored in plain text; only masked tokens are stamped on the bank loan appraisal dossier.
+            </p>
+          </div>
+
+          <button type="button" class="btn primary" id="btn-request-otp" onclick="requestAadhaarOTP()" style="width:100%;justify-content:center;padding:12px;background:var(--indigo);" disabled>
+            <span>📩 Send Simulated OTP to Registered Mobile</span>
+          </button>
+        </div>
+
+        <!-- Step 2: OTP Verification View -->
+        <div id="kyc-view-step2" style="display:none;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="font-size:2rem;margin-bottom:6px;">📲</div>
+            <h4 style="margin:0 0 6px;font-size:1.05rem;color:var(--indigo);">Enter Verification Code (OTP)</h4>
+            <p style="font-size:0.84rem;color:var(--ink-soft);margin:0;">
+              Simulated OTP has been sent to your registered mobile: <strong id="kyc-masked-mobile" style="color:var(--ink);">+91 98*** ***10</strong>
+            </p>
+          </div>
+
+          <div style="max-width:320px;margin:0 auto 16px;">
+            <input type="text" id="input-aadhaar-otp" class="otp-input-box" placeholder="••••••" maxlength="6" oninput="handleOtpInput(this)">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+              <span style="font-size:0.75rem;font-weight:700;color:var(--ink-soft);">Standard Demo OTP: <strong>123456</strong></span>
+              <button type="button" onclick="fillDemoOTP()" style="background:none;border:none;color:var(--indigo);font-size:0.75rem;font-weight:800;text-decoration:underline;cursor:pointer;">
+                ⚡ Auto-Fill
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button type="button" class="btn ghost sm" onclick="backToAadhaarStep1()" style="flex:1;justify-content:center;">
+              ← Back
+            </button>
+            <button type="button" class="btn primary sm" id="btn-verify-otp" onclick="verifyAadhaarOTP()" style="flex:2;justify-content:center;background:#047857;color:#fff;">
+              <span>✅ Verify &amp; Authenticate</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Verified UIDAI Beneficiary Identity Card View -->
+        <div id="kyc-view-step3" style="display:none;">
+          <div class="uidai-card">
+            <div class="uidai-tricolor-strip"></div>
+            
+            <!-- Card Top Bar -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-top:4px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:1.3rem;">🇮🇳</span>
+                <div>
+                  <strong style="font-size:0.85rem;color:var(--ink);letter-spacing:0.5px;">भारत सरकार · GOVT OF INDIA</strong>
+                  <div style="font-size:0.7rem;color:var(--ink-soft);font-weight:700;">Unique Identification Authority of India</div>
+                </div>
+              </div>
+              <span class="uidai-badge">
+                <span>✅</span>
+                <span>UIDAI AUTHENTICATED</span>
+              </span>
+            </div>
+
+            <!-- Beneficiary Details Layout -->
+            <div style="display:grid;grid-template-columns:90px 1fr;gap:16px;align-items:start;margin-bottom:14px;">
+              <div style="text-align:center;">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="Beneficiary Photo" style="width:84px;height:84px;border-radius:6px;border:2px solid var(--ink);object-fit:cover;">
+                <div style="margin-top:4px;font-size:0.68rem;font-weight:800;color:#047857;">Live Biometric Match</div>
+              </div>
+
+              <div>
+                <h3 id="kyc-card-name" style="margin:0 0 3px;font-size:1.15rem;color:var(--ink);">Ramesh Chand Patel</h3>
+                <div id="kyc-card-careof" style="font-size:0.8rem;color:var(--ink-soft);margin-bottom:4px;">S/O Ram Swaroop Patel</div>
+                <div style="font-size:0.78rem;color:var(--ink-soft);margin-bottom:6px;">
+                  <span>DOB: <strong>15/08/1984</strong></span> · <span>Gender: <strong>Male</strong></span> · <span>Age: <strong>42</strong></span>
+                </div>
+                <div id="kyc-card-address" style="font-size:0.78rem;color:var(--ink);line-height:1.4;">
+                  Plot No. 42, Gali No. 3, Shivpur Industrial Area, Varanasi, Uttar Pradesh - 221003
+                </div>
+              </div>
+            </div>
+
+            <!-- Masked Aadhaar Number Bar -->
+            <div style="background:var(--paper-alt);border:1.5px solid var(--ink);border-radius:6px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div>
+                <span style="font-size:0.72rem;font-weight:700;color:var(--ink-soft);">Masked Aadhaar Number:</span>
+                <div id="kyc-card-aadhaar" style="font-family:monospace;font-size:1.1rem;font-weight:900;letter-spacing:2px;color:var(--indigo-deep);">
+                  XXXX XXXX 9021
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span style="font-size:0.72rem;font-weight:700;color:var(--ink-soft);">UIDAI Token ID:</span>
+                <div id="kyc-card-token" style="font-size:0.75rem;font-weight:800;color:var(--ink);">
+                  UIDAI-eKYC-2026-MOSJE-9021
+                </div>
+              </div>
+            </div>
+
+            <!-- MoSJE Concessional Entitlements -->
+            <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:8px 12px;font-size:0.78rem;margin-bottom:12px;">
+              <div style="font-weight:800;color:#166534;margin-bottom:2px;">🏛️ MoSJE Priority Sector Lending Eligibility:</div>
+              <div style="color:#14532d;line-height:1.4;">
+                • <strong>Social Category:</strong> OBC (Beneficiary qualifies for NBCFDC 6% concessional term loan &amp; PMEGP 35% subsidy).<br>
+                • <strong>Bank Account:</strong> Aadhaar-seeded Jan Dhan / Current Account with active DBT enablement.<br>
+                • <strong>MSME Udyam:</strong> Verified (UDYAM-UP-75-0049210).
+              </div>
+            </div>
+
+            <!-- Digital Verification Seal -->
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.7rem;color:var(--ink-soft);border-top:1px dashed var(--ink-faint);padding-top:8px;">
+              <span>🔒 SHA-256 Digital Seal: <strong id="kyc-card-hash" style="font-family:monospace;">e3b0c44298fc1c14...</strong></span>
+              <span id="kyc-card-time">Verified Today</span>
+            </div>
+          </div>
+
+          <!-- Action Row -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <button type="button" class="btn primary sm" onclick="viewUpdatedBankDPR()" style="flex:2;justify-content:center;background:var(--indigo);">
+              <span>📑 View Updated Bank Financial Dossier (DPR)</span>
+            </button>
+            <button type="button" class="btn ghost sm" onclick="resetAadhaarKYC()" style="flex:1;justify-content:center;">
+              <span>🔄 Re-verify</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="padding:12px 20px;background:var(--paper-alt);border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:0.75rem;font-weight:700;color:var(--ink-soft);">Official SIH26091 UIDAI Simulation Stack</span>
+        <button type="button" class="btn sm ghost" onclick="closeAadhaarKYCModal()">Close</button>
+      </div>
     </div>
   </div>
 

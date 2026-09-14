@@ -27,6 +27,12 @@ from market_engine import (
     calculate_procurement_plan,
     MANDIS
 )
+from kyc_engine import (
+    initiate_aadhaar_kyc,
+    confirm_aadhaar_kyc,
+    validate_verhoeff_aadhaar,
+    DEFAULT_VERIFIED_PROFILE
+)
 
 app = FastAPI(
     title="MicroNiti — AI-Driven Hyper-Local Advisory & Financial Structuring Platform",
@@ -207,6 +213,16 @@ class ProcurementPlanRequest(BaseModel):
     quantity: float = Field(..., gt=0)
     transport_freight_cost: float = Field(0.0, ge=0)
     target_markup_pct: Optional[float] = None
+
+
+class AadhaarOTPRequest(BaseModel):
+    aadhaar: str = Field(..., min_length=12, max_length=16, example="548692349021")
+
+
+class AadhaarVerifyRequest(BaseModel):
+    aadhaar: str = Field(..., min_length=12, max_length=16, example="548692349021")
+    otp: str = Field(..., min_length=6, max_length=6, example="123456")
+    transaction_id: Optional[str] = None
 
 
 # ==================== REST ENDPOINTS ====================
@@ -710,6 +726,56 @@ def generate_procurement_plan(req: ProcurementPlanRequest):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Procurement planning failed: {str(e)}")
+
+
+# ==================== PHASE 5: AADHAAR e-KYC VERIFICATION ====================
+
+@app.post("/api/kyc/aadhaar/send-otp", tags=["Identity & e-KYC"])
+def send_aadhaar_otp(req: AadhaarOTPRequest):
+    """
+    Initiates Aadhaar e-KYC demographic verification by issuing a simulated OTP
+    to the beneficiary's registered mobile number (+91 98*** ***10).
+    """
+    try:
+        res = initiate_aadhaar_kyc(req.aadhaar)
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to initiate Aadhaar KYC: {str(e)}")
+
+
+@app.post("/api/kyc/aadhaar/verify-otp", tags=["Identity & e-KYC"])
+def verify_aadhaar_otp(req: AadhaarVerifyRequest):
+    """
+    Validates the 6-digit Aadhaar OTP and returns an authentic UIDAI Demographic
+    verification profile stamped with a SHA-256 digital authenticity certificate.
+    """
+    try:
+        res = confirm_aadhaar_kyc(
+            aadhaar_number=req.aadhaar,
+            otp=req.otp,
+            txn_id=req.transaction_id or ""
+        )
+        return res
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Aadhaar OTP verification failed: {str(e)}")
+
+
+@app.get("/api/kyc/status", tags=["Identity & e-KYC"])
+def get_kyc_default_profile():
+    """Returns the standard verified demo profile and verification requirements."""
+    return {
+        "success": True,
+        "mode": "Simulated UIDAI Stack",
+        "demo_profile": DEFAULT_VERIFIED_PROFILE,
+        "demo_credentials": {
+            "demo_aadhaar": "5486 9234 9021",
+            "demo_otp": "123456"
+        }
+    }
 
 
 if __name__ == "__main__":
