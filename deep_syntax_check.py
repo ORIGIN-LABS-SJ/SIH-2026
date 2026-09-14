@@ -1,7 +1,10 @@
+import os
 import re
 
-with open('C:/Users/Sanyam/OneDrive/Desktop/index.html', 'r', encoding='utf-8') as f:
+target_file = 'index.html' if os.path.exists('index.html') else 'C:/Users/Sanyam/OneDrive/Desktop/index.html'
+with open(target_file, 'r', encoding='utf-8') as f:
     html = f.read()
+print(f"Checking syntax for: {target_file}")
 
 # Extract script blocks
 scripts = re.findall(r'<script(?![^>]*src=)[^>]*>(.*?)</script>', html, re.DOTALL)

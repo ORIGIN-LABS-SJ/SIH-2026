@@ -152,6 +152,24 @@ class SchemeMatchRequest(BaseModel):
     business_type: Optional[str] = None
 
 
+class LedgerEntryItem(BaseModel):
+    client_tx_id: Optional[str] = None
+    type: str = "income"  # income, expense, udhar
+    amount: float = 0.0
+    category: Optional[str] = "General"
+    description: Optional[str] = ""
+    customer_name: Optional[str] = ""
+    customer_phone: Optional[str] = ""
+    payment_mode: Optional[str] = "cash"
+    is_cleared: Optional[bool] = False
+    created_at: Optional[str] = None
+
+
+class LedgerBatchSyncRequest(BaseModel):
+    user_id: Optional[int] = 0
+    entries: List[LedgerEntryItem] = []
+
+
 # ==================== REST ENDPOINTS ====================
 
 @app.get("/api/health", tags=["System"])
@@ -450,6 +468,60 @@ def optimize_capital(data: Dict[str, Any]):
         "ideal_capital": model["ideal_capital"],
         "distribution": distribution
     }
+
+
+# ==================== SMART LEDGER (KHATA) ENDPOINTS ====================
+
+@app.post("/api/ledger/sync", tags=["Smart Ledger"])
+def sync_ledger(req: LedgerBatchSyncRequest):
+    """
+    Idempotent batch synchronization of offline ledger transactions.
+    Supports offline-first clients that queue transactions locally.
+    """
+    try:
+        entries_data = [e.dict() for e in req.entries]
+        result = database.sync_ledger_batch(entries_data, user_id=req.user_id or 0)
+        summary = database.get_ledger_summary(user_id=req.user_id or 0)
+        return {
+            "success": True,
+            "synced_count": result.get("synced", 0),
+            "total_submitted": result.get("total", 0),
+            "summary": summary
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ledger sync failed: {str(e)}")
+
+
+@app.get("/api/ledger/summary", tags=["Smart Ledger"])
+def get_ledger_summary(user_id: int = 0):
+    """
+    Retrieves real-time cashflow metrics: Total Bikri (Income),
+    Total Kharcha (Expenses), Net Profit, and Pending Customer Udhar.
+    """
+    try:
+        summary = database.get_ledger_summary(user_id=user_id)
+        return {
+            "success": True,
+            "summary": summary
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch ledger summary: {str(e)}")
+
+
+@app.get("/api/ledger/entries", tags=["Smart Ledger"])
+def get_ledger_entries(user_id: int = 0, limit: int = 100):
+    """
+    Retrieves recent ledger entries for the user or offline session.
+    """
+    try:
+        entries = database.get_ledger_entries(user_id=user_id, limit=limit)
+        return {
+            "success": True,
+            "count": len(entries),
+            "entries": entries
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch ledger entries: {str(e)}")
 
 
 if __name__ == "__main__":

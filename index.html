@@ -369,6 +369,210 @@ try {
   }
   .header-advisor-btn:hover{background:var(--marigold);transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
 
+  /* Smart Ledger button in header */
+  .header-ledger-btn{
+    display:inline-flex;align-items:center;gap:7px;background:var(--paddy-light);
+    border:2px solid var(--ink);border-radius:999px;padding:6px 14px;
+    font-weight:800;font-size:.88rem;color:var(--paddy-deep);cursor:pointer;
+    box-shadow:2px 2px 0 var(--ink);transition:all .12s ease;
+  }
+  .header-ledger-btn:hover{background:var(--paddy);color:#fff;transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);}
+  .header-ledger-btn.active{background:var(--paddy);color:#fff;box-shadow:inset 0 2px 4px rgba(0,0,0,0.2);}
+  .ledger-sync-dot{
+    display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--paddy);box-shadow:0 0 4px var(--paddy);
+  }
+  .ledger-sync-dot.syncing{
+    background:var(--marigold);box-shadow:0 0 6px var(--marigold);animation:ledgerBlink 0.8s infinite alternate;
+  }
+  .ledger-sync-dot.offline{
+    background:#888;box-shadow:none;
+  }
+  @keyframes ledgerBlink{from{opacity:0.3;}to{opacity:1;}}
+
+  /* ==================== SMART LEDGER (DIGITAL KHATA) STYLES ==================== */
+  .ledger-screen{padding:20px 0 60px;}
+  .ledger-top-banner{
+    background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius);
+    padding:20px 24px;margin-bottom:24px;box-shadow:4px 4px 0 var(--ink);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  }
+  .ledger-title-group h2{
+    font-size:1.75rem;display:flex;align-items:center;gap:10px;margin-bottom:4px;
+  }
+  .ledger-phase-badge{
+    font-size:0.75rem;padding:3px 10px;background:var(--paddy);color:#fff;
+    border-radius:999px;font-family:var(--font-body);font-weight:800;letter-spacing:0.04em;
+  }
+  .ledger-top-banner p{
+    font-size:0.92rem;color:var(--ink-soft);font-weight:600;
+  }
+  .ledger-sync-badge{
+    display:inline-flex;align-items:center;gap:7px;background:var(--paper-alt);
+    border:1.5px solid var(--ink);border-radius:999px;padding:6px 14px;
+    font-size:0.82rem;font-weight:800;
+  }
+  .ledger-actions-bar{
+    display:flex;gap:10px;flex-wrap:wrap;
+  }
+
+  /* Metric KPI Cards */
+  .ledger-kpi-grid{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));gap:16px;margin-bottom:24px;
+  }
+  .ledger-kpi-card{
+    background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius);
+    padding:18px 20px;box-shadow:3px 3px 0 var(--ink);position:relative;overflow:hidden;
+    transition:all .15s ease;
+  }
+  .ledger-kpi-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);}
+  .ledger-kpi-head{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+  }
+  .ledger-kpi-label{
+    font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-soft);
+  }
+  .ledger-kpi-icon{font-size:1.3rem;}
+  .ledger-kpi-amount{
+    font-family:var(--font-display);font-size:2rem;font-weight:800;line-height:1.1;margin-bottom:6px;
+  }
+  .ledger-kpi-card.sales .ledger-kpi-amount{color:var(--paddy-deep);}
+  .ledger-kpi-card.expense .ledger-kpi-amount{color:var(--marigold-deep);}
+  .ledger-kpi-card.profit .ledger-kpi-amount{color:var(--indigo);}
+  .ledger-kpi-card.udhar .ledger-kpi-amount{color:var(--brick-deep);}
+  .ledger-kpi-sub{
+    font-size:0.78rem;font-weight:700;color:var(--ink-soft);display:flex;align-items:center;justify-content:space-between;
+  }
+
+  /* 🎙️ Voice Transaction Hero Card */
+  .ledger-voice-card{
+    background:linear-gradient(135deg, #182836 0%, #0F1C28 100%);
+    color:#fff;border:2.5px solid var(--ink);border-radius:var(--radius);
+    padding:24px;margin-bottom:28px;box-shadow:5px 5px 0 var(--ink);position:relative;
+  }
+  .voice-card-header{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;
+  }
+  .voice-card-title{
+    font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:#FFE7A0;display:flex;align-items:center;gap:8px;
+  }
+  .voice-card-body{
+    display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;
+  }
+  @media(max-width:768px){
+    .voice-card-body{grid-template-columns:1fr;text-align:center;}
+  }
+  .voice-mic-trigger{
+    width:76px;height:76px;border-radius:50%;background:#E8A63D;border:3px solid #fff;
+    font-size:2rem;display:flex;align-items:center;justify-content:center;cursor:pointer;
+    box-shadow:0 4px 15px rgba(232,166,61,0.5);transition:all .2s ease;position:relative;outline:none;
+    margin:0 auto;
+  }
+  .voice-mic-trigger:hover{transform:scale(1.08);background:#f2b54f;}
+  .voice-mic-trigger.recording{
+    background:#E53935;box-shadow:0 0 0 0 rgba(229,57,53,0.7);animation:voicePulse 1.2s infinite;
+  }
+  @keyframes voicePulse{
+    0%{box-shadow:0 0 0 0 rgba(229,57,53,0.8);}
+    70%{box-shadow:0 0 0 22px rgba(229,57,53,0);}
+    100%{box-shadow:0 0 0 0 rgba(229,57,53,0);}
+  }
+  .voice-instruction{
+    font-size:0.96rem;color:#E0E9F2;line-height:1.5;margin-bottom:8px;
+  }
+  .voice-sample-chips{
+    display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;
+  }
+  .voice-sample-chip{
+    background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);
+    padding:4px 10px;border-radius:999px;font-size:0.76rem;color:#FFDF85;cursor:pointer;font-weight:600;
+  }
+  .voice-sample-chip:hover{background:rgba(255,255,255,0.22);color:#fff;}
+  .voice-transcript-box{
+    margin-top:14px;padding:12px 16px;background:rgba(0,0,0,0.35);border:1.5px dashed rgba(255,255,255,0.3);
+    border-radius:var(--radius-sm);min-height:44px;display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;font-size:0.92rem;
+  }
+  .voice-parsed-summary{
+    display:none;margin-top:12px;padding:12px 16px;background:#1E3A2B;border:2px solid #57B67A;
+    border-radius:var(--radius-sm);animation:fadeIn .2s ease-out;
+  }
+  .voice-parsed-tags{
+    display:flex;gap:8px;flex-wrap:wrap;margin:6px 0;
+  }
+  .parsed-tag{
+    background:#2A553E;padding:3px 10px;border-radius:var(--radius-sm);border:1px solid #75D498;
+    font-size:0.78rem;font-weight:700;color:#fff;
+  }
+
+  /* Ledger Tabs & Tables */
+  .ledger-view-tabs{
+    display:flex;gap:8px;border-bottom:2px solid var(--ink);margin-bottom:20px;overflow-x:auto;
+  }
+  .ledger-tab-btn{
+    background:none;border:none;border-bottom:3px solid transparent;padding:10px 18px;
+    font-weight:800;font-size:0.92rem;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  }
+  .ledger-tab-btn.active{
+    color:var(--indigo-deep);border-bottom-color:var(--indigo);font-weight:900;
+  }
+  .ledger-table-wrap{
+    background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius);
+    box-shadow:4px 4px 0 var(--ink);overflow-x:auto;margin-bottom:30px;
+  }
+  .ledger-table{
+    width:100%;border-collapse:collapse;text-align:left;font-size:0.9rem;
+  }
+  .ledger-table th{
+    background:var(--paper-alt);padding:12px 14px;font-weight:800;border-bottom:2px solid var(--ink);
+    text-transform:uppercase;font-size:0.76rem;letter-spacing:0.04em;color:var(--ink-soft);
+  }
+  .ledger-table td{
+    padding:12px 14px;border-bottom:1px solid var(--ink-faint);vertical-align:middle;
+  }
+  .ledger-table tr:hover td{background:rgba(232,166,61,0.06);}
+  .badge-tx{
+    display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:999px;
+    font-size:0.75rem;font-weight:800;border:1px solid var(--ink);
+  }
+  .badge-tx.income{background:var(--paddy-light);color:var(--paddy-deep);}
+  .badge-tx.expense{background:var(--marigold-light);color:var(--marigold-deep);}
+  .badge-tx.udhar{background:var(--brick-light);color:var(--brick-deep);}
+  .btn-whatsapp-remind{
+    display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;
+    border:1.5px solid var(--ink);border-radius:var(--radius-sm);padding:5px 10px;
+    font-size:0.78rem;font-weight:800;box-shadow:1.5px 1.5px 0 var(--ink);cursor:pointer;
+  }
+  .btn-whatsapp-remind:hover{background:#1EBE5D;}
+  .btn-settle-udhar{
+    display:inline-flex;align-items:center;gap:4px;background:var(--paddy-light);color:var(--paddy-deep);
+    border:1.5px solid var(--ink);border-radius:var(--radius-sm);padding:5px 10px;
+    font-size:0.78rem;font-weight:800;box-shadow:1.5px 1.5px 0 var(--ink);cursor:pointer;
+  }
+  .btn-settle-udhar:hover{background:var(--paddy);color:#fff;}
+  .btn-delete-tx{
+    background:none;border:none;color:var(--brick);font-size:1rem;cursor:pointer;padding:4px;
+  }
+  .btn-delete-tx:hover{color:var(--brick-deep);}
+
+  /* Manual Entry Modal Styles */
+  .ledger-type-selector{
+    display:grid;grid-template-columns:repeat(3, 1fr);gap:8px;margin-bottom:16px;
+  }
+  .ledger-type-btn{
+    padding:10px 8px;border:2px solid var(--ink);border-radius:var(--radius-sm);
+    font-weight:800;font-size:0.88rem;background:var(--paper-alt);cursor:pointer;text-align:center;
+    transition:all .12s;
+  }
+  .ledger-type-btn.active.income{background:var(--paddy);color:#fff;}
+  .ledger-type-btn.active.expense{background:var(--marigold);color:var(--ink);}
+  .ledger-type-btn.active.udhar{background:var(--brick);color:#fff;}
+  .ledger-form-row{margin-bottom:14px;}
+  .ledger-form-row label{display:block;font-size:0.82rem;font-weight:800;margin-bottom:5px;color:var(--ink);}
+  .ledger-form-row input, .ledger-form-row select, .ledger-form-row textarea{
+    width:100%;padding:9px 12px;border:2px solid var(--ink);border-radius:var(--radius-sm);
+    font-weight:600;font-size:0.9rem;background:#fff;
+  }
+
   /* Language Selector */
   .lang-select-wrap{position:relative;display:inline-block;}
   .lang-dropdown-btn{
@@ -1101,7 +1305,12 @@ try {
         <span data-i18n="btnHome">Home</span>
       </button>
 
-      
+      <!-- Smart Ledger (Digital Khata) Header Button -->
+      <button type="button" class="header-ledger-btn" id="header-ledger-btn" onclick="showScreen('screen-ledger')" title="Offline Digital Khata & Voice Sales Entry">
+        <span style="font-size:1.05rem;">📖</span>
+        <span data-i18n="btnSmartLedger">Smart Ledger</span>
+        <span class="ledger-sync-dot" id="ledger-header-sync-dot" title="Auto Cloud Sync Active"></span>
+      </button>
 
       <!-- AI Advisor Header Button (Every page) -->
       <button type="button" class="header-advisor-btn" onclick="openChatDrawer()">
@@ -1152,6 +1361,10 @@ try {
             </button>
             <button class="btn secondary" onclick="viewSampleAssessment()">
               <span data-i18n="heroCtaSecondary">See a sample result</span>
+            </button>
+            <button class="btn" onclick="showScreen('screen-ledger')" style="background:var(--paddy);color:#fff;" title="Record Daily Sales & Udhar with Voice Input">
+              <span>📖</span>
+              <span data-i18n="heroCtaLedger">Daily Smart Ledger</span>
             </button>
           </div>
 
@@ -2002,6 +2215,224 @@ try {
     </div>
   </section>
 
+  <!-- ===================== 5. SMART LEDGER (DIGITAL KHATA) SCREEN ===================== -->
+  <section class="screen" id="screen-ledger">
+    <div class="wrap ledger-screen">
+      <!-- Back to Dashboard / Advisor -->
+      <div class="subpage-top-nav">
+        <button type="button" class="back-btn" onclick="showScreen('screen-landing')">
+          <span>←</span>
+          <span data-i18n="btnBackHome">Back to Home</span>
+        </button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="ledger-sync-badge" id="ledger-sync-status-pill">
+            <span class="ledger-sync-dot" id="ledger-badge-dot"></span>
+            <span id="ledger-sync-status-text">Cloud Sync Ready</span>
+          </span>
+          <button type="button" class="btn sm secondary" onclick="triggerLedgerCloudSync(true)" title="Force sync all local entries with FastAPI backend">
+            <span>🔄 Sync Now</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Top Banner Header -->
+      <div class="ledger-top-banner">
+        <div class="ledger-title-group">
+          <h2>
+            <span>📖 Sahayak Smart Ledger</span>
+            <span class="ledger-phase-badge">Phase 2 · Live</span>
+          </h2>
+          <p>Offline-First Digital Khata, Cashflow Tracking & Voice Transaction Entry for Micro-Enterprises</p>
+        </div>
+        <div class="ledger-actions-bar">
+          <button type="button" class="btn sm" onclick="openLedgerModal('income')" style="background:var(--paddy);color:#fff;">
+            <span>+ 🟢 Record Sale (बिक्री)</span>
+          </button>
+          <button type="button" class="btn sm" onclick="openLedgerModal('expense')" style="background:var(--marigold);color:var(--ink);">
+            <span>+ 🟠 Record Expense (खर्च)</span>
+          </button>
+          <button type="button" class="btn sm" onclick="openLedgerModal('udhar')" style="background:var(--brick);color:#fff;">
+            <span>+ 🔴 Customer Udhar (उधार)</span>
+          </button>
+          <button type="button" class="btn sm secondary" onclick="exportLedgerCSV()" title="Download CSV report for bank loan or accountant">
+            <span>📥 Export CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Cashflow KPI Cards -->
+      <div class="ledger-kpi-grid">
+        <div class="ledger-kpi-card sales">
+          <div class="ledger-kpi-head">
+            <span class="ledger-kpi-label">Today's Sales (दैनिक बिक्री)</span>
+            <span class="ledger-kpi-icon">💰</span>
+          </div>
+          <div class="ledger-kpi-amount" id="kpi-ledger-sales">₹0</div>
+          <div class="ledger-kpi-sub">
+            <span id="kpi-ledger-sales-count">0 transactions</span>
+            <span style="color:var(--paddy-deep);font-weight:800;">Cash + UPI Inflow</span>
+          </div>
+        </div>
+
+        <div class="ledger-kpi-card expense">
+          <div class="ledger-kpi-head">
+            <span class="ledger-kpi-label">Today's Expenses (दैनिक खर्च)</span>
+            <span class="ledger-kpi-icon">📉</span>
+          </div>
+          <div class="ledger-kpi-amount" id="kpi-ledger-expense">₹0</div>
+          <div class="ledger-kpi-sub">
+            <span id="kpi-ledger-expense-count">0 transactions</span>
+            <span style="color:var(--marigold-deep);font-weight:800;">Stock & Operational</span>
+          </div>
+        </div>
+
+        <div class="ledger-kpi-card profit">
+          <div class="ledger-kpi-head">
+            <span class="ledger-kpi-label">Net Profit (शुद्ध बचत/मुनाफा)</span>
+            <span class="ledger-kpi-icon">📈</span>
+          </div>
+          <div class="ledger-kpi-amount" id="kpi-ledger-profit">₹0</div>
+          <div class="ledger-kpi-sub">
+            <span>Sales minus Expenses</span>
+            <span id="kpi-ledger-margin" style="font-weight:800;color:var(--indigo);">100% Margin</span>
+          </div>
+        </div>
+
+        <div class="ledger-kpi-card udhar">
+          <div class="ledger-kpi-head">
+            <span class="ledger-kpi-label">Pending Udhar (कुल बकाया उधार)</span>
+            <span class="ledger-kpi-icon">⚠️</span>
+          </div>
+          <div class="ledger-kpi-amount" id="kpi-ledger-udhar">₹0</div>
+          <div class="ledger-kpi-sub">
+            <span id="kpi-ledger-udhar-count">0 customers</span>
+            <a href="javascript:void(0)" onclick="switchLedgerTab('udhar')" style="color:var(--brick-deep);font-weight:800;text-decoration:underline;">Send Reminders →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🎙️ VOICE-DRIVEN TRANSACTION ENTRY ENGINE HERO CARD -->
+      <div class="ledger-voice-card">
+        <div class="voice-card-header">
+          <div class="voice-card-title">
+            <span>🎙️</span>
+            <span>Voice-to-Ledger Action Engine (बोलकर बहीखाता भरें)</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.8rem;color:#FFE7A0;font-weight:700;">Engine:</span>
+            <span style="background:rgba(255,255,255,0.15);padding:3px 10px;border-radius:999px;font-size:0.75rem;font-weight:800;color:#fff;">Auto NLP & Regex</span>
+            <span id="voice-listening-status" style="font-size:0.82rem;font-weight:800;color:#75D498;">Ready</span>
+          </div>
+        </div>
+
+        <div class="voice-card-body">
+          <div>
+            <button type="button" class="voice-mic-trigger" id="ledger-voice-btn" onclick="toggleLedgerVoiceRecognition()" title="Click to Speak Transaction">
+              <span id="ledger-mic-icon">🎙️</span>
+            </button>
+            <div style="text-align:center;margin-top:8px;font-size:0.78rem;font-weight:800;color:#FFE7A0;" id="ledger-mic-caption">Tap to Speak</div>
+          </div>
+
+          <div>
+            <p class="voice-instruction">
+              Speak naturally in Hindi or English. The AI parses the amount, type, category, and customer name instantly:
+            </p>
+            <div class="voice-sample-chips">
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Today I sold 1000 rupees worth of grocery product')">
+                🗣️ "Today I sold 1000 rupees worth of grocery product"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Aaj 500 rupaye ka tel becha')">
+                🗣️ "Aaj 500 rupaye ka tel becha"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Ramesh ko 250 rupaye udhar diya')">
+                🗣️ "Ramesh ko 250 rupaye udhar diya"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Petrol kharcha 150 rupaye')">
+                🗣️ "Petrol kharcha 150 rupaye"
+              </button>
+              <button type="button" class="voice-sample-chip" onclick="simulateVoicePhrase('Dukan ka kiraya 3000 rupaye diya')">
+                🗣️ "Dukan ka kiraya 3000 rupaye diya"
+              </button>
+            </div>
+
+            <!-- Live Voice Transcript Output -->
+            <div class="voice-transcript-box">
+              <span id="voice-live-transcript" style="font-style:italic;color:#E0E9F2;">Waiting for your speech input... Click the microphone or test a sample above.</span>
+              <button type="button" id="voice-quick-confirm-btn" style="display:none;background:#57B67A;color:#0F1C28;font-weight:900;border:none;border-radius:4px;padding:5px 12px;cursor:pointer;" onclick="confirmParsedVoiceEntry()">
+                Save Entry ✓
+              </button>
+            </div>
+
+            <!-- Real-time Parsed Preview Tags -->
+            <div class="voice-parsed-summary" id="voice-parsed-container">
+              <div style="font-size:0.82rem;font-weight:800;color:#A9E5BF;margin-bottom:4px;">Parsed Transaction Detected:</div>
+              <div class="voice-parsed-tags" id="voice-parsed-tags-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ledger Navigation Tabs: Daily Book, Customer Udhar -->
+      <div class="ledger-view-tabs">
+        <button type="button" class="ledger-tab-btn active" id="btn-ltab-all" onclick="switchLedgerTab('all')">
+          <span>📋 All Transactions (रोजनामचा)</span>
+          <span id="count-ltab-all" style="font-size:0.75rem;background:var(--paper-alt);padding:2px 7px;border-radius:999px;">0</span>
+        </button>
+        <button type="button" class="ledger-tab-btn" id="btn-ltab-sales" onclick="switchLedgerTab('income')">
+          <span>🟢 Sales Only (बिक्री)</span>
+          <span id="count-ltab-sales" style="font-size:0.75rem;background:var(--paper-alt);padding:2px 7px;border-radius:999px;">0</span>
+        </button>
+        <button type="button" class="ledger-tab-btn" id="btn-ltab-expense" onclick="switchLedgerTab('expense')">
+          <span>🟠 Expenses Only (खर्च)</span>
+          <span id="count-ltab-expense" style="font-size:0.75rem;background:var(--paper-alt);padding:2px 7px;border-radius:999px;">0</span>
+        </button>
+        <button type="button" class="ledger-tab-btn" id="btn-ltab-udhar" onclick="switchLedgerTab('udhar')">
+          <span>🔴 Customer Udhar Book (उधार खाता & WhatsApp)</span>
+          <span id="count-ltab-udhar" style="font-size:0.75rem;background:var(--brick-light);color:var(--brick-deep);padding:2px 7px;border-radius:999px;font-weight:900;">0</span>
+        </button>
+      </div>
+
+      <!-- 1. All Transactions Table -->
+      <div class="ledger-table-wrap" id="ledger-table-container">
+        <table class="ledger-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Type</th>
+              <th>Amount (₹)</th>
+              <th>Category</th>
+              <th>Description / Customer</th>
+              <th>Payment Mode</th>
+              <th>Cloud Sync</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-table-body">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 2. Customer Udhar Recovery Section (Visible when Udhar tab selected) -->
+      <div id="ledger-udhar-container" style="display:none;margin-bottom:30px;">
+        <div style="background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius);padding:20px;box-shadow:4px 4px 0 var(--ink);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <h3 style="font-size:1.25rem;">👥 Outstanding Customer Credit (उधार वसूली रजिस्टर)</h3>
+              <p style="font-size:0.88rem;color:var(--ink-soft);font-weight:600;">1-Click WhatsApp payment reminders with polite automated Indian business templates</p>
+            </div>
+            <button type="button" class="btn sm" onclick="openLedgerModal('udhar')" style="background:var(--brick);color:#fff;">+ Add Customer Udhar</button>
+          </div>
+
+          <div id="udhar-cards-list" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:14px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- FLOATING AI CHAT TRIGGER BUTTON -->
@@ -2048,6 +2479,92 @@ try {
       <input type="text" id="chat-input" placeholder="Ask anything: PMEGP, NSFDC, subsidies, CIBIL, budget..." onkeydown="if(event.key==='Enter') sendChatMessage()" style="flex:1;padding:10px 14px;border:2px solid var(--ink);border-radius:var(--radius-sm);font-weight:600;font-size:0.9rem;">
       <button type="button" class="btn sm" id="chat-send-btn" onclick="sendChatMessage()" style="padding:10px 16px;font-weight:800;box-shadow:2px 2px 0 var(--ink);">Send →</button>
     </div>
+  </div>
+</div>
+
+<!-- ==================== SMART LEDGER MANUAL ENTRY MODAL ==================== -->
+<div class="modal-overlay" id="ledger-modal" onclick="closeLedgerModal(event)">
+  <div class="modal-box" style="max-width:540px;" onclick="event.stopPropagation()">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.1rem;">
+        <span>📝</span>
+        <span id="ledger-modal-title">Record Transaction</span>
+      </div>
+      <button type="button" class="modal-close-btn" onclick="closeLedgerModal()">✕</button>
+    </div>
+
+    <form onsubmit="handleManualLedgerSubmit(event)">
+      <div class="modal-body">
+        <!-- Entry Type Selector -->
+        <div class="ledger-type-selector">
+          <button type="button" class="ledger-type-btn active income" id="modal-type-income" onclick="setModalEntryType('income')">
+            🟢 Sales (बिक्री)
+          </button>
+          <button type="button" class="ledger-type-btn expense" id="modal-type-expense" onclick="setModalEntryType('expense')">
+            🟠 Expense (खर्च)
+          </button>
+          <button type="button" class="ledger-type-btn udhar" id="modal-type-udhar" onclick="setModalEntryType('udhar')">
+            🔴 Udhar (उधार)
+          </button>
+        </div>
+
+        <!-- Amount -->
+        <div class="ledger-form-row">
+          <label>Amount (राशि) ₹ *</label>
+          <input type="number" id="modal-tx-amount" min="1" step="0.5" placeholder="e.g. 1000" required autofocus style="font-size:1.2rem;font-weight:800;color:var(--ink);">
+        </div>
+
+        <!-- Category -->
+        <div class="ledger-form-row">
+          <label>Category (श्रेणी)</label>
+          <select id="modal-tx-category">
+            <option value="Grocery / Retail">Grocery & Retail Goods</option>
+            <option value="Raw Materials / Stock">Raw Materials & Wholesale Stock</option>
+            <option value="Fuel & Transport">Fuel & Logistics</option>
+            <option value="Shop Rent">Shop Rent</option>
+            <option value="Electricity & Utilities">Electricity & Utilities</option>
+            <option value="Labor & Wages">Labor & Daily Wages</option>
+            <option value="General Sales">General Merchandise Sales</option>
+            <option value="Customer Credit">Customer Credit (Udhar)</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- Customer Name & Phone (shown especially for Udhar) -->
+        <div id="modal-customer-fields" style="background:var(--paper-alt);padding:10px 12px;border:1.5px dashed var(--ink);border-radius:var(--radius-sm);margin-bottom:14px;">
+          <div class="ledger-form-row" style="margin-bottom:8px;">
+            <label>Customer / Party Name (ग्राहक का नाम) <span id="customer-name-req-star" style="display:none;color:var(--brick);">*</span></label>
+            <input type="text" id="modal-tx-customer-name" placeholder="e.g. Ramesh Sharma">
+          </div>
+          <div class="ledger-form-row" style="margin-bottom:0;">
+            <label>Customer Mobile Number (WhatsApp के लिए 10 अंक)</label>
+            <input type="tel" id="modal-tx-customer-phone" placeholder="e.g. 9876543210" maxlength="10">
+          </div>
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="ledger-form-row">
+          <label>Payment Mode (भुगतान माध्यम)</label>
+          <select id="modal-tx-mode">
+            <option value="cash">💵 Cash (नकद)</option>
+            <option value="upi">📱 UPI QR (PhonePe / GPay / Paytm)</option>
+            <option value="bank">🏦 Bank Transfer</option>
+            <option value="credit">⏳ Udhar (To be paid later)</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="ledger-form-row">
+          <label>Description / Item Notes (विवरण)</label>
+          <input type="text" id="modal-tx-desc" placeholder="e.g. 5kg wheat flour, cooking oil, customer purchase">
+        </div>
+      </div>
+
+      <div class="modal-foot" style="padding:14px 20px;background:var(--paper-alt);border-top:2px solid var(--ink);display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn sm secondary" onclick="closeLedgerModal()">Cancel</button>
+        <button type="submit" class="btn sm" style="background:var(--paddy);color:#fff;">Save Entry ✓</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -2152,6 +2669,9 @@ try {
       btnHome: "Home",
       btnBack: "Back",
       btnSignIn: "Sign In",
+      btnSmartLedger: "Smart Ledger",
+      heroCtaLedger: "Daily Smart Ledger",
+      btnBackHome: "Back to Home",
       btnAiAdvisor: "AI Advisor",
       btnDiscuss: "Discuss with Advisor",
       btnEdit: "Edit answers",
@@ -2259,6 +2779,9 @@ try {
       btnHome: "होम",
       btnBack: "वापस",
       btnSignIn: "साइन इन",
+      btnSmartLedger: "स्मार्ट बहीखाता",
+      heroCtaLedger: "दैनिक बहीखाता",
+      btnBackHome: "मुख्य पृष्ठ",
       btnAiAdvisor: "एआई सलाहकार",
       btnDiscuss: "सलाहकार से चर्चा",
       btnEdit: "जवाब बदलें",
@@ -3388,6 +3911,17 @@ try {
       } else {
         homeBtn.style.display = 'inline-flex';
       }
+    }
+
+    // Toggle active state on header-ledger-btn
+    const ledgerBtn = document.getElementById('header-ledger-btn');
+    if(ledgerBtn){
+      ledgerBtn.classList.toggle('active', id === 'screen-ledger');
+    }
+
+    if(id === 'screen-ledger'){
+      try { refreshLedgerUI(); } catch(e){}
+      try { triggerLedgerCloudSync(); } catch(e){}
     }
 
     if(id === 'screen-results'){
@@ -5652,6 +6186,855 @@ CRITICAL MANDATORY INSTRUCTIONS:
     doc.write('<div style="text-align:center;margin-top:20px;"><button onclick="window.print()" style="background:#1F3F5C;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;font-weight:bold;">🖨️ Print Document</button></div>');
     doc.write('</body></html>');
     doc.close();
+  }
+
+  // ==================== SMART LEDGER (DIGITAL KHATA) & VOICE CONTROLLER ====================
+  let currentLedgerTab = 'all';
+  let sahayakLedger = [];
+  let activeVoiceEntry = null;
+  let voiceAutoCommitTimer = null;
+  let ledgerSpeechRec = null;
+  let isListeningLedger = false;
+
+  // Sound chime for transaction completion (100% offline via Web Audio API)
+  function playLedgerChime() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.11); // E5
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.32);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.33);
+    } catch(e) {}
+  }
+
+  // Demo seed transactions for initial realistic micro-enterprise experience
+  function getSeedLedgerTransactions() {
+    const now = Date.now();
+    return [
+      {
+        client_tx_id: 'seed_tx_1',
+        type: 'income',
+        amount: 1250,
+        category: 'Grocery / Retail',
+        description: 'Wholesale grains & cooking oil packet sales',
+        customer_name: 'Cash Customer',
+        customer_phone: '',
+        payment_mode: 'cash',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 180).toISOString(),
+        synced: false
+      },
+      {
+        client_tx_id: 'seed_tx_2',
+        type: 'income',
+        amount: 850,
+        category: 'Grocery / Retail',
+        description: 'Daily provisions & dairy packs',
+        customer_name: 'Gita Devi',
+        customer_phone: '9876543210',
+        payment_mode: 'upi',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 120).toISOString(),
+        synced: false
+      },
+      {
+        client_tx_id: 'seed_tx_3',
+        type: 'expense',
+        amount: 250,
+        category: 'Fuel & Transport',
+        description: 'Diesel for tempo delivery from wholesale mandi',
+        customer_name: 'Mandi Logistics',
+        customer_phone: '',
+        payment_mode: 'cash',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 90).toISOString(),
+        synced: false
+      },
+      {
+        client_tx_id: 'seed_tx_4',
+        type: 'expense',
+        amount: 450,
+        category: 'Raw Materials / Stock',
+        description: 'Wholesale morning milk crates restock',
+        customer_name: 'Saras Dairy Agent',
+        customer_phone: '',
+        payment_mode: 'upi',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 50).toISOString(),
+        synced: false
+      },
+      {
+        client_tx_id: 'seed_tx_5',
+        type: 'udhar',
+        amount: 350,
+        category: 'Customer Credit',
+        description: '5kg wheat flour & spices taken on credit (promise Friday)',
+        customer_name: 'Suresh Kumar',
+        customer_phone: '9876543210',
+        payment_mode: 'credit',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 25).toISOString(),
+        synced: false
+      },
+      {
+        client_tx_id: 'seed_tx_6',
+        type: 'udhar',
+        amount: 600,
+        category: 'Customer Credit',
+        description: 'Monthly ration advance groceries',
+        customer_name: 'Pinky Sharma',
+        customer_phone: '9812345678',
+        payment_mode: 'credit',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 10).toISOString(),
+        synced: false
+      }
+    ];
+  }
+
+  // Initialize Ledger data from localStorage
+  function initLedger() {
+    try {
+      const stored = localStorage.getItem('sahayak_ledger_entries');
+      if (stored) {
+        sahayakLedger = JSON.parse(stored);
+      } else {
+        sahayakLedger = getSeedLedgerTransactions();
+        localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+      }
+    } catch(e) {
+      sahayakLedger = getSeedLedgerTransactions();
+    }
+    refreshLedgerUI();
+    initLedgerVoice();
+
+    // Auto-sync listeners
+    window.addEventListener('online', () => triggerLedgerCloudSync(false));
+    window.addEventListener('offline', () => updateLedgerSyncBadge('offline'));
+
+    // Periodic sync attempt every 30 seconds
+    setInterval(() => {
+      if (navigator.onLine) triggerLedgerCloudSync(false);
+    }, 30000);
+  }
+
+  // Refresh entire Ledger UI
+  function refreshLedgerUI() {
+    let salesTotal = 0;
+    let salesCount = 0;
+    let expenseTotal = 0;
+    let expenseCount = 0;
+    let udharTotal = 0;
+    let udharCount = 0;
+
+    sahayakLedger.forEach(t => {
+      const amt = Number(t.amount) || 0;
+      if (t.type === 'income') {
+        salesTotal += amt;
+        salesCount++;
+      } else if (t.type === 'expense') {
+        expenseTotal += amt;
+        expenseCount++;
+      } else if (t.type === 'udhar' && !t.is_cleared) {
+        udharTotal += amt;
+        udharCount++;
+      }
+    });
+
+    const netProfit = salesTotal - expenseTotal;
+    const marginPct = salesTotal > 0 ? Math.round((netProfit / salesTotal) * 100) : 0;
+
+    // Update KPI Card Numbers
+    const elSales = document.getElementById('kpi-ledger-sales');
+    const elSalesCount = document.getElementById('kpi-ledger-sales-count');
+    if (elSales) elSales.textContent = '₹' + salesTotal.toLocaleString('en-IN');
+    if (elSalesCount) elSalesCount.textContent = `${salesCount} sales recorded`;
+
+    const elExpense = document.getElementById('kpi-ledger-expense');
+    const elExpenseCount = document.getElementById('kpi-ledger-expense-count');
+    if (elExpense) elExpense.textContent = '₹' + expenseTotal.toLocaleString('en-IN');
+    if (elExpenseCount) elExpenseCount.textContent = `${expenseCount} expenses recorded`;
+
+    const elProfit = document.getElementById('kpi-ledger-profit');
+    const elMargin = document.getElementById('kpi-ledger-margin');
+    if (elProfit) {
+      elProfit.textContent = (netProfit >= 0 ? '+' : '') + '₹' + netProfit.toLocaleString('en-IN');
+      elProfit.style.color = netProfit >= 0 ? 'var(--paddy-deep)' : 'var(--brick-deep)';
+    }
+    if (elMargin) elMargin.textContent = `${marginPct}% Net Margin`;
+
+    const elUdhar = document.getElementById('kpi-ledger-udhar');
+    const elUdharCount = document.getElementById('kpi-ledger-udhar-count');
+    if (elUdhar) elUdhar.textContent = '₹' + udharTotal.toLocaleString('en-IN');
+    if (elUdharCount) elUdharCount.textContent = `${udharCount} pending receivables`;
+
+    // Update Tab Counters
+    const cAll = document.getElementById('count-ltab-all');
+    const cSales = document.getElementById('count-ltab-sales');
+    const cExpense = document.getElementById('count-ltab-expense');
+    const cUdhar = document.getElementById('count-ltab-udhar');
+    if (cAll) cAll.textContent = sahayakLedger.length;
+    if (cSales) cSales.textContent = salesCount;
+    if (cExpense) cExpense.textContent = expenseCount;
+    if (cUdhar) cUdhar.textContent = udharCount;
+
+    // Render Table Rows
+    renderLedgerTable();
+
+    // Render Udhar Cards
+    renderUdharCards();
+  }
+
+  // Render transactions table
+  function renderLedgerTable() {
+    const tbody = document.getElementById('ledger-table-body');
+    if (!tbody) return;
+
+    let filtered = sahayakLedger;
+    if (currentLedgerTab === 'income') {
+      filtered = sahayakLedger.filter(t => t.type === 'income');
+    } else if (currentLedgerTab === 'expense') {
+      filtered = sahayakLedger.filter(t => t.type === 'expense');
+    } else if (currentLedgerTab === 'udhar') {
+      filtered = sahayakLedger.filter(t => t.type === 'udhar');
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center;padding:32px;color:var(--ink-soft);font-weight:700;">
+            No transactions found in this view. Use <strong>Record Sale</strong> or the <strong>🎙️ Voice Bar</strong> above to add an entry!
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(t => {
+      const dateStr = t.created_at ? new Date(t.created_at).toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+      }) : 'Just now';
+
+      let typeBadge = '';
+      if (t.type === 'income') {
+        typeBadge = `<span class="badge-tx income">🟢 Sale (बिक्री)</span>`;
+      } else if (t.type === 'expense') {
+        typeBadge = `<span class="badge-tx expense">🟠 Expense (खर्च)</span>`;
+      } else {
+        typeBadge = t.is_cleared
+          ? `<span class="badge-tx income">✓ Udhar Cleared</span>`
+          : `<span class="badge-tx udhar">🔴 Udhar (उधार)</span>`;
+      }
+
+      const syncBadge = t.synced
+        ? `<span style="color:var(--paddy-deep);font-size:0.78rem;font-weight:800;">🟢 Cloud</span>`
+        : `<span style="color:var(--marigold-deep);font-size:0.78rem;font-weight:800;">🟡 Local</span>`;
+
+      let actionBtns = `
+        <button type="button" class="btn-delete-tx" onclick="deleteLedgerEntry('${t.client_tx_id}')" title="Delete Entry">🗑️</button>
+      `;
+
+      if (t.type === 'udhar' && !t.is_cleared) {
+        actionBtns = `
+          <button type="button" class="btn-settle-udhar" onclick="settleUdharEntry('${t.client_tx_id}')" title="Mark Paid">✓ Paid</button>
+          <button type="button" class="btn-whatsapp-remind" onclick="sendWhatsAppReminder('${t.customer_name}', '${t.customer_phone}', ${t.amount}, '${dateStr}')" title="Send WhatsApp Payment Reminder">💬 Remind</button>
+          <button type="button" class="btn-delete-tx" onclick="deleteLedgerEntry('${t.client_tx_id}')" title="Delete Entry">🗑️</button>
+        `;
+      }
+
+      return `
+        <tr>
+          <td style="font-weight:700;color:var(--ink-soft);font-size:0.82rem;white-space:nowrap;">${dateStr}</td>
+          <td>${typeBadge}</td>
+          <td style="font-weight:900;font-size:1.05rem;color:${t.type==='income'?'var(--paddy-deep)':t.type==='expense'?'var(--marigold-deep)':'var(--brick-deep)'};">
+            ₹${Number(t.amount).toLocaleString('en-IN')}
+          </td>
+          <td style="font-weight:700;font-size:0.85rem;">${escapeHtml(t.category || 'General')}</td>
+          <td>
+            <div style="font-weight:700;font-size:0.9rem;">${escapeHtml(t.description || '')}</div>
+            ${t.customer_name ? `<div style="font-size:0.78rem;color:var(--ink-soft);font-weight:600;">Party: <strong>${escapeHtml(t.customer_name)}</strong> ${t.customer_phone ? '· ' + escapeHtml(t.customer_phone) : ''}</div>` : ''}
+          </td>
+          <td style="text-transform:uppercase;font-size:0.78rem;font-weight:800;color:var(--ink-soft);">${escapeHtml(t.payment_mode || 'cash')}</td>
+          <td>${syncBadge}</td>
+          <td><div style="display:flex;gap:6px;align-items:center;">${actionBtns}</div></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // Render Customer Udhar Book Cards
+  function renderUdharCards() {
+    const list = document.getElementById('udhar-cards-list');
+    if (!list) return;
+
+    const udhars = sahayakLedger.filter(t => t.type === 'udhar');
+    if (udhars.length === 0) {
+      list.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--ink-soft);font-weight:700;">No pending customer udhar. All clear! 🤝</div>`;
+      return;
+    }
+
+    list.innerHTML = udhars.map(t => {
+      const dateStr = t.created_at ? new Date(t.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : 'Recent';
+      const isCleared = !!t.is_cleared;
+
+      return `
+        <div style="background:var(--paper);border:2px solid ${isCleared ? 'var(--paddy)' : 'var(--brick)'};border-radius:var(--radius-sm);padding:14px;box-shadow:2px 2px 0 var(--ink);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+            <div>
+              <strong style="font-size:1.05rem;color:var(--indigo);display:block;">${escapeHtml(t.customer_name || 'Customer')}</strong>
+              <span style="font-size:0.8rem;color:var(--ink-soft);font-weight:600;">📱 ${escapeHtml(t.customer_phone || 'No phone recorded')}</span>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:900;font-size:1.2rem;color:${isCleared ? 'var(--paddy-deep)' : 'var(--brick-deep)'};">₹${Number(t.amount).toLocaleString('en-IN')}</div>
+              <span style="font-size:0.72rem;font-weight:800;padding:2px 6px;border-radius:999px;background:${isCleared?'var(--paddy-light)':'var(--brick-light)'};color:${isCleared?'var(--paddy-deep)':'var(--brick-deep)'};">
+                ${isCleared ? '✓ Cleared' : '⏳ Pending'}
+              </span>
+            </div>
+          </div>
+          <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:12px;background:rgba(255,255,255,0.6);padding:6px 8px;border-radius:4px;">
+            ${escapeHtml(t.description || 'Customer credit')} · <small>${dateStr}</small>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            ${!isCleared ? `
+              <button type="button" class="btn-whatsapp-remind" onclick="sendWhatsAppReminder('${t.customer_name}', '${t.customer_phone}', ${t.amount}, '${dateStr}')" style="flex:1;">
+                <span>💬 WhatsApp Reminder</span>
+              </button>
+              <button type="button" class="btn-settle-udhar" onclick="settleUdharEntry('${t.client_tx_id}')">
+                <span>✓ Settle Paid</span>
+              </button>
+            ` : `
+              <span style="font-size:0.8rem;color:var(--paddy-deep);font-weight:800;">Settled & Closed</span>
+            `}
+            <button type="button" class="btn-delete-tx" onclick="deleteLedgerEntry('${t.client_tx_id}')" title="Delete">🗑️</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Switch tabs in Smart Ledger view
+  function switchLedgerTab(tab) {
+    currentLedgerTab = tab;
+    ['all', 'sales', 'expense', 'udhar'].forEach(t => {
+      const btn = document.getElementById(`btn-ltab-${t}`);
+      if (btn) btn.classList.toggle('active', (t === 'sales' && tab === 'income') || (t === tab));
+    });
+
+    const udharContainer = document.getElementById('ledger-udhar-container');
+    const tableContainer = document.getElementById('ledger-table-container');
+
+    if (tab === 'udhar') {
+      if (udharContainer) udharContainer.style.display = 'block';
+    } else {
+      if (udharContainer) udharContainer.style.display = 'none';
+    }
+    if (tableContainer) tableContainer.style.display = 'block';
+
+    renderLedgerTable();
+  }
+
+  // Open manual transaction entry modal
+  function openLedgerModal(prefillType) {
+    const modal = document.getElementById('ledger-modal');
+    if (!modal) return;
+    modal.classList.add('active');
+    setModalEntryType(prefillType || 'income');
+    const amtInput = document.getElementById('modal-tx-amount');
+    if (amtInput) {
+      amtInput.value = '';
+      setTimeout(() => amtInput.focus(), 100);
+    }
+    const descInput = document.getElementById('modal-tx-desc');
+    if (descInput) descInput.value = '';
+    const nameInput = document.getElementById('modal-tx-customer-name');
+    if (nameInput) nameInput.value = '';
+    const phoneInput = document.getElementById('modal-tx-customer-phone');
+    if (phoneInput) phoneInput.value = '';
+  }
+
+  function closeLedgerModal(e) {
+    if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('modal-close-btn')) return;
+    const modal = document.getElementById('ledger-modal');
+    if (modal) modal.classList.remove('active');
+  }
+
+  let selectedModalType = 'income';
+  function setModalEntryType(type) {
+    selectedModalType = type;
+    ['income', 'expense', 'udhar'].forEach(t => {
+      const btn = document.getElementById(`modal-type-${t}`);
+      if (btn) {
+        btn.classList.toggle('active', t === type);
+      }
+    });
+
+    const star = document.getElementById('customer-name-req-star');
+    const custFields = document.getElementById('modal-customer-fields');
+    const title = document.getElementById('ledger-modal-title');
+    const modeSelect = document.getElementById('modal-tx-mode');
+
+    if (type === 'udhar') {
+      if (title) title.textContent = 'Record Customer Udhar (उधार खाता)';
+      if (star) star.style.display = 'inline';
+      if (custFields) custFields.style.borderColor = 'var(--brick)';
+      if (modeSelect) modeSelect.value = 'credit';
+    } else if (type === 'expense') {
+      if (title) title.textContent = 'Record Business Expense (दुकान खर्च)';
+      if (star) star.style.display = 'none';
+      if (custFields) custFields.style.borderColor = 'var(--ink)';
+      if (modeSelect) modeSelect.value = 'cash';
+    } else {
+      if (title) title.textContent = 'Record Daily Sale (दुकान बिक्री)';
+      if (star) star.style.display = 'none';
+      if (custFields) custFields.style.borderColor = 'var(--ink)';
+      if (modeSelect) modeSelect.value = 'cash';
+    }
+  }
+
+  function handleManualLedgerSubmit(e) {
+    if (e) e.preventDefault();
+    const amt = parseFloat(document.getElementById('modal-tx-amount').value);
+    if (!amt || amt <= 0) {
+      alert('Please enter a valid amount in ₹.');
+      return;
+    }
+
+    const category = document.getElementById('modal-tx-category').value;
+    const desc = document.getElementById('modal-tx-desc').value.trim();
+    const custName = document.getElementById('modal-tx-customer-name').value.trim();
+    const custPhone = document.getElementById('modal-tx-customer-phone').value.trim();
+    const mode = document.getElementById('modal-tx-mode').value;
+
+    if (selectedModalType === 'udhar' && !custName) {
+      alert('Please provide the Customer / Party name for Udhar tracking.');
+      return;
+    }
+
+    const newEntry = {
+      client_tx_id: 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+      type: selectedModalType,
+      amount: amt,
+      category: category,
+      description: desc || (selectedModalType === 'income' ? 'Daily shop sale' : selectedModalType === 'expense' ? 'Operational expense' : 'Credit purchase'),
+      customer_name: custName,
+      customer_phone: custPhone,
+      payment_mode: mode,
+      is_cleared: false,
+      created_at: new Date().toISOString(),
+      synced: false
+    };
+
+    sahayakLedger.unshift(newEntry);
+    localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+    playLedgerChime();
+    closeLedgerModal();
+    refreshLedgerUI();
+    triggerLedgerCloudSync(false);
+  }
+
+  function deleteLedgerEntry(client_tx_id) {
+    if (!confirm('Are you sure you want to delete this transaction from your Khata?')) return;
+    sahayakLedger = sahayakLedger.filter(t => t.client_tx_id !== client_tx_id);
+    localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+    refreshLedgerUI();
+  }
+
+  function settleUdharEntry(client_tx_id) {
+    const entry = sahayakLedger.find(t => t.client_tx_id === client_tx_id);
+    if (!entry) return;
+    entry.is_cleared = true;
+    entry.synced = false;
+    localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+    playLedgerChime();
+    refreshLedgerUI();
+    triggerLedgerCloudSync(false);
+  }
+
+  // 1-Click WhatsApp Payment Reminder
+  function sendWhatsAppReminder(name, phone, amount, dateStr) {
+    let cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+    if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+    const msg = `नमस्ते ${name || 'जी'}, Sahayak डिजिटल बहीखाता के अनुसार आपका ₹${Number(amount).toLocaleString('en-IN')} का बकाया शेष है। कृपया शीघ्र भुगतान करने का कष्ट करें। डिजिटल भुगतान (UPI/Cash) के लिए धन्यवाद!`;
+    const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}` : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  // Export Ledger as CSV for banks / accountants
+  function exportLedgerCSV() {
+    if (!sahayakLedger || !sahayakLedger.length) {
+      alert('No transactions to export yet. Add a few sales or expenses first!');
+      return;
+    }
+    let csv = '\uFEFFDate & Time,Type,Amount (INR),Category,Description,Customer Name,Customer Phone,Payment Mode,Status\n';
+    sahayakLedger.forEach(t => {
+      const row = [
+        `"${t.created_at || ''}"`,
+        `"${t.type}"`,
+        t.amount,
+        `"${(t.category || '').replace(/"/g, '""')}"`,
+        `"${(t.description || '').replace(/"/g, '""')}"`,
+        `"${(t.customer_name || '').replace(/"/g, '""')}"`,
+        `"${(t.customer_phone || '').replace(/"/g, '""')}"`,
+        `"${t.payment_mode || 'cash'}"`,
+        `"${t.type === 'udhar' ? (t.is_cleared ? 'Cleared' : 'Pending') : 'Recorded'}"`
+      ];
+      csv += row.join(',') + '\n';
+    });
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Sahayak_Ledger_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+  }
+
+  // ==================== VOICE-TO-LEDGER ACTION PARSER ENGINE ====================
+  function parseVoiceTransaction(transcript) {
+    const text = transcript.toLowerCase().trim();
+    let type = 'income'; // default
+    let amount = 0;
+    let category = 'Grocery / Retail';
+    let description = transcript;
+    let customerName = '';
+    let customerPhone = '';
+
+    // 1. Detect Type
+    const udharKeywords = ['udhar', 'udhari', 'credit', 'baaki', 'baki', 'baad me dega', 'baad mein', 'khate me', 'khaate mein', 'udhar diya', 'udhaar'];
+    const expenseKeywords = ['kharcha', 'kharch', 'expense', 'spent', 'kharida', 'kharid', 'paid', 'purchase', 'buying', 'petrol', 'diesel', 'rent', 'kiraya', 'bijli', 'bill', 'repair', 'diya to', 'paid to'];
+    const incomeKeywords = ['sale', 'sales', 'bikri', 'becha', 'bechi', 'beche', 'sold', 'aaya', 'aaye', 'mil gaya', 'received', 'kamaya', 'earning', 'jama hua', 'income'];
+
+    const isUdhar = udharKeywords.some(k => text.includes(k));
+    const isExpense = expenseKeywords.some(k => text.includes(k));
+    const isIncome = incomeKeywords.some(k => text.includes(k));
+
+    if (isUdhar) {
+      type = 'udhar';
+      category = 'Customer Credit';
+    } else if (isExpense && !isIncome) {
+      type = 'expense';
+      category = 'Operational Expense';
+    } else {
+      type = 'income';
+      category = 'Grocery / Retail';
+    }
+
+    // 2. Extract Amount (Digits or Indian units)
+    const digitMatch = text.match(/(?:rs\.?|inr|₹|rupees|rupaye|rupeye|rupya)?\s*([0-9]+(?:,[0-9]+)*(?:\.[0-9]+)?)\s*(?:rs\.?|inr|₹|rupees|rupaye|rupeye|rupya|hazaar|thousand|sau|hundred|k)?/i);
+    if (digitMatch && digitMatch[1]) {
+      amount = parseFloat(digitMatch[1].replace(/,/g, ''));
+      if (text.includes('hazaar') || text.includes('thousand') || text.includes(' hazar')) {
+        if (amount < 1000) amount = amount * 1000;
+      } else if (text.includes('sau') || text.includes('hundred')) {
+        if (amount < 100) amount = amount * 100;
+      } else if (text.includes('lakh') || text.includes('lac')) {
+        if (amount < 100000) amount = amount * 100000;
+      }
+    } else {
+      // Basic words detection
+      const wordMap = { 'ek hazaar': 1000, 'do hazaar': 2000, 'paanch sau': 500, 'do sau': 200, 'sau': 100, 'hazaar': 1000 };
+      for (const [w, val] of Object.entries(wordMap)) {
+        if (text.includes(w)) {
+          amount = val;
+          break;
+        }
+      }
+    }
+
+    // 3. Category Refinement
+    if (text.includes('grocery') || text.includes('kirana') || text.includes('rashan') || text.includes('product')) {
+      category = 'Grocery / Retail';
+    } else if (text.includes('petrol') || text.includes('diesel') || text.includes('fuel') || text.includes('tel') || text.includes('oil')) {
+      category = 'Fuel & Transport';
+    } else if (text.includes('rent') || text.includes('kiraya')) {
+      category = 'Shop Rent';
+    } else if (text.includes('bijli') || text.includes('electricity') || text.includes('bill')) {
+      category = 'Electricity & Utilities';
+    } else if (text.includes('milk') || text.includes('doodh') || text.includes('dairy')) {
+      category = 'Dairy & Milk';
+    } else if (text.includes('wholesale') || text.includes('stock') || text.includes('mal')) {
+      category = 'Raw Materials / Stock';
+    }
+
+    // 4. Extract Customer Name (for Udhar or person transactions)
+    const nameKoMatch = text.match(/([a-zA-Z\u0900-\u097F]+)\s+(?:ko|se|ne)\b/i);
+    if (nameKoMatch && !['aaj', 'kal', 'aapse', 'dukan', 'shop', 'hum', 'today', 'maine'].includes(nameKoMatch[1].toLowerCase())) {
+      customerName = nameKoMatch[1].charAt(0).toUpperCase() + nameKoMatch[1].slice(1);
+    } else {
+      const toMatch = text.match(/(?:to|from|customer|grahak)\s+([a-zA-Z\u0900-\u097F]+)/i);
+      if (toMatch && !['cash', 'today'].includes(toMatch[1].toLowerCase())) {
+        customerName = toMatch[1].charAt(0).toUpperCase() + toMatch[1].slice(1);
+      }
+    }
+
+    return {
+      type,
+      amount: amount || 0,
+      category,
+      description: transcript,
+      customerName: customerName || (type === 'udhar' ? 'Customer' : ''),
+      customerPhone: customerPhone || ''
+    };
+  }
+
+  function initLedgerVoice() {
+    const SpeechClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechClass) {
+      const caption = document.getElementById('ledger-mic-caption');
+      if (caption) caption.textContent = 'Voice simulation ready';
+      return;
+    }
+
+    try {
+      ledgerSpeechRec = new SpeechClass();
+      ledgerSpeechRec.continuous = false;
+      ledgerSpeechRec.interimResults = true;
+      ledgerSpeechRec.lang = currentLang === 'en' ? 'en-IN' : 'hi-IN';
+
+      ledgerSpeechRec.onstart = function() {
+        isListeningLedger = true;
+        const micBtn = document.getElementById('ledger-voice-btn');
+        if (micBtn) micBtn.classList.add('recording');
+        const stat = document.getElementById('voice-listening-status');
+        if (stat) {
+          stat.textContent = 'Listening... Speak now!';
+          stat.style.color = '#FFE7A0';
+        }
+        const live = document.getElementById('voice-live-transcript');
+        if (live) live.textContent = 'Listening...';
+      };
+
+      ledgerSpeechRec.onresult = function(event) {
+        let interim = '';
+        let final = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final += event.results[i][0].transcript;
+          } else {
+            interim += event.results[i][0].transcript;
+          }
+        }
+        const live = document.getElementById('voice-live-transcript');
+        if (live) live.textContent = final || interim || 'Listening...';
+
+        if (final) {
+          processSpokenPhrase(final);
+        }
+      };
+
+      ledgerSpeechRec.onerror = function(event) {
+        isListeningLedger = false;
+        const micBtn = document.getElementById('ledger-voice-btn');
+        if (micBtn) micBtn.classList.remove('recording');
+        const stat = document.getElementById('voice-listening-status');
+        if (stat) {
+          stat.textContent = 'Ready';
+          stat.style.color = '#75D498';
+        }
+      };
+
+      ledgerSpeechRec.onend = function() {
+        isListeningLedger = false;
+        const micBtn = document.getElementById('ledger-voice-btn');
+        if (micBtn) micBtn.classList.remove('recording');
+        const stat = document.getElementById('voice-listening-status');
+        if (stat) {
+          stat.textContent = 'Ready';
+          stat.style.color = '#75D498';
+        }
+      };
+    } catch(e) {}
+  }
+
+  function toggleLedgerVoiceRecognition() {
+    if (!ledgerSpeechRec) {
+      initLedgerVoice();
+    }
+    if (!ledgerSpeechRec) {
+      simulateVoicePhrase('Today I sold 1000 rupees worth of grocery product');
+      return;
+    }
+
+    if (isListeningLedger) {
+      try { ledgerSpeechRec.stop(); } catch(e){}
+      isListeningLedger = false;
+    } else {
+      try {
+        ledgerSpeechRec.lang = currentLang === 'en' ? 'en-IN' : 'hi-IN';
+        ledgerSpeechRec.start();
+      } catch(e) {
+        simulateVoicePhrase('Today I sold 1000 rupees worth of grocery product');
+      }
+    }
+  }
+
+  // Quick simulation helper for instant demonstration
+  function simulateVoicePhrase(phrase) {
+    const live = document.getElementById('voice-live-transcript');
+    if (live) live.textContent = `"${phrase}"`;
+    processSpokenPhrase(phrase);
+  }
+
+  function processSpokenPhrase(phrase) {
+    const parsed = parseVoiceTransaction(phrase);
+    activeVoiceEntry = parsed;
+
+    // Show tags
+    const container = document.getElementById('voice-parsed-container');
+    const tagsList = document.getElementById('voice-parsed-tags-list');
+    const confirmBtn = document.getElementById('voice-quick-confirm-btn');
+
+    if (tagsList) {
+      const typeLabel = parsed.type === 'income' ? '🟢 Bikri (Sale)' : parsed.type === 'expense' ? '🟠 Kharcha (Expense)' : '🔴 Customer Udhar';
+      tagsList.innerHTML = `
+        <span class="parsed-tag">Type: ${typeLabel}</span>
+        <span class="parsed-tag" style="background:#FFE7A0;color:#0F1C28;font-weight:900;">Amount: ₹${parsed.amount.toLocaleString('en-IN')}</span>
+        <span class="parsed-tag">Category: ${parsed.category}</span>
+        ${parsed.customerName ? `<span class="parsed-tag">Party: ${parsed.customerName}</span>` : ''}
+      `;
+    }
+
+    if (container) container.style.display = 'block';
+    if (confirmBtn) {
+      confirmBtn.style.display = 'inline-block';
+      confirmBtn.textContent = `Save Entry (₹${parsed.amount}) ✓`;
+    }
+
+    // Auto-commit within 3.5 seconds if user doesn't cancel
+    if (voiceAutoCommitTimer) clearTimeout(voiceAutoCommitTimer);
+    voiceAutoCommitTimer = setTimeout(() => {
+      confirmParsedVoiceEntry();
+    }, 3500);
+  }
+
+  function confirmParsedVoiceEntry() {
+    if (voiceAutoCommitTimer) {
+      clearTimeout(voiceAutoCommitTimer);
+      voiceAutoCommitTimer = null;
+    }
+    if (!activeVoiceEntry) return;
+
+    if (!activeVoiceEntry.amount || activeVoiceEntry.amount <= 0) {
+      alert('Could not detect a clear amount. Please try speaking again with the amount (e.g., "1000 rupees")');
+      return;
+    }
+
+    const newEntry = {
+      client_tx_id: 'tx_voice_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      type: activeVoiceEntry.type,
+      amount: activeVoiceEntry.amount,
+      category: activeVoiceEntry.category,
+      description: activeVoiceEntry.description,
+      customer_name: activeVoiceEntry.customerName || '',
+      customer_phone: activeVoiceEntry.customerPhone || '',
+      payment_mode: activeVoiceEntry.type === 'udhar' ? 'credit' : 'cash',
+      is_cleared: false,
+      created_at: new Date().toISOString(),
+      synced: false
+    };
+
+    sahayakLedger.unshift(newEntry);
+    localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+    playLedgerChime();
+
+    const live = document.getElementById('voice-live-transcript');
+    if (live) live.innerHTML = `✅ <strong style="color:#75D498;">Recorded successfully:</strong> ₹${newEntry.amount} [${newEntry.type.toUpperCase()}] in your Digital Khata!`;
+
+    const confirmBtn = document.getElementById('voice-quick-confirm-btn');
+    if (confirmBtn) confirmBtn.style.display = 'none';
+
+    refreshLedgerUI();
+    triggerLedgerCloudSync(false);
+    activeVoiceEntry = null;
+  }
+
+  // ==================== AUTO CLOUD SYNC ENGINE ====================
+  function updateLedgerSyncBadge(state) {
+    const dot = document.getElementById('ledger-badge-dot');
+    const txt = document.getElementById('ledger-sync-status-text');
+    const headerDot = document.getElementById('ledger-header-sync-dot');
+
+    if (state === 'syncing') {
+      if (dot) { dot.className = 'ledger-sync-dot syncing'; }
+      if (headerDot) { headerDot.className = 'ledger-sync-dot syncing'; }
+      if (txt) txt.textContent = 'Syncing to Cloud...';
+    } else if (state === 'offline') {
+      if (dot) { dot.className = 'ledger-sync-dot offline'; }
+      if (headerDot) { headerDot.className = 'ledger-sync-dot offline'; }
+      if (txt) txt.textContent = 'Offline (Stored Locally)';
+    } else {
+      if (dot) { dot.className = 'ledger-sync-dot'; }
+      if (headerDot) { headerDot.className = 'ledger-sync-dot'; }
+      if (txt) txt.textContent = '🟢 Cloud Synced';
+    }
+  }
+
+  async function triggerLedgerCloudSync(isManual = false) {
+    if (!navigator.onLine) {
+      updateLedgerSyncBadge('offline');
+      if (isManual) alert('You are currently working offline. All transactions are securely stored locally and will sync once internet returns.');
+      return;
+    }
+
+    updateLedgerSyncBadge('syncing');
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+
+      const payload = {
+        user_id: 0,
+        entries: sahayakLedger.map(t => ({
+          client_tx_id: t.client_tx_id,
+          type: t.type,
+          amount: t.amount,
+          category: t.category,
+          description: t.description,
+          customer_name: t.customer_name,
+          customer_phone: t.customer_phone,
+          payment_mode: t.payment_mode,
+          is_cleared: !!t.is_cleared,
+          created_at: t.created_at
+        }))
+      };
+
+      const res = await fetch('http://localhost:5000/api/ledger/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const data = await res.json();
+        // Mark entries as synced
+        sahayakLedger.forEach(t => t.synced = true);
+        localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+        updateLedgerSyncBadge('synced');
+        renderLedgerTable();
+        if (isManual) {
+          alert(`Cloud Sync Successful!\n${data.synced_count} transactions verified and synchronized with FastAPI SQLite database.`);
+        }
+        return;
+      }
+    } catch(e) {}
+
+    updateLedgerSyncBadge('offline');
+  }
+
+  // Initialize Smart Ledger on load
+  try {
+    initLedger();
+  } catch(e) {
+    console.warn('[LEDGER INIT ERROR]', e);
   }
 
   // Initialize carousel on load
