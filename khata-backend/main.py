@@ -20,6 +20,7 @@ import uvicorn
 import database
 from schemes_data import get_ranked_schemes
 from ai_service import generate_advisor_response, LANGUAGE_MAP
+from credit_engine import calculate_alternative_credit_score, generate_bank_financial_dossier
 
 app = FastAPI(
     title="MicroNiti — AI-Driven Hyper-Local Advisory & Financial Structuring Platform",
@@ -168,6 +169,31 @@ class LedgerEntryItem(BaseModel):
 class LedgerBatchSyncRequest(BaseModel):
     user_id: Optional[int] = 0
     entries: List[LedgerEntryItem] = []
+
+
+class CreditScoreRequest(BaseModel):
+    sales_total: Optional[float] = 0.0
+    expense_total: Optional[float] = 0.0
+    udhar_total: Optional[float] = 0.0
+    udhar_settled_ratio: Optional[float] = 0.85
+    tx_count: Optional[int] = 10
+    business_type: Optional[str] = "grocery"
+    capital: Optional[float] = 150000.0
+    cibil_score: Optional[int] = None
+
+
+class BankDossierRequest(BaseModel):
+    entrepreneur_name: Optional[str] = "Ramesh Sharma"
+    business_name: Optional[str] = "Ramesh General Provisions"
+    trade: Optional[str] = "Grocery & General Provisions"
+    location: Optional[str] = "Sojat City, Rajasthan"
+    social_category: Optional[str] = "OBC"
+    gender: Optional[str] = "Male"
+    project_cost: Optional[float] = 180000.0
+    sales_total: Optional[float] = 0.0
+    expense_total: Optional[float] = 0.0
+    udhar_total: Optional[float] = 0.0
+    cibil_score: Optional[int] = 720
 
 
 # ==================== REST ENDPOINTS ====================
@@ -522,6 +548,86 @@ def get_ledger_entries(user_id: int = 0, limit: int = 100):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch ledger entries: {str(e)}")
+
+
+# ==================== ALTERNATIVE CREDIT SCORING & BANK DOSSIER (PHASE 3) ====================
+
+@app.post("/api/credit/score", tags=["Alternative Credit Scoring"])
+def get_alternative_credit_score(req: CreditScoreRequest):
+    """
+    Non-bureau alternative ML credit scoring (300 to 900) for unbanked micro-entrepreneurs.
+    Evaluates 4 operational pillars: Cash flow consistency (35%), Supplier discipline (25%),
+    Utility regularity (20%), and Customer Udhar recovery (20%).
+    """
+    try:
+        score_data = calculate_alternative_credit_score(
+            sales_total=req.sales_total or 0.0,
+            expense_total=req.expense_total or 0.0,
+            udhar_total=req.udhar_total or 0.0,
+            udhar_settled_ratio=req.udhar_settled_ratio or 0.85,
+            tx_count=req.tx_count or 10,
+            business_type=req.business_type or "grocery",
+            capital=req.capital or 150000.0,
+            cibil_input=req.cibil_score
+        )
+        return {
+            "success": True,
+            **score_data
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Credit score calculation failed: {str(e)}")
+
+
+@app.post("/api/dossier/generate", tags=["Bank Financial Dossier"])
+def generate_dossier(req: BankDossierRequest):
+    """
+    Generates a verifiable Bank Appraisal Detailed Project Report (DPR) & Financial Dossier
+    with capital structuring, 12-month cashflows, DSCR ratio, and document checklist.
+    """
+    try:
+        dossier = generate_bank_financial_dossier(
+            entrepreneur_name=req.entrepreneur_name or "Ramesh Sharma",
+            business_name=req.business_name or "Ramesh General Provisions",
+            trade=req.trade or "Grocery & General Provisions",
+            location=req.location or "Sojat City, Rajasthan",
+            social_category=req.social_category or "OBC",
+            gender=req.gender or "Male",
+            project_cost=req.project_cost or 180000.0,
+            sales_total=req.sales_total or 0.0,
+            expense_total=req.expense_total or 0.0,
+            udhar_total=req.udhar_total or 0.0,
+            cibil_score=req.cibil_score or 720
+        )
+        return {
+            "success": True,
+            "dossier": dossier
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Dossier generation failed: {str(e)}")
+
+
+@app.get("/api/credit/summary", tags=["Alternative Credit Scoring"])
+def get_live_credit_summary(user_id: int = 0, capital: float = 150000.0, business: str = "grocery"):
+    """
+    Calculates real-time Alternative Credit Score directly from active SQLite Ledger transactions.
+    """
+    try:
+        summary = database.get_ledger_summary(user_id=user_id)
+        score_data = calculate_alternative_credit_score(
+            sales_total=summary.get("total_income", 0.0),
+            expense_total=summary.get("total_expenses", 0.0),
+            udhar_total=summary.get("pending_udhar", 0.0),
+            tx_count=summary.get("transaction_count", 0),
+            business_type=business,
+            capital=capital
+        )
+        return {
+            "success": True,
+            "ledger_summary": summary,
+            "credit_profile": score_data
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Live credit summary failed: {str(e)}")
 
 
 if __name__ == "__main__":
