@@ -21,6 +21,12 @@ import database
 from schemes_data import get_ranked_schemes
 from ai_service import generate_advisor_response, LANGUAGE_MAP
 from credit_engine import calculate_alternative_credit_score, generate_bank_financial_dossier
+from market_engine import (
+    get_all_commodities,
+    get_seasonal_surges,
+    calculate_procurement_plan,
+    MANDIS
+)
 
 app = FastAPI(
     title="MicroNiti — AI-Driven Hyper-Local Advisory & Financial Structuring Platform",
@@ -194,6 +200,13 @@ class BankDossierRequest(BaseModel):
     expense_total: Optional[float] = 0.0
     udhar_total: Optional[float] = 0.0
     cibil_score: Optional[int] = 720
+
+
+class ProcurementPlanRequest(BaseModel):
+    commodity_id: str
+    quantity: float = Field(..., gt=0)
+    transport_freight_cost: float = Field(0.0, ge=0)
+    target_markup_pct: Optional[float] = None
 
 
 # ==================== REST ENDPOINTS ====================
@@ -628,6 +641,75 @@ def get_live_credit_summary(user_id: int = 0, capital: float = 150000.0, busines
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Live credit summary failed: {str(e)}")
+
+
+# ==============================================================================
+# PHASE 4: HYPER-LOCAL MARKET INTELLIGENCE & MANDI WHOLESALE PRICING
+# ==============================================================================
+
+@app.get("/api/market/mandis", tags=["Market Intelligence"])
+def list_supported_mandis():
+    """Returns directory of supported APMC Mandis and geographical tags."""
+    return {
+        "success": True,
+        "mandis": MANDIS,
+        "default_mandi": "varanasi"
+    }
+
+
+@app.get("/api/market/commodities", tags=["Market Intelligence"])
+def list_commodities(category: Optional[str] = None, search: Optional[str] = None, mandi: Optional[str] = None):
+    """
+    Returns live APMC Mandi commodity benchmark rates with price trends,
+    converted retail units (Kg/L), and arbitrage recommendations.
+    """
+    try:
+        commodities = get_all_commodities(category=category, search=search, mandi=mandi)
+        return {
+            "success": True,
+            "total_commodities": len(commodities),
+            "commodities": commodities,
+            "selected_mandi": MANDIS.get(mandi, MANDIS["varanasi"])
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch market commodities: {str(e)}")
+
+
+@app.get("/api/market/surges", tags=["Market Intelligence"])
+def list_seasonal_surges():
+    """
+    Returns upcoming festive, agricultural, and seasonal demand surge forecasts
+    with countdown days and optimal advance restocking recommendations.
+    """
+    try:
+        surges = get_seasonal_surges()
+        return {
+            "success": True,
+            "surges": surges
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch seasonal surges: {str(e)}")
+
+
+@app.post("/api/market/procurement-plan", tags=["Market Intelligence"])
+def generate_procurement_plan(req: ProcurementPlanRequest):
+    """
+    Computes wholesale landed purchase cost, recommended retail selling price (MRP),
+    projected gross revenue, profit margin, and arbitrage savings.
+    """
+    try:
+        plan = calculate_procurement_plan(
+            commodity_id=req.commodity_id,
+            quantity=req.quantity,
+            transport_freight_cost=req.transport_freight_cost,
+            target_markup_pct=req.target_markup_pct
+        )
+        return {
+            "success": True,
+            "plan": plan
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Procurement planning failed: {str(e)}")
 
 
 if __name__ == "__main__":

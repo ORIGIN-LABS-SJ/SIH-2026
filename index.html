@@ -1181,16 +1181,92 @@ try {
   .dossier-table td{
     border:1.5px solid var(--ink);padding:8px 10px;font-weight:600;
   }
+
+  /* ==================== PHASE 4: MARKET INTELLIGENCE & MANDI WHOLESALE TRACKER ==================== */
+  .market-screen{padding:24px 0 60px;}
+  .market-top-banner{
+    background:var(--paper-card);border:2.5px solid var(--ink);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow-off) var(--shadow-off) 0 var(--ink);margin-bottom:20px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+  }
+  .market-title-group h2{
+    margin:0 0 4px;font-size:1.6rem;font-weight:900;letter-spacing:-0.4px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .market-title-group p{margin:0;color:var(--ink-soft);font-size:0.92rem;font-weight:600;}
+  .market-selector-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .mandi-select{
+    padding:8px 14px;border:2px solid var(--ink);border-radius:var(--radius-sm);
+    background:var(--paper);font-weight:800;font-size:0.9rem;color:var(--ink);cursor:pointer;
+  }
+  .market-filter-bar{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;
+  }
+  .market-pills{display:flex;gap:8px;flex-wrap:wrap;}
+  .market-pill{
+    padding:6px 14px;border:2px solid var(--ink);border-radius:999px;background:var(--paper);
+    font-weight:800;font-size:0.82rem;color:var(--ink);cursor:pointer;transition:all .15s ease;
+  }
+  .market-pill.active{background:#047857;color:#fff;box-shadow:2px 2px 0 var(--ink);}
+  .market-search-box{
+    position:relative;flex:1;min-width:240px;max-width:380px;
+  }
+  .market-search-input{
+    width:100%;padding:8px 14px 8px 36px;border:2px solid var(--ink);border-radius:var(--radius-sm);
+    background:var(--paper);font-weight:700;font-size:0.88rem;
+  }
+  .market-search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:0.95rem;pointer-events:none;}
+  .market-grid{
+    display:grid;grid-template-columns:repeat(auto-fill, minmax(290px, 1fr));gap:16px;margin-bottom:30px;
+  }
+  .commodity-card{
+    background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius-sm);
+    padding:16px;box-shadow:3px 3px 0 var(--ink);transition:transform .15s ease, box-shadow .15s ease;
+    display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .commodity-card:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink);}
+  .comm-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .comm-name{font-size:1.02rem;font-weight:900;color:var(--ink);line-height:1.25;}
+  .comm-cat-tag{font-size:0.7rem;font-weight:800;padding:2px 7px;border-radius:999px;border:1px solid var(--ink);background:var(--paper-alt);color:var(--ink-soft);text-transform:uppercase;}
+  .comm-prices{background:var(--paper);border:1.5px solid var(--ink);border-radius:4px;padding:10px 12px;margin-bottom:10px;}
+  .comm-modal-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}
+  .comm-modal-label{font-size:0.78rem;font-weight:700;color:var(--ink-soft);}
+  .comm-modal-val{font-size:1.35rem;font-weight:900;color:#047857;}
+  .comm-retail-val{font-size:0.84rem;font-weight:800;color:var(--indigo-deep);}
+  .comm-range{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;color:var(--ink-soft);border-top:1px dashed var(--ink-faint);padding-top:4px;}
+  .trend-badge{
+    display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;padding:2px 8px;border-radius:999px;border:1px solid var(--ink);
+  }
+  .trend-badge.bullish{background:#dcfce7;color:#15803d;}
+  .trend-badge.bearish{background:#fee2e2;color:#b91c1c;}
+  .trend-badge.stable{background:#f3f4f6;color:#4b5563;}
+  .arbitrage-tag{
+    background:#eff6ff;border:1px solid #3b82f6;border-radius:4px;padding:6px 8px;font-size:0.75rem;font-weight:700;color:#1d4ed8;margin-bottom:12px;line-height:1.35;
+  }
+  .surge-timeline-grid{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;margin-top:12px;
+  }
+  .surge-card{
+    background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius-sm);
+    padding:14px 16px;box-shadow:3px 3px 0 var(--ink);
+  }
+  .surge-badge-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .surge-urgency{font-size:0.7rem;font-weight:900;padding:2px 8px;border-radius:999px;border:1px solid var(--ink);}
+  .surge-urgency.high{background:#fee2e2;color:#b91c1c;}
+  .surge-urgency.medium{background:#fef3c7;color:#b45309;}
+  .surge-urgency.low{background:#e0f2fe;color:#0369a1;}
+
   @media print{
     body * {visibility: hidden;}
-    #printable-dossier-content, #printable-dossier-content * {
+    #printable-dossier-content, #printable-dossier-content *,
+    #printable-mandi-sheet, #printable-mandi-sheet * {
       visibility: visible;
     }
-    #printable-dossier-content {
+    #printable-dossier-content, #printable-mandi-sheet {
       position: absolute;left: 0;top: 0;width: 100%;padding: 20px;
       background: #fff !important;color: #000 !important;
     }
-    .modal-head, .modal-foot, .chatbot-floating-trigger, header.site, footer, .modal-close-btn {
+    .modal-head, .modal-foot, .chatbot-floating-trigger, header.site, footer, .modal-close-btn, .subpage-top-nav, .market-filter-bar {
       display: none !important;
     }
   }
@@ -1366,6 +1442,12 @@ try {
         <span class="ledger-sync-dot" id="ledger-header-sync-dot" title="Auto Cloud Sync Active"></span>
       </button>
 
+      <!-- Mandi Wholesale Tracker (Market Intelligence) Header Button -->
+      <button type="button" class="header-ledger-btn" id="header-market-btn" onclick="showScreen('screen-market')" title="Live APMC Mandi Wholesale Rates & Seasonal Demand Surges" style="background:#047857;color:#fff;">
+        <span style="font-size:1.05rem;">📈</span>
+        <span data-i18n="btnMandiTracker">Mandi Tracker</span>
+      </button>
+
       <!-- AI Advisor Header Button (Every page) -->
       <button type="button" class="header-advisor-btn" onclick="openChatDrawer()">
         <span>💭</span>
@@ -1419,6 +1501,10 @@ try {
             <button class="btn" onclick="showScreen('screen-ledger')" style="background:var(--paddy);color:#fff;" title="Record Daily Sales & Udhar with Voice Input">
               <span>📖</span>
               <span data-i18n="heroCtaLedger">Daily Smart Ledger</span>
+            </button>
+            <button class="btn" onclick="showScreen('screen-market')" style="background:#047857;color:#fff;" title="Live APMC Mandi Wholesale Prices & Seasonal Demand Surges">
+              <span>📈</span>
+              <span>Wholesale Mandi Rates</span>
             </button>
           </div>
 
@@ -2422,6 +2508,15 @@ try {
         </div>
       </div>
 
+      <!-- Mandi Procurement Intelligence Alert Banner -->
+      <div class="ledger-mandi-tip" onclick="showScreen('screen-market')" style="cursor:pointer;background:#ecfdf5;border:2px solid #059669;border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:2px 2px 0 var(--ink);">
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--ink);">
+          <span style="font-size:1.25rem;">📈</span>
+          <span><strong>Mandi Procurement Tip:</strong> Check today's official APMC wholesale rates before buying shop stock. Compare wholesale mandis to save 10%–18% on bulk purchases.</span>
+        </div>
+        <span style="font-size:0.82rem;font-weight:900;color:#047857;text-decoration:underline;white-space:nowrap;">Open Mandi Tracker →</span>
+      </div>
+
       <!-- Live Cashflow KPI Cards -->
       <div class="ledger-kpi-grid">
         <div class="ledger-kpi-card sales">
@@ -2589,6 +2684,126 @@ try {
           <div id="udhar-cards-list" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:14px;">
             <!-- Rendered dynamically -->
           </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== 6. MARKET INTELLIGENCE & MANDI WHOLESALE TRACKER (PHASE 4) ===================== -->
+  <section class="screen" id="screen-market">
+    <div class="wrap market-screen">
+      <!-- Subpage Top Nav -->
+      <div class="subpage-top-nav">
+        <button type="button" class="back-btn" onclick="showScreen('screen-landing')">
+          <span>←</span>
+          <span data-i18n="btnBackHome">Back to Home</span>
+        </button>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span class="ledger-sync-badge" style="background:#ecfdf5;border:1.5px solid #10b981;color:#047857;">
+            <span class="ledger-sync-dot" style="background:#10b981;"></span>
+            <span id="market-sync-status">Live APMC Mandi Feed</span>
+          </span>
+          <button type="button" class="btn sm secondary" onclick="refreshMarketData()" title="Refresh latest APMC rates">
+            <span>🔄 Refresh Rates</span>
+          </button>
+          <button type="button" class="btn sm" onclick="printMandiRateSheet()" style="background:var(--marigold);color:var(--ink);font-weight:800;" title="Print daily Mandi rate sheet for shop counter">
+            <span>🖨️ Print Rate Sheet</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Top Banner Header -->
+      <div class="market-top-banner">
+        <div class="market-title-group">
+          <h2>
+            <span>📈 Sahayak Market Intelligence</span>
+            <span class="ledger-phase-badge" style="background:#047857;">Phase 4 · Live APMC</span>
+          </h2>
+          <p>Real-Time Wholesale Mandi Rates, Price Arbitrage Discovery &amp; Festival Demand Surge Forecasting</p>
+        </div>
+        <div class="market-selector-wrap">
+          <label style="font-weight:800;font-size:0.85rem;color:var(--ink);">Select APMC Mandi:</label>
+          <select id="select-mandi" class="mandi-select" onchange="switchMandi(this.value)">
+            <option value="varanasi">Varanasi APMC Main Mandi (Eastern UP)</option>
+            <option value="kanpur">Kanpur APMC Mandi (Central UP Hub)</option>
+            <option value="indore">Indore Choithram APMC Mandi (MP Hub)</option>
+            <option value="patna">Patna Bazar Samiti Mandi (Bihar)</option>
+            <option value="jaipur">Jaipur Muhana APMC Mandi (Rajasthan)</option>
+            <option value="delhi_azadpur">Delhi Azadpur APMC Mandi (National)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills & Search Bar -->
+      <div class="market-filter-bar">
+        <div class="market-pills">
+          <button type="button" class="market-pill active" id="mpill-all" onclick="filterMarketCategory('all')">All (सभी 21+)</button>
+          <button type="button" class="market-pill" id="mpill-grains" onclick="filterMarketCategory('grains')">🌾 Grains &amp; Pulses (अनाज)</button>
+          <button type="button" class="market-pill" id="mpill-oils" onclick="filterMarketCategory('oils')">🛢️ Oils &amp; Sugar (तेल/चीनी)</button>
+          <button type="button" class="market-pill" id="mpill-produce" onclick="filterMarketCategory('produce')">🥔 Vegetables &amp; Produce (सब्जी)</button>
+          <button type="button" class="market-pill" id="mpill-spices" onclick="filterMarketCategory('spices')">🌶️ Spices &amp; Kirana (मसाले)</button>
+          <button type="button" class="market-pill" id="mpill-dairy" onclick="filterMarketCategory('dairy')">🥛 Dairy &amp; Feed (डेयरी)</button>
+          <button type="button" class="market-pill" id="mpill-raw_materials" onclick="filterMarketCategory('raw_materials')">🧵 Artisan Materials (कच्चा माल)</button>
+        </div>
+        <div class="market-search-box">
+          <span class="market-search-icon">🔍</span>
+          <input type="text" id="input-market-search" class="market-search-input" placeholder="Search commodity (Wheat, Mustard Oil, Chana, सूत)..." oninput="handleMarketSearch(this.value)">
+        </div>
+      </div>
+
+      <!-- Commodity Rate Grid -->
+      <div class="market-grid" id="market-commodities-grid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+
+      <!-- Printable Mandi Rate Sheet (Used by @media print) -->
+      <div id="printable-mandi-sheet" style="display:none;">
+        <div style="text-align:center;border-bottom:2px solid #000;padding-bottom:12px;margin-bottom:16px;">
+          <h2 style="margin:0;font-size:1.4rem;">SAHAYAK — DAILY APMC MANDI WHOLESALE BENCHMARK SHEET</h2>
+          <div style="font-size:0.85rem;color:#333;margin-top:4px;">
+            Market: <strong id="print-mandi-name">Varanasi APMC Main Mandi</strong> | Date: <strong id="print-mandi-date">14 Sep 2026</strong> | Source: Agmarknet &amp; Sahayak Intelligence
+          </div>
+        </div>
+        <table class="dossier-table" style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+          <thead>
+            <tr>
+              <th>Commodity Name</th>
+              <th>Category</th>
+              <th>Wholesale Unit</th>
+              <th style="text-align:right;">Modal Wholesale (₹)</th>
+              <th style="text-align:right;">Min / Max (₹)</th>
+              <th style="text-align:right;">Converted Retail Unit (₹)</th>
+              <th style="text-align:right;">Benchmark MRP (₹)</th>
+            </tr>
+          </thead>
+          <tbody id="print-mandi-tbody">
+            <!-- Populated on print -->
+          </tbody>
+        </table>
+        <div style="font-size:0.75rem;color:#555;margin-top:14px;text-align:center;">
+          Generated by Sahayak Market Intelligence Engine v4.0 · Ministry of Social Justice and Empowerment (SIH26091)
+        </div>
+      </div>
+
+      <!-- ==================== PREDICTIVE SEASONAL SURGE & FESTIVAL RESTOCKING SECTION ==================== -->
+      <div style="margin-top:30px;background:var(--paper-alt);border:2.5px solid var(--ink);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-off) var(--shadow-off) 0 var(--ink);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <div>
+            <h3 style="margin:0 0 4px;font-size:1.3rem;font-weight:900;color:var(--indigo-deep);display:flex;align-items:center;gap:8px;">
+              <span>🎉</span> Seasonal Demand Surge &amp; Festival Restocking Forecast
+            </h3>
+            <p style="margin:0;color:var(--ink-soft);font-size:0.88rem;font-weight:600;">
+              AI-driven festival calendar forecasting high-demand sales peaks so micro-retailers lock in wholesale stock before price spikes.
+            </p>
+          </div>
+          <span style="font-size:0.75rem;font-weight:800;background:var(--indigo);color:#fff;padding:4px 10px;border-radius:999px;">
+            Predictive Calendar · 2026-2027
+          </span>
+        </div>
+
+        <div class="surge-timeline-grid" id="surge-cards-container">
+          <!-- Populated dynamically -->
         </div>
       </div>
 
@@ -3072,6 +3287,98 @@ try {
         </button>
         <button type="button" class="btn sm secondary" onclick="closeBankDossierModal()">Close</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WHOLESALE-TO-RETAIL PROFIT MARGIN SIMULATOR MODAL (PHASE 4) ==================== -->
+<div class="modal-overlay" id="modal-margin-calc" onclick="closeMarginCalculator(event)">
+  <div class="modal-box" style="max-width:580px;" onclick="event.stopPropagation()">
+    <div class="modal-head" style="background:#047857;color:#fff;">
+      <div style="display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.1rem;">
+        <span>🧮</span>
+        <span id="margin-calc-title">Wholesale-to-Retail Profit Simulator</span>
+      </div>
+      <button type="button" class="modal-close-btn" onclick="closeMarginCalculator()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Selected Commodity Banner -->
+      <div style="background:var(--paper);border:1.5px solid var(--ink);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:1.05rem;font-weight:900;color:var(--ink);" id="calc-comm-name">Wheat / Sharbati (गेहूं)</div>
+          <div style="font-size:0.78rem;color:var(--ink-soft);font-weight:700;">Wholesale APMC Rate: <strong id="calc-modal-rate" style="color:#047857;">₹2,420 / Quintal</strong></div>
+        </div>
+        <div style="text-align:right;">
+          <span class="trend-badge bullish" id="calc-trend-badge">🟢 +2.8%</span>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div class="field">
+          <label style="font-weight:800;font-size:0.84rem;">Purchase Quantity *</label>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <input type="number" id="calc-qty" min="0.1" step="0.5" value="2" oninput="calculateMarginLive()" style="width:100%;padding:8px 12px;border:2px solid var(--ink);border-radius:var(--radius-sm);font-weight:800;font-size:1.05rem;">
+            <span id="calc-unit-label" style="font-weight:800;font-size:0.8rem;white-space:nowrap;color:var(--ink-soft);">Quintal</span>
+          </div>
+        </div>
+        <div class="field">
+          <label style="font-weight:800;font-size:0.84rem;">Transport &amp; Freight (₹)</label>
+          <input type="number" id="calc-freight" min="0" step="10" value="150" oninput="calculateMarginLive()" style="width:100%;padding:8px 12px;border:2px solid var(--ink);border-radius:var(--radius-sm);font-weight:800;font-size:1.05rem;">
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <label style="font-weight:800;font-size:0.84rem;">Target Retail Profit Markup</label>
+          <strong id="calc-markup-display" style="color:#047857;font-size:0.92rem;">22% Markup</strong>
+        </div>
+        <input type="range" id="calc-markup-slider" min="5" max="50" step="1" value="22" oninput="calculateMarginLive()" style="width:100%;">
+        <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-soft);font-weight:700;">
+          <span>5% (Wholesale pass-through)</span>
+          <span>20% (Standard Retail)</span>
+          <span>40% (Premium artisan)</span>
+        </div>
+      </div>
+
+      <!-- Live Calculation Breakdown Cards -->
+      <div style="background:#f0fdf4;border:2px solid #059669;border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;font-size:0.84rem;">
+          <div>
+            <div style="color:var(--ink-soft);font-weight:700;">Total Landed Cost</div>
+            <div style="font-size:1.25rem;font-weight:900;color:var(--ink);" id="res-landed-cost">₹4,990</div>
+            <div style="font-size:0.72rem;color:var(--ink-soft);" id="res-cost-per-unit">₹24.95 / Kg landed</div>
+          </div>
+          <div>
+            <div style="color:var(--ink-soft);font-weight:700;">Recommended Retail MRP</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#047857;" id="res-retail-mrp">₹30.44 / Kg</div>
+            <div style="font-size:0.72rem;color:var(--ink-soft);" id="res-benchmark-mrp">Market MRP: ₹29.50 / Kg</div>
+          </div>
+        </div>
+
+        <div style="border-top:1.5px dashed #059669;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <span style="font-weight:800;font-size:0.85rem;color:var(--ink);">Projected Gross Profit:</span>
+            <strong id="res-gross-profit" style="font-size:1.15rem;font-weight:900;color:var(--paddy-deep);margin-left:6px;">₹1,098</strong>
+          </div>
+          <span style="font-size:0.78rem;font-weight:800;background:#dcfce7;color:#15803d;padding:3px 8px;border-radius:999px;border:1px solid #16a34a;" id="res-margin-pill">
+            18.0% Net Margin
+          </span>
+        </div>
+      </div>
+
+      <!-- Arbitrage Savings Callout -->
+      <div id="calc-arbitrage-box" class="arbitrage-tag" style="margin-bottom:0;">
+        💡 <strong>Wholesale Arbitrage:</strong> Sourcing from Kanpur APMC saves ₹110/Qtl (₹220 total savings).
+      </div>
+    </div>
+
+    <div class="modal-foot" style="padding:14px 20px;background:var(--paper-alt);border-top:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <button type="button" class="btn sm secondary" onclick="closeMarginCalculator()">Close</button>
+      <button type="button" class="btn sm" onclick="transferProcurementToLedger()" style="background:#047857;color:#fff;font-weight:800;">
+        <span>➕ Record as Planned Stock Expense in Khata</span>
+      </button>
     </div>
   </div>
 </div>
@@ -4421,10 +4728,19 @@ try {
       }
     }
 
-    // Toggle active state on header-ledger-btn
+    // Toggle active state on header buttons
     const ledgerBtn = document.getElementById('header-ledger-btn');
     if(ledgerBtn){
       ledgerBtn.classList.toggle('active', id === 'screen-ledger');
+    }
+
+    const marketBtn = document.getElementById('header-market-btn');
+    if(marketBtn){
+      marketBtn.classList.toggle('active', id === 'screen-market');
+    }
+
+    if(id === 'screen-market'){
+      try { initMarketTracker(); } catch(e){}
     }
 
     if(id === 'screen-ledger'){
@@ -6306,6 +6622,381 @@ try {
     dlAnchor.remove();
   }
 
+  // ==================== PHASE 4: HYPER-LOCAL MARKET INTELLIGENCE & MANDI TRACKER ====================
+  const COMMODITIES_OFFLINE_DATA = [
+    { id: "wheat_sharbati", name: "Wheat / Sharbati (गेहूं)", category: "grains", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 2420, min_price: 2350, max_price: 2510, trend: "bullish", trend_pct: 2.8, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 2310, savings_per_qtl: 110, tip: "Save ₹1.10/kg by aggregating transport from Kanpur" }, retail_benchmark_mrp: 29.50, standard_markup_pct: 22 },
+    { id: "rice_sona_masoori", name: "Rice / Sona Masoori (चावल)", category: "grains", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 3650, min_price: 3500, max_price: 3820, trend: "stable", trend_pct: 0.5, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Patna Bazar Samiti Mandi", cheapest_price: 3480, savings_per_qtl: 170, tip: "Bulk procurement from Patna saves ₹1.70/kg" }, retail_benchmark_mrp: 45.00, standard_markup_pct: 23 },
+    { id: "chana_dal", name: "Gram / Chana Dal (चना दाल)", category: "grains", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 6850, min_price: 6600, max_price: 7100, trend: "bullish", trend_pct: 4.2, primary_mandi: "Indore Choithram APMC Mandi", arbitrage: { cheapest_mandi: "Indore Choithram APMC Mandi", cheapest_price: 6700, savings_per_qtl: 150, tip: "MP central pulse line offers purest unpolished stock" }, retail_benchmark_mrp: 84.00, standard_markup_pct: 22 },
+    { id: "arhar_tur_dal", name: "Arhar / Tur Dal (अरहर दाल देसी)", category: "grains", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 13800, min_price: 13200, max_price: 14400, trend: "bearish", trend_pct: -1.8, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 13400, savings_per_qtl: 400, tip: "Wholesale arrivals increasing; buy 15-day inventory only" }, retail_benchmark_mrp: 165.00, standard_markup_pct: 20 },
+    { id: "moong_dal", name: "Moong Dal Dhuli (मूँग दाल)", category: "grains", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 9400, min_price: 9100, max_price: 9800, trend: "stable", trend_pct: 0.2, primary_mandi: "Jaipur Muhana APMC Mandi", arbitrage: { cheapest_mandi: "Jaipur Muhana APMC Mandi", cheapest_price: 9250, savings_per_qtl: 150, tip: "Rajasthan fresh arrivals active" }, retail_benchmark_mrp: 115.00, standard_markup_pct: 22 },
+    { id: "mustard_oil_kachi_ghani", name: "Mustard Oil / Kachi Ghani (कच्ची घानी सरसों तेल)", category: "oils", unit: "Tins (15 Litre)", unit_retail: "Litre", conversion_factor: 15, modal_price: 1820, min_price: 1760, max_price: 1890, trend: "bullish", trend_pct: 3.1, primary_mandi: "Kanpur APMC Mandi", arbitrage: { cheapest_mandi: "Jaipur Muhana APMC Mandi", cheapest_price: 1740, savings_per_qtl: 80, tip: "Crushers in Bharatpur running competitive rates" }, retail_benchmark_mrp: 142.00, standard_markup_pct: 17 },
+    { id: "refined_soy_oil", name: "Refined Soybean Oil (रिफाइंड सोयाबीन तेल)", category: "oils", unit: "Tins (15 Litre)", unit_retail: "Litre", conversion_factor: 15, modal_price: 1580, min_price: 1520, max_price: 1640, trend: "stable", trend_pct: -0.4, primary_mandi: "Indore Choithram APMC Mandi", arbitrage: { cheapest_mandi: "Indore Choithram APMC Mandi", cheapest_price: 1540, savings_per_qtl: 40, tip: "Indore refinery hub provides direct pricing" }, retail_benchmark_mrp: 122.00, standard_markup_pct: 16 },
+    { id: "sugar_m30", name: "White Sugar M-30 (सफेद चीनी)", category: "oils", unit: "Quintal (50kg x 2)", unit_retail: "Kg", conversion_factor: 100, modal_price: 3840, min_price: 3780, max_price: 3920, trend: "bullish", trend_pct: 1.9, primary_mandi: "Kanpur APMC Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 3810, savings_per_qtl: 30, tip: "Western UP sugar mill quota quota releases weekly" }, retail_benchmark_mrp: 44.00, standard_markup_pct: 15 },
+    { id: "jaggery_gur", name: "Organic Desi Jaggery / Gur (देसी गुड़)", category: "oils", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 3400, min_price: 3200, max_price: 3650, trend: "bullish", trend_pct: 4.5, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 3250, savings_per_qtl: 150, tip: "Winter festive demand rising; stock up early" }, retail_benchmark_mrp: 45.00, standard_markup_pct: 32 },
+    { id: "onion_nasik", name: "Onion / Nasik Red (प्याज)", category: "produce", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 3100, min_price: 2850, max_price: 3400, trend: "bullish", trend_pct: 6.8, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Delhi Azadpur APMC Mandi", cheapest_price: 2900, savings_per_qtl: 200, tip: "High wholesale volatility; buy 3-day buffer only" }, retail_benchmark_mrp: 40.00, standard_markup_pct: 29 },
+    { id: "potato_jyoti", name: "Potato / Jyoti & Chipsona (आलू)", category: "produce", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 1850, min_price: 1700, max_price: 2050, trend: "stable", trend_pct: 0.8, primary_mandi: "Kanpur APMC Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 1780, savings_per_qtl: 70, tip: "Farrukhabad cold storage stocks plentiful" }, retail_benchmark_mrp: 25.00, standard_markup_pct: 35 },
+    { id: "tomato_hybrid", name: "Tomato / Hybrid Red (टमाटर)", category: "produce", unit: "Crate (25 Kg)", unit_retail: "Kg", conversion_factor: 25, modal_price: 625, min_price: 550, max_price: 750, trend: "bearish", trend_pct: -5.2, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Patna Bazar Samiti Mandi", cheapest_price: 580, savings_per_qtl: 45, tip: "Local mandi arrivals strong; prices cooling" }, retail_benchmark_mrp: 32.00, standard_markup_pct: 28 },
+    { id: "garlic_desi", name: "Garlic / Desi White (लहसुन)", category: "produce", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 18500, min_price: 17200, max_price: 20000, trend: "bullish", trend_pct: 5.4, primary_mandi: "Indore Choithram APMC Mandi", arbitrage: { cheapest_mandi: "Indore Choithram APMC Mandi", cheapest_price: 17800, savings_per_qtl: 700, tip: "Mandsaur/Neemuch MP production belt offers prime wholesale rates" }, retail_benchmark_mrp: 230.00, standard_markup_pct: 24 },
+    { id: "turmeric_powder", name: "Turmeric / Haldi Whole (हल्दी गांठ/पाउडर)", category: "spices", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 14200, min_price: 13600, max_price: 15100, trend: "bullish", trend_pct: 3.7, primary_mandi: "Varanasi APMC Main Mandi", arbitrage: { cheapest_mandi: "Kanpur APMC Mandi", cheapest_price: 13800, savings_per_qtl: 400, tip: "High festive demand for wedding and puja season" }, retail_benchmark_mrp: 185.00, standard_markup_pct: 30 },
+    { id: "red_chili_whole", name: "Red Chili Guntur / Teja (सूखी लाल मिर्च)", category: "spices", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 21500, min_price: 20000, max_price: 23000, trend: "stable", trend_pct: 0.3, primary_mandi: "Kanpur APMC Mandi", arbitrage: { cheapest_mandi: "Delhi Azadpur APMC Mandi", cheapest_price: 20800, savings_per_qtl: 700, tip: "Direct terminal market lots in 25kg gunny packs" }, retail_benchmark_mrp: 270.00, standard_markup_pct: 26 },
+    { id: "cumin_jeera", name: "Cumin Seeds / Jeera Unjha (जीरा)", category: "spices", unit: "Quintal", unit_retail: "Kg", conversion_factor: 100, modal_price: 28400, min_price: 26800, max_price: 30500, trend: "bearish", trend_pct: -3.2, primary_mandi: "Jaipur Muhana APMC Mandi", arbitrage: { cheapest_mandi: "Jaipur Muhana APMC Mandi", cheapest_price: 27600, savings_per_qtl: 800, tip: "Unjha arrivals cooling market prices" }, retail_benchmark_mrp: 360.00, standard_markup_pct: 27 },
+    { id: "raw_milk_cow", name: "Raw Farm Milk / Cow (कच्चा गाय का दूध)", category: "dairy", unit: "Liter (Can 40L)", unit_retail: "Litre", conversion_factor: 1, modal_price: 42.0, min_price: 39.0, max_price: 45.0, trend: "stable", trend_pct: 0.0, primary_mandi: "Varanasi Dairy Collection Center", arbitrage: { cheapest_mandi: "Patna Dairy Cooperative", cheapest_price: 40.0, savings_per_qtl: 2.0, tip: "Direct collection depot price for 4.0% Fat / 8.5% SNF" }, retail_benchmark_mrp: 54.00, standard_markup_pct: 28 },
+    { id: "cattle_feed_pellet", name: "Cattle Feed / Sudha Pellet (पशु आहार 50kg)", category: "dairy", unit: "Bag (50 Kg)", unit_retail: "Bag", conversion_factor: 1, modal_price: 1380, min_price: 1320, max_price: 1450, trend: "bullish", trend_pct: 2.1, primary_mandi: "Kanpur Feed Complex", arbitrage: { cheapest_mandi: "Kanpur Feed Complex", cheapest_price: 1340, savings_per_qtl: 40, tip: "Distributor concession on 20+ bags purchase" }, retail_benchmark_mrp: 1550.00, standard_markup_pct: 12 },
+    { id: "cotton_yarn_count40", name: "Cotton Yarn 40s Count (सूत का धागा लच्छी)", category: "raw_materials", unit: "Bundle (5 Kg)", unit_retail: "Kg", conversion_factor: 5, modal_price: 1450, min_price: 1380, max_price: 1550, trend: "bullish", trend_pct: 2.5, primary_mandi: "Varanasi Handloom Mandi", arbitrage: { cheapest_mandi: "Kanpur Textile Market", cheapest_price: 1390, savings_per_qtl: 60, tip: "Weavers qualify for 10% NHDC yarn subsidy rebate" }, retail_benchmark_mrp: 360.00, standard_markup_pct: 24 },
+    { id: "pottery_terracotta_clay", name: "Terracotta Clay (कुम्हार की चिकनी मिट्टी)", category: "raw_materials", unit: "Trolley (2.5 Ton)", unit_retail: "Quintal", conversion_factor: 25, modal_price: 3800, min_price: 3400, max_price: 4200, trend: "bullish", trend_pct: 5.8, primary_mandi: "Varanasi Artisan Depot", arbitrage: { cheapest_mandi: "Mirzapur Chunar Depot", cheapest_price: 3300, savings_per_qtl: 500, tip: "Essential for Diwali Diya & Idol makers" }, retail_benchmark_mrp: 240.00, standard_markup_pct: 57 },
+    { id: "mild_steel_wire", name: "GI & Binding Wire 18G (लोहे का तार / जाली)", category: "raw_materials", unit: "Bundle (50 Kg)", unit_retail: "Kg", conversion_factor: 50, modal_price: 3650, min_price: 3500, max_price: 3800, trend: "stable", trend_pct: 0.4, primary_mandi: "Kanpur Loha Mandi", arbitrage: { cheapest_mandi: "Kanpur Loha Mandi", cheapest_price: 3550, savings_per_qtl: 100, tip: "Standard hardware reinforcement wire" }, retail_benchmark_mrp: 86.00, standard_markup_pct: 18 }
+  ];
+
+  const SEASONAL_SURGES_OFFLINE_DATA = [
+    { id: "diwali_dhanteras", festival: "Diwali & Dhanteras Festive Surge (दीपावली व धनतेरस)", period: "October - November", days_remaining: 38, multiplier: 1.75, demand_surge: "+75% Across Micro-Retail", sector_impact: { grocery: "+65% (Ghee, Sugar, Dry Fruits, Oils)", apparel: "+80% (Festive wear, sarees)", artisans: "+140% (Diyas, Utensils, Decor)", transport: "+40% (Freight)" }, stocking_window: "Lock in wholesale bookings 14–20 days prior to avoid peak mandi price gouging.", working_capital_advice: "Allocate 40% of revolving credit limit to festive inventory buffers.", urgency: "high" },
+    { id: "chhath_puja", festival: "Chhath Puja Mahaparv (छठ पूजा महाउत्सव)", period: "November", days_remaining: 44, multiplier: 1.60, demand_surge: "+60% (East UP, Bihar, Jharkhand)", sector_impact: { grocery: "+85% (Atta, Desi Ghee, Sugarcane, Gur)", artisans: "+110% (Bamboo Soop & Daura baskets)", produce: "+70% (Daab Nimbu, Coconuts)" }, stocking_window: "Procure bamboo crafts and jaggery lots 10 days before Kharna.", working_capital_advice: "Pre-book with local artisan clusters for guaranteed delivery.", urgency: "medium" },
+    { id: "wedding_lagna_season", festival: "Winter Wedding Season (लगन व शादी-ब्याह का सीजन)", period: "November - February", days_remaining: 60, multiplier: 1.50, demand_surge: "+50% High-Ticket Turnover", sector_impact: { apparel: "+90% (Bridal stitching, bulk cloth)", grocery: "+60% (Catering lots: Rice, Oil, Spices)", dairy: "+70% (Milk, Paneer, Khoya for sweets)" }, stocking_window: "Maintain rolling 30-day inventory with wholesale supplier credit.", working_capital_advice: "Leverage PMEGP / MUDRA working capital CC limit for bulk supply orders.", urgency: "medium" },
+    { id: "makar_sankranti", festival: "Makar Sankranti & Lohri (मकर संक्रांति व लोहड़ी)", period: "January", days_remaining: 120, multiplier: 1.40, demand_surge: "+40% Specialized Products", sector_impact: { grocery: "+90% (Sesame/Til, Gur, Poha, Peanuts)", artisans: "+65% (Kites, manjha threads)" }, stocking_window: "Start stocking winter sesame and new harvest jaggery in late December.", working_capital_advice: "Low capital requirement with quick 7-day inventory turnaround.", urgency: "low" },
+    { id: "holi_festive", festival: "Holi Festival of Colors (होली उत्सव)", period: "March", days_remaining: 180, multiplier: 1.55, demand_surge: "+55% Spring Peak", sector_impact: { grocery: "+70% (Maida, Suji, Khoya, Oil for Gujiya)", general_retail: "+110% (Pichkari, Gulal, Kurtas)" }, stocking_window: "Book gulal and flour stock 3 weeks prior.", working_capital_advice: "Short 10-day intense sales spike.", urgency: "low" }
+  ];
+
+  let currentMandi = 'varanasi';
+  let currentMarketCategory = 'all';
+  let currentMarketSearch = '';
+  let activeCalcCommodity = null;
+  let activeProcurementPlan = null;
+  let activeCommoditiesList = COMMODITIES_OFFLINE_DATA;
+
+  function initMarketTracker() {
+    renderCommodities();
+    renderSurgeTimeline();
+
+    // Attempt live fetch from FastAPI backend
+    try {
+      fetch('http://localhost:5000/api/market/commodities')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data && data.commodities && data.commodities.length > 0) {
+            activeCommoditiesList = data.commodities;
+            renderCommodities();
+            const badge = document.getElementById('market-sync-status');
+            if (badge) badge.textContent = 'Live APMC Feed Synced';
+          }
+        }).catch(() => {});
+
+      fetch('http://localhost:5000/api/market/surges')
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (data && data.surges) {
+            renderSurgeTimeline(data.surges);
+          }
+        }).catch(() => {});
+    } catch(e) {}
+  }
+
+  function refreshMarketData() {
+    const badge = document.getElementById('market-sync-status');
+    if (badge) badge.textContent = 'Refreshing...';
+    setTimeout(() => {
+      initMarketTracker();
+      if (badge) badge.textContent = 'Live APMC Feed Active';
+    }, 400);
+  }
+
+  function switchMandi(mandiId) {
+    currentMandi = mandiId;
+    const mandiNames = {
+      varanasi: "Varanasi APMC Main Mandi",
+      kanpur: "Kanpur APMC Mandi",
+      indore: "Indore Choithram APMC Mandi",
+      patna: "Patna Bazar Samiti Mandi",
+      jaipur: "Jaipur Muhana APMC Mandi",
+      delhi_azadpur: "Delhi Azadpur APMC Mandi"
+    };
+    const pMandi = document.getElementById('print-mandi-name');
+    if (pMandi) pMandi.textContent = mandiNames[mandiId] || mandiId;
+    renderCommodities();
+  }
+
+  function filterMarketCategory(cat) {
+    currentMarketCategory = cat;
+    document.querySelectorAll('.market-pill').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.getElementById(`mpill-${cat}`);
+    if (activeBtn) activeBtn.classList.add('active');
+    renderCommodities();
+  }
+
+  function handleMarketSearch(query) {
+    currentMarketSearch = (query || '').toLowerCase().trim();
+    renderCommodities();
+  }
+
+  function renderCommodities() {
+    const grid = document.getElementById('market-commodities-grid');
+    if (!grid) return;
+
+    let list = activeCommoditiesList || COMMODITIES_OFFLINE_DATA;
+
+    if (currentMarketCategory && currentMarketCategory !== 'all') {
+      list = list.filter(c => c.category === currentMarketCategory);
+    }
+
+    if (currentMarketSearch) {
+      list = list.filter(c => c.name.toLowerCase().includes(currentMarketSearch) || c.id.toLowerCase().includes(currentMarketSearch));
+    }
+
+    if (list.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px 20px;background:var(--paper-card);border:2px dashed var(--ink);border-radius:var(--radius-sm);font-weight:700;color:var(--ink-soft);">
+        🔍 No wholesale commodities found matching "${currentMarketSearch}". Try searching for Wheat, Mustard Oil, Chana, or सूत.
+      </div>`;
+      return;
+    }
+
+    let html = '';
+    list.forEach(c => {
+      const conv = c.conversion_factor || 100;
+      const retailUnitCost = (c.modal_price / conv).toFixed(2);
+      const trendClass = c.trend === 'bullish' ? 'bullish' : c.trend === 'bearish' ? 'bearish' : 'stable';
+      const trendIcon = c.trend === 'bullish' ? '▲' : c.trend === 'bearish' ? '▼' : '●';
+      const trendSign = c.trend_pct > 0 ? '+' : '';
+
+      html += `
+        <div class="commodity-card">
+          <div>
+            <div class="comm-head">
+              <div class="comm-name">${c.name}</div>
+              <span class="comm-cat-tag">${c.category}</span>
+            </div>
+
+            <div class="comm-prices">
+              <div class="comm-modal-row">
+                <span class="comm-modal-label">Wholesale Modal Rate:</span>
+                <span class="comm-modal-val">₹${Number(c.modal_price).toLocaleString('en-IN')} <span style="font-size:0.75rem;font-weight:700;color:var(--ink-soft);">/ ${c.unit}</span></span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-size:0.78rem;font-weight:700;color:var(--ink-soft);">Unit Landed Base:</span>
+                <span class="comm-retail-val">₹${retailUnitCost} / ${c.unit_retail}</span>
+              </div>
+              <div class="comm-range">
+                <span>Range: ₹${Number(c.min_price).toLocaleString('en-IN')} – ₹${Number(c.max_price).toLocaleString('en-IN')}</span>
+                <span class="trend-badge ${trendClass}">${trendIcon} ${trendSign}${c.trend_pct}%</span>
+              </div>
+            </div>
+
+            ${c.arbitrage ? `
+              <div class="arbitrage-tag">
+                💡 <strong>Arbitrage:</strong> ${c.arbitrage.tip} (Save ₹${c.arbitrage.savings_per_qtl}/Qtl via ${c.arbitrage.cheapest_mandi})
+              </div>
+            ` : ''}
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid var(--ink-faint);padding-top:10px;">
+            <div style="font-size:0.76rem;color:var(--ink-soft);font-weight:700;">
+              Rec. MRP: <strong style="color:var(--ink);">₹${c.retail_benchmark_mrp} / ${c.unit_retail}</strong>
+            </div>
+            <button type="button" class="btn sm" onclick="openMarginCalculator('${c.id}')" style="background:#047857;color:#fff;font-size:0.78rem;padding:6px 10px;">
+              <span>🧮 Profit Margin</span>
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    grid.innerHTML = html;
+  }
+
+  function renderSurgeTimeline(surgesList) {
+    const container = document.getElementById('surge-cards-container');
+    if (!container) return;
+
+    const list = surgesList || SEASONAL_SURGES_OFFLINE_DATA;
+    let html = '';
+
+    list.forEach(s => {
+      const urgencyClass = s.urgency || 'medium';
+      html += `
+        <div class="surge-card">
+          <div class="surge-badge-row">
+            <span style="font-size:0.75rem;font-weight:800;color:var(--indigo-deep);">${s.period}</span>
+            <span class="surge-urgency ${urgencyClass}">⏳ In ${s.days_remaining} Days</span>
+          </div>
+          <h4 style="margin:0 0 6px;font-size:1.02rem;color:var(--ink);">${s.festival}</h4>
+          <div style="background:#fef3c7;border:1px solid #f59e0b;padding:4px 8px;border-radius:4px;font-size:0.8rem;font-weight:800;color:#92400e;margin-bottom:8px;">
+            📈 Surge Potential: ${s.demand_surge}
+          </div>
+          <div style="font-size:0.78rem;color:var(--ink);line-height:1.4;margin-bottom:8px;">
+            <strong>Optimal Stocking:</strong> ${s.stocking_window}
+          </div>
+          <div style="font-size:0.74rem;color:var(--indigo-deep);font-weight:700;border-top:1px dashed var(--ink-faint);padding-top:6px;">
+            💼 <strong>Credit Tip:</strong> ${s.working_capital_advice}
+          </div>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  function openMarginCalculator(commodityId) {
+    const list = activeCommoditiesList || COMMODITIES_OFFLINE_DATA;
+    activeCalcCommodity = list.find(c => c.id === commodityId) || list[0];
+
+    const commName = document.getElementById('calc-comm-name');
+    const modalRate = document.getElementById('calc-modal-rate');
+    const unitLabel = document.getElementById('calc-unit-label');
+    const trendBadge = document.getElementById('calc-trend-badge');
+    const arbBox = document.getElementById('calc-arbitrage-box');
+
+    if (commName) commName.textContent = activeCalcCommodity.name;
+    if (modalRate) modalRate.textContent = `₹${Number(activeCalcCommodity.modal_price).toLocaleString('en-IN')} / ${activeCalcCommodity.unit}`;
+    if (unitLabel) unitLabel.textContent = activeCalcCommodity.unit;
+
+    if (trendBadge) {
+      trendBadge.className = `trend-badge ${activeCalcCommodity.trend}`;
+      trendBadge.textContent = `${activeCalcCommodity.trend === 'bullish' ? '▲' : activeCalcCommodity.trend === 'bearish' ? '▼' : '●'} ${activeCalcCommodity.trend_pct > 0 ? '+' : ''}${activeCalcCommodity.trend_pct}%`;
+    }
+
+    if (arbBox) {
+      if (activeCalcCommodity.arbitrage) {
+        arbBox.style.display = 'block';
+        arbBox.innerHTML = `💡 <strong>Wholesale Arbitrage:</strong> ${activeCalcCommodity.arbitrage.tip} (Saves ₹${activeCalcCommodity.arbitrage.savings_per_qtl}/${activeCalcCommodity.unit} via ${activeCalcCommodity.arbitrage.cheapest_mandi}).`;
+      } else {
+        arbBox.style.display = 'none';
+      }
+    }
+
+    const slider = document.getElementById('calc-markup-slider');
+    if (slider) slider.value = activeCalcCommodity.standard_markup_pct || 22;
+
+    calculateMarginLive();
+
+    const modal = document.getElementById('modal-margin-calc');
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeMarginCalculator(event) {
+    if (event && event.target && event.target !== event.currentTarget && !event.target.classList.contains('modal-close-btn')) {
+      return;
+    }
+    const modal = document.getElementById('modal-margin-calc');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.display = 'none';
+    }
+  }
+
+  function calculateMarginLive() {
+    if (!activeCalcCommodity) return;
+
+    const qtyInput = document.getElementById('calc-qty');
+    const freightInput = document.getElementById('calc-freight');
+    const markupSlider = document.getElementById('calc-markup-slider');
+    const markupDisplay = document.getElementById('calc-markup-display');
+
+    const qty = parseFloat(qtyInput ? qtyInput.value : 2) || 1;
+    const freight = parseFloat(freightInput ? freightInput.value : 150) || 0;
+    const markup = parseFloat(markupSlider ? markupSlider.value : 22) || 20;
+
+    if (markupDisplay) markupDisplay.textContent = `${markup}% Markup`;
+
+    const wholesaleRate = activeCalcCommodity.modal_price;
+    const conv = activeCalcCommodity.conversion_factor || 100;
+    const wholesaleOutlay = wholesaleRate * qty;
+    const totalLandedCost = wholesaleOutlay + freight;
+
+    const totalRetailUnits = qty * conv;
+    const costPerRetailUnit = totalRetailUnits > 0 ? (totalLandedCost / totalRetailUnits) : 0;
+    const recommendedRetailPrice = costPerRetailUnit * (1 + (markup / 100));
+
+    const projectedRevenue = recommendedRetailPrice * totalRetailUnits;
+    const projectedGrossProfit = projectedRevenue - totalLandedCost;
+    const actualMarginPct = projectedRevenue > 0 ? Math.round((projectedGrossProfit / projectedRevenue) * 100) : markup;
+
+    activeProcurementPlan = {
+      commodity: activeCalcCommodity,
+      purchased_quantity: qty,
+      freight_cost: freight,
+      total_landed_cost: Math.round(totalLandedCost),
+      cost_per_retail_unit: costPerRetailUnit.toFixed(2),
+      recommended_retail_price: recommendedRetailPrice.toFixed(2),
+      projected_gross_profit: Math.round(projectedGrossProfit),
+      actual_margin_pct: actualMarginPct
+    };
+
+    const resLanded = document.getElementById('res-landed-cost');
+    const resUnitCost = document.getElementById('res-cost-per-unit');
+    const resRetailMrp = document.getElementById('res-retail-mrp');
+    const resBenchmarkMrp = document.getElementById('res-benchmark-mrp');
+    const resGrossProfit = document.getElementById('res-gross-profit');
+    const resMarginPill = document.getElementById('res-margin-pill');
+
+    if (resLanded) resLanded.textContent = `₹${Math.round(totalLandedCost).toLocaleString('en-IN')}`;
+    if (resUnitCost) resUnitCost.textContent = `₹${costPerRetailUnit.toFixed(2)} / ${activeCalcCommodity.unit_retail} landed`;
+    if (resRetailMrp) resRetailMrp.textContent = `₹${recommendedRetailPrice.toFixed(2)} / ${activeCalcCommodity.unit_retail}`;
+    if (resBenchmarkMrp) resBenchmarkMrp.textContent = `Market MRP: ₹${activeCalcCommodity.retail_benchmark_mrp} / ${activeCalcCommodity.unit_retail}`;
+    if (resGrossProfit) resGrossProfit.textContent = `₹${Math.round(projectedGrossProfit).toLocaleString('en-IN')}`;
+    if (resMarginPill) resMarginPill.textContent = `${actualMarginPct}% Net Margin`;
+  }
+
+  function transferProcurementToLedger() {
+    if (!activeProcurementPlan || !activeCalcCommodity) return;
+
+    closeMarginCalculator();
+
+    // Switch to Smart Ledger screen
+    showScreen('screen-ledger');
+
+    // Open ledger modal in expense mode pre-filled
+    openLedgerModal('expense');
+
+    setTimeout(() => {
+      const elAmt = document.getElementById('modal-tx-amount');
+      const elCat = document.getElementById('modal-tx-category');
+      const elDesc = document.getElementById('modal-tx-desc');
+
+      if (elAmt) elAmt.value = activeProcurementPlan.total_landed_cost;
+      if (elCat) elCat.value = 'Raw Materials / Stock';
+      if (elDesc) elDesc.value = `Wholesale APMC Sourcing: ${activeCalcCommodity.name} (${activeProcurementPlan.purchased_quantity} ${activeCalcCommodity.unit}) landed cost`;
+    }, 150);
+  }
+
+  function printMandiRateSheet() {
+    const list = activeCommoditiesList || COMMODITIES_OFFLINE_DATA;
+    const tbody = document.getElementById('print-mandi-tbody');
+    const printMandiDate = document.getElementById('print-mandi-date');
+
+    if (printMandiDate) {
+      printMandiDate.textContent = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    if (tbody) {
+      let rows = '';
+      list.forEach(c => {
+        const conv = c.conversion_factor || 100;
+        const retailCost = (c.modal_price / conv).toFixed(2);
+        rows += `
+          <tr>
+            <td><strong>${c.name}</strong></td>
+            <td>${c.category}</td>
+            <td>${c.unit}</td>
+            <td style="text-align:right;font-weight:800;color:#047857;">₹${Number(c.modal_price).toLocaleString('en-IN')}</td>
+            <td style="text-align:right;">₹${c.min_price} – ₹${c.max_price}</td>
+            <td style="text-align:right;font-weight:700;">₹${retailCost} / ${c.unit_retail}</td>
+            <td style="text-align:right;font-weight:800;">₹${c.retail_benchmark_mrp} / ${c.unit_retail}</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rows;
+    }
+
+    const printContainer = document.getElementById('printable-mandi-sheet');
+    if (printContainer) printContainer.style.display = 'block';
+
+    window.print();
+
+    setTimeout(() => {
+      if (printContainer) printContainer.style.display = 'none';
+    }, 1000);
+  }
+
   // MULTILINGUAL AI ADVISOR ENGINE (Requirement 2)
   const MULTILINGUAL_CHAT_DATA = {
     hi: {
@@ -7894,6 +8585,13 @@ CRITICAL MANDATORY INSTRUCTIONS:
     initLedger();
   } catch(e) {
     console.warn('[LEDGER INIT ERROR]', e);
+  }
+
+  // Initialize Mandi Market Tracker on load
+  try {
+    initMarketTracker();
+  } catch(e) {
+    console.warn('[MARKET TRACKER INIT ERROR]', e);
   }
 
   // Initialize carousel on load
