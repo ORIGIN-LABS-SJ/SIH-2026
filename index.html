@@ -7276,7 +7276,7 @@ try {
     if(!text) return fallbackLang || 'hi';
     const tLower = text.toLowerCase();
     const mwrDev = ["म्हारी", "म्हारो", "म्हाने", "थारी", "थारो", "थाने", "घणी", "खम्मा", "लेणी", "लेणो", "लेवणी", "कमाऊ", "कमाऊं", "कोनी", "पड़सी", "आवसी", "साहब", "ब्याव", "दुकान री", "महीना रो"];
-    const mwrRom = ["mhari", "mharo", "mhare", "thari", "tharo", "thare", "ri dukan", "ro kaam", "mahina ro", "mahina ri", "kamau", "kamai", "leno hai", "levani", "ghani khamma", "koni", "hove", "hukum", "suno sa", "bhai sa", "padsi", "aavasi"];
+    const mwrRom = ["mhari", "maari", "mari", "mharo", "mhare", "thari", "tharo", "thare", "ri dukan", "ro kaam", "mahina ro", "mahina ri", "kamau", "kamai", "leno hai", "levani", "ghani khamma", "koni", "hove", "hukum", "suno sa", "bhai sa", "padsi", "aavasi", "dukaan ro", "maari darji", "mhari darji"];
     if(mwrDev.some(w => text.includes(w)) || mwrRom.some(w => new RegExp('\\b' + w + '\\b', 'i').test(tLower))){
       return 'mwr';
     }
@@ -7301,7 +7301,7 @@ try {
     if(/[\u0C80-\u0CFF]/.test(text)){
       return 'kn';
     }
-    if(/[\u0900-\u097F]/.test(text) || /\b(meri dukan|kamata hu|kamati hu|nayi machine|chahiye|kholna)\b/i.test(tLower)){
+    if(/[\u0900-\u097F]/.test(text) || /\b(meri dukan|darji|darzi|silai|silayi|dukaan|dukan|kamata hu|kamati hu|nayi machine|chahiye|kholna|yojana|yojna|banao|mujhe|leni|lenny|kaise|kharidna)\b/i.test(tLower)){
       return 'hi';
     }
     return fallbackLang || 'hi';
@@ -7312,10 +7312,11 @@ try {
     const incMatch = qLower.match(/(?:₹|rs\.?|inr)?\s*(\d{1,2}[,\.]\d{3}|\d{4,6})\s*(?:k|hazar|thousand)?/);
     const incVal = incMatch ? parseInt(incMatch[1].replace(/[,.]/g, '')) : 25000;
     const incStr = '₹' + incVal.toLocaleString('en-IN');
-    const isTailor = /tailor|सिलाई|टेलर|दर्जी|कपड़ा|garment|boutique/i.test(qLower);
-    const isMachine = /machine|मशीन|टूल|उपकरण|औजार|tools|equipment|नयी|नवी|नई|खरीद|leni|leno|kharid/i.test(qLower);
+    const isTailor = /tailor|tailoring|darji|darzi|silai|silayi|sewing|stitching|सिलाई|टेलर|दर्जी|कपड़ा|garment|boutique/i.test(qLower);
+    const isMachine = /machine|मशीन|silai machine|टूल|उपकरण|औजार|tools|equipment|नयी|नवी|नई|खरीद|leni|lenny|lena|leno|kharid/i.test(qLower);
+    const isYojana = /yojana|yojna|योजना|योजनाएं|scheme|subsidy|सब्सिडी|अनुदान|grant|vishwakarma|विश्वकर्मा/i.test(qLower);
 
-    if(isTailor && isMachine){
+    if(isTailor && (isMachine || isYojana || qLower.includes('machine') || qLower.includes('silai') || qLower.includes('yojana'))){
       if(dialect === 'mwr'){
         return `घणी खम्मा सा! थारी सिलाई (टेलर) री दुकान वास्ते ${incStr} महीना री कमाई माथै नवी मशीन लेवण सारू भारत सरकार री सबसूं चोखी योजनावां अर पक्को हिसाब अठीनै है:
 

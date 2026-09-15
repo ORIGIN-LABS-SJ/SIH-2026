@@ -1,6 +1,6 @@
 """
-MicroNiti Backend - Dynamic Multilingual AI Advisor Engine (SIH26091)
-Official AI service for MicroNiti under the Ministry of Social Justice and Empowerment.
+Sahayak Backend - Dynamic Multilingual AI Advisor Engine (SIH26091)
+Official AI service for Sahayak under the Ministry of Social Justice and Empowerment.
 Integrates Google Gemini 2.0/1.5 Flash REST API with dynamic contextual NLP synthesis
 supporting authentic Indian regional languages & dialects (Marwari, Hindi, Gujarati,
 Marathi, Bengali, Punjabi, Tamil, Telugu, Kannada, English) with real government
@@ -48,9 +48,9 @@ def detect_dialect_and_language(text: str, fallback_lang: str = "hi") -> tuple[s
     # 2. Marwari / Rajasthani detection (Devanagari or distinctive Romanized phrases)
     marwari_devanagari = ["म्हारी", "म्हारो", "म्हाने", "थारी", "थारो", "थाने", "घणी", "खम्मा", "लेणी", "लेणो", "लेवणी", "कोनी", "पड़सी", "आवसी", "साहब", "ब्याव", "दुकान री", "महीना रो"]
     marwari_roman = [
-        "mhari", "mharo", "mhare", "thari", "tharo", "thare", "ri dukan", "ro kaam", "mahina ro",
+        "mhari", "maari", "mari", "mharo", "mhare", "thari", "tharo", "thare", "ri dukan", "ro kaam", "mahina ro",
         "mahina ri", "leno hai", "levani", "ghani khamma", "koni",
-        "hove", "hukum", "suno sa", "bhai sa", "padsi", "aavasi", "dukaan ro"
+        "hove", "hukum", "suno sa", "bhai sa", "padsi", "aavasi", "dukaan ro", "maari darji", "mhari darji"
     ]
     if any(w in text for w in marwari_devanagari) or any(re.search(rf"\b{re.escape(w)}\b", t_lower) for w in marwari_roman):
         return ("mwr", "Marwari (राजस्थानी)")
@@ -86,7 +86,11 @@ def detect_dialect_and_language(text: str, fallback_lang: str = "hi") -> tuple[s
     # 7. Hindi (Devanagari script or Romanized Hinglish)
     if re.search(r'[\u0900-\u097F]', text):
         return ("hi", "Hindi")
-    hindi_roman = ["meri dukan", "kamata hu", "kamati hu", "nayi machine", "chahiye", "kholna hai", "kitna loan", "kaise milega"]
+    hindi_roman = [
+        "meri dukan", "kamata hu", "kamati hu", "nayi machine", "chahiye", "kholna hai", "kitna loan", "kaise milega",
+        "darji", "darzi", "silai", "silayi", "dukaan", "dukan", "mujhe", "leni", "lenny", "yojana", "yojna",
+        "banao", "kaise", "batao", "karna", "kharidna", "kirana", "kapda", "silai machine"
+    ]
     if any(re.search(rf"\b{re.escape(w)}\b", t_lower) for w in hindi_roman):
         return ("hi", "Hindi")
 
@@ -120,7 +124,7 @@ def extract_entities_and_numbers(query: str, profile: dict) -> dict:
     trade_name_hi = "सूक्ष्म उद्यम"
     trade_name_mwr = "उद्यम"
 
-    if any(w in q_clean for w in ["tailor", "टेलर", "सिलाई", "दर्जी", "कपड़ा", "garment", "suit", "बुटीक", "boutique"]):
+    if any(w in q_clean for w in ["tailor", "tailoring", "darji", "darzi", "silai", "silayi", "sewing", "stitching", "टेलर", "सिलाई", "दर्जी", "कपड़ा", "garment", "suit", "बुटीक", "boutique"]):
         trade = "tailor"
         trade_name_hi = "सिलाई व दर्जी उद्यम"
         trade_name_mwr = "सिलाई (टेलर) री दुकान"
@@ -142,8 +146,8 @@ def extract_entities_and_numbers(query: str, profile: dict) -> dict:
         trade_name_mwr = "खाण-पीण रो ठेला या स्टॉल"
 
     # Extract goal / intent
-    is_machine = any(w in q_clean for w in ["machine", "मशीन", "टूलकिट", "उपकरण", "औजार", "tools", "equipment", "नयी", "नवी", "नई", "खरीद", "leni", "leno", "kharidna", "ghyaychi", "kinte", "laini"])
-    is_subsidy = any(w in q_clean for w in ["subsidy", "सब्सिडी", "अनुदान", "छूट", "grant", "सबल", "सहा"])
+    is_machine = any(w in q_clean for w in ["machine", "मशीन", "silai machine", "टूलकिट", "उपकरण", "औजार", "tools", "equipment", "नयी", "नवी", "नई", "खरीद", "leni", "lenny", "leno", "lena", "kharidna", "kharidni", "ghyaychi", "kinte", "laini"])
+    is_subsidy = any(w in q_clean for w in ["subsidy", "सब्सिडी", "अनुदान", "छूट", "grant", "sarkari", "yojana", "योजना", "scheme", "vishwakarma", "विश्वकर्मा", "सबल", "सहा"])
     is_loan = any(w in q_clean for w in ["loan", "लोन", "कर्ज", "ऋण", "ब्याज", "interest", "emi", "किस्त", "किश्त"])
     is_docs = any(w in q_clean for w in ["doc", "दस्तावेज", "कागजात", "papers", "दस्तावेज़", "proof", "aadhar", "pan"])
 
@@ -282,7 +286,7 @@ def synthesize_dynamic_response(query: str, lang: str, profile: dict) -> str:
     # SPECIFIC CASE 1: TAILORING + NEW MACHINE / EQUIPMENT (e.g. User query)
     # Real data: PM Vishwakarma दर्जी trade, ₹15,000 toolkit e-voucher, 5% interest loan
     # =========================================================================
-    if trade == "tailor" and is_machine:
+    if trade == "tailor" and (is_machine or is_subsidy or "machine" in query.lower() or "silai" in query.lower() or "yojana" in query.lower() or "योजना" in query.lower()):
         # Machine cost: ₹26,000. Toolkit grant: ₹15,000. Net loan needed: ₹11,000 - ₹15,000.
         # Monthly EMI at 5% for 18 months on ₹15,000 loan: ~₹866/mo.
         # EMI as % of income: ~3.5% (Extremely safe).
@@ -520,7 +524,7 @@ def synthesize_dynamic_response(query: str, lang: str, profile: dict) -> str:
             )
         else:
             body = (
-                f"💡 **MicroNiti (सूक्ष्म-नीति) 40-25-10-25 अनुशंसित वित्तीय योजना:**\n\n"
+                f"💡 **Sahayak (सहायक) 40-25-10-25 अनुशंसित वित्तीय योजना:**\n\n"
                 f"1. **40% माल/इन्वेंट्री:** तेज बिकने वाले सामान व रॉ मैटेरियल में लगाएं।\n"
                 f"2. **25% दुकान सेटअप:** रैक, फिटिंग व ग्राहक काउंटर में लगाएं।\n"
                 f"3. **10% डिजिटल बोर्ड:** UPI QR कोड व डिस्प्ले बोर्ड में लगाएं।\n"
@@ -563,7 +567,7 @@ def generate_advisor_response(params: dict) -> dict:
     # 1. If Gemini API Key is present, call Google Gemini with local dialect instructions
     if api_key and len(api_key) > 10:
         try:
-            sys_prompt = f"""You are MicroNiti AI (सूक्ष्म-नीति साथी), the official conversational AI Business & Financial Structuring Advisor for rural Indian micro-entrepreneurs, developed for Smart India Hackathon (SIH26091) under the Ministry of Social Justice and Empowerment.
+            sys_prompt = f"""You are Sahayak AI Advisor (सहायक साथी), the official conversational AI Business & Financial Structuring Advisor for rural Indian micro-entrepreneurs, developed for Smart India Hackathon (SIH26091) under the Ministry of Social Justice and Empowerment.
 CRITICAL MANDATORY INSTRUCTIONS:
 1. DIALECT & LOCAL LANGUAGE MATCHING:
    - Detect the user's input language and dialect (e.g., Marwari/Rajasthani, Hindi, Hinglish, Gujarati, Bengali, Marathi, Tamil, Telugu, Punjabi, Kannada).
@@ -604,7 +608,7 @@ CRITICAL MANDATORY INSTRUCTIONS:
 
     return {
         "success": True,
-        "source": f"microniti-intelligence ({dialect_name})",
+        "source": f"Sahayak AI Advisor ({dialect_name})",
         "language": active_lang,
         "dialect": dialect_name,
         "reply": dynamic_reply,

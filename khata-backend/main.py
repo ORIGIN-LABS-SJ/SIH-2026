@@ -1,6 +1,6 @@
 """
-MicroNiti Enterprise Advisory API - FastAPI Production Service (SIH26091)
-Official backend for MicroNiti: AI-Driven Hyper-Local Advisory & Financial Structuring
+Sahayak Enterprise Advisory API - FastAPI Production Service (SIH26091)
+Official backend for Sahayak: AI-Driven Hyper-Local Advisory & Financial Structuring
 Platform for Rural Micro-Entrepreneurs under the Ministry of Social Justice and Empowerment.
 High-performance asynchronous backend with SQLite persistence, Google OAuth,
 real-time Gemini AI integration, and Consumer Favorability scheme ranking.
@@ -28,7 +28,7 @@ from kyc_engine import (
 )
 
 app = FastAPI(
-    title="MicroNiti — AI-Driven Hyper-Local Advisory & Financial Structuring Platform",
+    title="Sahayak — AI-Driven Hyper-Local Advisory & Financial Structuring Platform",
     description="Official SIH26091 (Ministry of Social Justice and Empowerment) FastAPI service for "
                 "hyper-local business advisory, rural financial structuring, dynamic Gemini AI guidance, "
                 "and authentic Indian credit scheme matching.",
@@ -222,8 +222,8 @@ def health_check():
     gemini_key = os.getenv("GEMINI_API_KEY", "")
     return {
         "status": "online",
-        "service": "MicroNiti Rural Advisory & Financial Structuring Platform",
-        "project": "MicroNiti",
+        "service": "Sahayak Rural Advisory & Financial Structuring Platform",
+        "project": "Sahayak",
         "sih_code": "SIH26091",
         "ministry": "Ministry of Social Justice and Empowerment",
         "version": "3.1.0",
