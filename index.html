@@ -10,6 +10,8 @@ const IS_LOCAL = Boolean(
   window.location.hostname === '[::1]'
 );
 const API_BASE_URL = IS_LOCAL ? 'http://localhost:5000' : '';
+const DEFAULT_GEMINI_API_KEY = 'AQ.Ab8RN6LwQQew8RNo08aYnUMxVIOBLUEAJl4gIhINCRFTQ-KRlw';
+try { if (!localStorage.getItem('khata_gemini_key')) { localStorage.setItem('khata_gemini_key', DEFAULT_GEMINI_API_KEY); } } catch(e){};
 
 // Top-priority error reporter
 window.onerror = function(msg, url, line, col, error) {
@@ -5333,13 +5335,13 @@ try {
     const modal = document.getElementById('modal-ai-key');
     const input = document.getElementById('input-gemini-key');
     const status = document.getElementById('gemini-key-status');
-    const saved = localStorage.getItem('khata_gemini_key') || '';
+    const saved = (localStorage.getItem('khata_gemini_key') || DEFAULT_GEMINI_API_KEY).trim();
     if (input) input.value = saved;
     if (status) {
       if (saved) {
         status.style.display = 'block';
         status.style.color = '#059669';
-        status.textContent = '🟢 Google Gemini API Key configured in your browser.';
+        status.textContent = '🟢 Google Gemini Flash active (Pre-configured cloud key).';
       } else {
         status.style.display = 'none';
       }
@@ -7664,7 +7666,7 @@ try {
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    const savedKey = localStorage.getItem('khata_gemini_key') || '';
+    const savedKey = (localStorage.getItem('khata_gemini_key') || DEFAULT_GEMINI_API_KEY).trim();
     const payload = {
       message: msg,
       lang: detectedDialect,
@@ -7698,7 +7700,7 @@ try {
       };
       const targetLangName = langNames[detectedDialect] || "Standard Hindi (हिन्दी)";
 
-      const candidateModels = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-2.0-flash-exp'];
+      const candidateModels = ['gemini-flash-lite-latest', 'gemini-flash-latest', 'gemini-3.7-flash', 'gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro-latest'];
       for(const mName of candidateModels){
         try {
           const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${mName}:generateContent?key=${savedKey.trim()}`;

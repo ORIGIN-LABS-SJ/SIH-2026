@@ -1,3 +1,4 @@
+DEFAULT_GEMINI_KEY = "AQ.Ab8RN6LwQQew8RNo08aYnUMxVIOBLUEAJl4gIhINCRFTQ-KRlw"
 """
 Sahayak Backend - Dynamic Multilingual AI Advisor Engine (SIH26091)
 Official AI service for Sahayak under the Ministry of Social Justice and Empowerment.
@@ -187,21 +188,28 @@ def call_gemini_api(api_key: str, prompt: str, system_instruction: str) -> tuple
     except Exception as e:
         print(f"[GEMINI MODEL DISCOVERY]: {e}")
 
-    # Prioritize 2.0-flash, 2.5-flash, flash models
-    candidate_models = []
+    # Prioritize fastest stable models: flash-lite, 2.0-flash
+    candidate_models = ["gemini-flash-lite-latest"]
     for m in discovered_models:
-        if "2.0-flash" in m or "2.5-flash" in m:
+        if "flash-lite" in m and m not in candidate_models:
+            candidate_models.append(m)
+    for m in discovered_models:
+        if "2.0-flash" in m and m not in candidate_models:
             candidate_models.append(m)
     for m in discovered_models:
         if "flash" in m and m not in candidate_models:
             candidate_models.append(m)
-    candidate_models += discovered_models
+    for m in discovered_models:
+        if m not in candidate_models:
+            candidate_models.append(m)
 
     # Fallback standard candidate models if discovery was empty
     default_candidates = [
+        "gemini-flash-lite-latest",
+        "gemini-flash-latest",
+        "gemini-3.7-flash",
         "gemini-2.0-flash",
         "gemini-2.5-flash",
-        "gemini-1.5-flash-latest",
         "gemini-2.0-flash-exp",
         "gemini-1.5-pro",
         "gemini-1.5-flash"
@@ -700,7 +708,7 @@ def generate_advisor_response(params: dict) -> dict:
         capital_str = str(capital_val)
 
     # API key check
-    api_key = (params.get("geminiApiKey") or params.get("apiKey") or os.getenv("GEMINI_API_KEY", "")).strip()
+    api_key = (params.get("geminiApiKey") or params.get("apiKey") or os.getenv("GEMINI_API_KEY", "") or DEFAULT_GEMINI_KEY).strip()
 
     # 1. If Gemini API Key is present, call Google Gemini with local dialect instructions
     if api_key and len(api_key) > 10:
