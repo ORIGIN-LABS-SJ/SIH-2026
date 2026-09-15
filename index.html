@@ -7274,36 +7274,52 @@ try {
 
   function detectClientDialect(text, fallbackLang){
     if(!text) return fallbackLang || 'hi';
-    const tLower = text.toLowerCase();
-    const mwrDev = ["म्हारी", "म्हारो", "म्हाने", "थारी", "थारो", "थाने", "घणी", "खम्मा", "लेणी", "लेणो", "लेवणी", "कमाऊ", "कमाऊं", "कोनी", "पड़सी", "आवसी", "साहब", "ब्याव", "दुकान री", "महीना रो"];
-    const mwrRom = ["mhari", "maari", "mari", "mharo", "mhare", "thari", "tharo", "thare", "ri dukan", "ro kaam", "mahina ro", "mahina ri", "kamau", "kamai", "leno hai", "levani", "ghani khamma", "koni", "hove", "hukum", "suno sa", "bhai sa", "padsi", "aavasi", "dukaan ro", "maari darji", "mhari darji"];
+    const tLower = text.toLowerCase().trim();
+
+    // 1. English detection: purely English queries
+    const engWords = /\b(i have|my shop|i earn|want to buy|how to get|loan scheme|subsidy|business|capital|bank|interest|which scheme|cibil score|need loan|can i get|what is the)\b/i;
+    if(engWords.test(tLower) && !/\b(dukan|silai|yojana|yojna|karo|batao|chahiye|hai|kitti|kiti|meri|mhari)\b/i.test(tLower)){
+      return 'en';
+    }
+
+    // 2. Strict Marwari / Rajasthani markers (Devanagari & authentic Romanized)
+    // NOTE: Common Hindi words like 'mari', 'meri', 'kamai', 'kamau', 'saahab' are excluded!
+    const mwrDev = ["म्हारी", "म्हारो", "म्हाने", "थारी", "थारो", "थाने", "घणी खम्मा", "खम्मा घणी", "लेणी", "लेणो", "लेवणी", "कोनी", "पड़सी", "आवसी", "दुकान री", "महीना रो", "दुकान रो", "काईं"];
+    const mwrRom = ["mhari", "mharo", "mhare", "thari", "tharo", "thare", "ghani khamma", "khamma ghani", "koni", "hukum", "padsi", "aavasi", "ri dukan", "ro kaam", "mahina ro", "mahina ri", "leno hai", "levani", "mhari dukan", "thari dukan"];
     if(mwrDev.some(w => text.includes(w)) || mwrRom.some(w => new RegExp('\\b' + w + '\\b', 'i').test(tLower))){
       return 'mwr';
     }
-    if(/[\u0A80-\u0AFF]/.test(text) || /\b(mari dukan|tamari|kamau chhu|levi chhe|karvu chhe|chhe|nathi|ketla)\b/i.test(tLower)){
+
+    // 3. Gujarati (Unicode or distinctive Gujarati words)
+    if(/[\u0A80-\u0AFF]/.test(text) || /\b(mari dukan chhe|tamari dukan|kamau chhu|levi chhe|karvu chhe|chhe|nathi|ketla rupiya)\b/i.test(tLower)){
       return 'gu';
     }
-    if(/[\u0980-\u09FF]/.test(text) || /\b(amar dokan|notun machine|kinte chai|taka|korte chai)\b/i.test(tLower)){
-      return 'bn';
-    }
-    if(/[\u0A00-\u0A7F]/.test(text) || /\b(meri dukan|kamanda haan|laini hai|navi machine)\b/i.test(tLower)){
+
+    // 4. Punjabi (Gurmukhi or distinctive phrases)
+    if(/[\u0A00-\u0A7F]/.test(text) || /\b(kamanda haan|laini hai|karni hai|navi machine|chahida hai|veera)\b/i.test(tLower)){
       return 'pa';
     }
-    if(/\b(माझी|माझ्या|घ्यायची|करायचे|आहे|नाही|majhi dukan|kamavto|ghyaychi ahe)\b/i.test(tLower)){
+
+    // 5. Bengali
+    if(/[\u0980-\u09FF]/.test(text) || /\b(amar dokan|notun machine|kinte chai|korte chai|taka kamai)\b/i.test(tLower)){
+      return 'bn';
+    }
+
+    // 6. Marathi
+    if(/\b(माझी दुकान|माझ्या दुकाना|घ्यायची|करायचे|दुकान आहे|नाही|majhi dukan|kamavto|ghyaychi ahe)\b/i.test(tLower)){
       return 'mr';
     }
-    if(/[\u0B80-\u0BFF]/.test(text) || /\b(ennoda kadai|venum|panradhu)\b/i.test(tLower)){
-      return 'ta';
-    }
-    if(/[\u0C00-\u0C7F]/.test(text) || /\b(naa shop|kaavali|cheyali)\b/i.test(tLower)){
-      return 'te';
-    }
-    if(/[\u0C80-\u0CFF]/.test(text)){
-      return 'kn';
-    }
-    if(/[\u0900-\u097F]/.test(text) || /\b(meri dukan|darji|darzi|silai|silayi|dukaan|dukan|kamata hu|kamati hu|nayi machine|chahiye|kholna|yojana|yojna|banao|mujhe|leni|lenny|kaise|kharidna)\b/i.test(tLower)){
+
+    // 7. South Indian (Tamil, Telugu, Kannada)
+    if(/[\u0B80-\u0BFF]/.test(text) || /\b(ennoda kadai|venum)\b/i.test(tLower)) return 'ta';
+    if(/[\u0C00-\u0C7F]/.test(text) || /\b(naa shop|kaavali)\b/i.test(tLower)) return 'te';
+    if(/[\u0C80-\u0CFF]/.test(text)) return 'kn';
+
+    // 8. Hindi / Hinglish (Devanagari script or standard Hindi words)
+    if(/[\u0900-\u097F]/.test(text) || /\b(meri|mari|dukan|dukaan|kamata|kamati|kamai|nayi|nai|machine|chahiye|kholna|yojana|yojna|banao|mujhe|leni|lena|kaise|kharidna|batao|karna|loan|subsidy|darji|silai|kirana|thela)\b/i.test(tLower)){
       return 'hi';
     }
+
     return fallbackLang || 'hi';
   }
 
@@ -7668,6 +7684,20 @@ try {
 
     // 1. If user configured Gemini API Key, query Google Gemini directly with dialect matching
     if(savedKey && savedKey.length > 10){
+      const langNames = {
+        hi: "Standard Hindi (हिन्दी)",
+        mwr: "Marwari / Rajasthani (मारवाड़ी)",
+        gu: "Gujarati (ગુજરાતી)",
+        mr: "Marathi (मराठी)",
+        bn: "Bengali (বাংলা)",
+        pa: "Punjabi (ਪੰਜਾਬੀ)",
+        ta: "Tamil (தமிழ்)",
+        te: "Telugu (తెలుగు)",
+        kn: "Kannada (ಕನ್ನಡ)",
+        en: "English"
+      };
+      const targetLangName = langNames[detectedDialect] || "Standard Hindi (हिन्दी)";
+
       const candidateModels = ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro', 'gemini-2.0-flash-exp'];
       for(const mName of candidateModels){
         try {
@@ -7676,25 +7706,37 @@ try {
             system_instruction: {
               parts: [{
                 text: `You are Sahayak AI Advisor (सहायक साथी), India's premier conversational AI Business and Financial Advisor for micro-entrepreneurs.
-CRITICAL MANDATORY INSTRUCTIONS:
-1. DIALECT & REGIONAL LANGUAGE MATCHING:
-   - Detect the user's input language and dialect (e.g. Marwari/Rajasthani, Hindi, Hinglish, Gujarati, Bengali, Marathi, Punjabi, Tamil, Telugu, Kannada).
-   - ALWAYS formulate your response in that EXACT SAME local language and dialect!
-   - If the user asks in Marwari (e.g., 'Mhari tailor ri dukan hai, mahina ro 25,000 kamau, machine nayi leni hai...'), you MUST respond in warm, respectful Marwari / Rajasthani ('घणी खम्मा सा! थारी सिलाई (टेलर) री दुकान वास्ते ₹25,000 महीना री कमाई माथै नवी मशीन लेवण सारू...').
-   - NEVER reply in English if the user communicates in an Indian language or regional dialect!
-2. REAL DATA AND ACCURATE CALCULATIONS:
-   - Extract their exact figures from the prompt (e.g. income ₹25,000/month, capital, machinery need, tailoring/artisan trade).
-   - Tailoring Trade (दर्जी): Recommend PM Vishwakarma Yojana with ₹15,000 FREE Modern Toolkit Grant (e-RUPI voucher) + 5% subsidized interest loans (Tranche 1: ₹1,00,000, Tranche 2: ₹2,00,000) + ₹500/day training stipend.
-   - Calculate affordability: A new industrial machine costs ₹25k-₹30k. After ₹15k grant, loan needed is only ₹10k-₹15k. At 5% over 18 months, EMI is only ~₹865/mo (merely 3.5% of ₹25,000 income - super safe).
-   - Detail clear registration steps: Nearest CSC / e-Mitra or pmvishwakarma.gov.in with Aadhaar, ration card, and shop photo.
-3. Structure with friendly tone, clean bullet points, and high practical utility.`
+
+STRICT LANGUAGE & DIALECT MATCHING RULES (CRITICAL):
+1. IF THE USER ASKS IN HINDI OR HINGLISH (e.g. 'मेरी दुकान है', 'लोन कैसे मिलेगा', 'meri dukan hai', 'kitna loan mil sakta hai', 'nayi machine leni hai'):
+   - You MUST respond in pure, polite, natural HINDI in Devanagari script ('नमस्ते जी! आपके व्यवसाय के लिए...').
+   - ABSOLUTE PROHIBITION: DO NOT use Marwari or Rajasthani phrases (NEVER say 'घणी खम्मा सा', 'थारी', 'म्हारी', 'कोनी', 'पड़सी') when the user asks in Hindi!
+2. IF AND ONLY IF THE USER WRITES IN AUTHENTIC MARWARI / RAJASTHANI DIALECT (e.g. 'म्हारी दुकान', 'घणी खम्मा', 'mhari dukan', 'thari', 'mahina ro'):
+   - Respond in warm, respectful Marwari ('घणी खम्मा सा! थारी दुकान वास्ते...').
+3. IF THE USER WRITES IN GUJARATI:
+   - Respond in GUJARATI ('નમસ્તે જી! તમારી દુકાન માટે...').
+4. IF THE USER WRITES IN ENGLISH:
+   - Respond in clear, professional ENGLISH ('Greetings! For your business...').
+5. FOR ANY OTHER REGIONAL LANGUAGE (Marathi, Bengali, Punjabi, Tamil, Telugu, Kannada):
+   - Respond in that respective language.
+
+DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
+- Extract user's exact trade (tailor, kirana, dairy, food cart, mobile repair, artisan, etc.), income, and capital.
+- Tailoring Trade: PM Vishwakarma Yojana (₹15,000 FREE e-RUPI toolkit voucher + 5% subsidized loan + training stipend). Calculate exact EMI.
+- Dairy & Livestock: Animal Husbandry KCC at 4% subsidized interest + NABARD/AHIDF 25%-33.3% capital subsidy.
+- Kirana & Stores: PM MUDRA Kishore (up to ₹5L collateral-free) + PMEGP 35% subsidy.
+- Street Vendors: PM SVANidhi (₹10k, ₹20k, ₹50k) + 7% interest subvention + ₹1,200/yr UPI cashback.
+- Thin-File / Low CIBIL: Explain Sahayak Alternative ML Underwriting & priority sector lending.
+- Format with clean bullet points, polite tone, and actionable steps (CSC / Jan Seva Kendra / Bank).`
               }]
             },
             contents: [{
-              parts: [{ text: msg }]
+              parts: [{
+                text: `[Target Response Language: ${targetLangName}]\n[User Selected Interface Language: ${currentLang}]\nUser Question: ${msg}\n\nStrict Rule: Answer in ${targetLangName}. If the question is in Hindi or Hinglish, reply ONLY in Hindi (Devanagari script), DO NOT use Marwari or 'घणी खम्मा सा'.`
+              }]
             }],
             generationConfig: {
-              temperature: 0.5,
+              temperature: 0.35,
               maxOutputTokens: 1000
             }
           };
