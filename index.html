@@ -1205,52 +1205,7 @@ try {
     border:1.5px solid var(--ink);padding:8px 10px;font-weight:600;
   }
 
-  /* ==================== UIDAI AADHAAR e-KYC GATEWAY & CARRIER SMS NOTIFICATION ==================== */
-  .carrier-sms-toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 100000;
-    max-width: 380px;
-    background: #0f172a;
-    color: #f8fafc;
-    border: 2px solid #3b82f6;
-    border-radius: 12px;
-    padding: 14px 18px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-    cursor: pointer;
-    animation: smsSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  @keyframes smsSlideIn {
-    from { transform: translateX(120%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  .carrier-sms-toast .sms-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-    font-size: 0.76rem;
-    color: #94a3b8;
-    letter-spacing: 0.5px;
-  }
-  .carrier-sms-toast .sms-body {
-    font-size: 0.88rem;
-    line-height: 1.4;
-    color: #f1f5f9;
-    margin-bottom: 8px;
-  }
-  .carrier-sms-toast .sms-tap {
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: #60a5fa;
-    text-align: right;
-  }
-  .carrier-sms-toast:hover {
-    border-color: #60a5fa;
-    transform: translateY(-2px);
-  }
+  /* UIDAI AADHAAR e-KYC GATEWAY */
 
   /* Phase 5: Aadhaar e-KYC & Voice Khata Styles */
   .header-kyc-btn{
@@ -6750,19 +6705,7 @@ try {
     }, 1000);
   }
 
-  function showCarrierSmsToast(otp, mobile) {
-    const toast = document.getElementById('carrier-sms-toast');
-    const otpEl = document.getElementById('carrier-sms-otp-code');
-    if (!toast || !otpEl) return;
-
-    otpEl.textContent = otp;
-    toast.style.display = 'block';
-
-    // Auto-hide after 22 seconds
-    setTimeout(() => {
-      if (toast) toast.style.display = 'none';
-    }, 22000);
-  }
+  
 
   function autoFillInspectorOTP() {
     if (!activeGeneratedOtp) return;
@@ -9557,22 +9500,7 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
     </div>
   </div>
 
-  <!-- CARRIER SMS PUSH NOTIFICATION POPUP (Simulating Phone Push Alert) -->
-  <div id="carrier-sms-toast" class="carrier-sms-toast" style="display:none;" onclick="autoPasteReceivedOTP()">
-    <div class="sms-head">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="font-size:1.15rem;">💬</span>
-        <strong style="font-size:0.8rem;letter-spacing:0.5px;">MESSAGES · NOW</strong>
-      </div>
-      <span style="font-size:0.72rem;background:#1e293b;padding:2px 6px;border-radius:4px;border:1px solid #475569;">VK-UIDAI</span>
-    </div>
-    <div class="sms-body" id="carrier-sms-text">
-      Your Aadhaar verification OTP is <strong id="carrier-sms-otp-code" style="color:#60a5fa;font-size:1.05rem;letter-spacing:2px;">------</strong> for MoSJE Portal loan appraisal. Valid for 10 min. Do not share with anyone.
-    </div>
-    <div class="sms-tap">
-      👉 Tap to automatically paste OTP into verification box
-    </div>
-  </div>
+  
 
 </body>
 </html>
