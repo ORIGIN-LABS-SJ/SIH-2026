@@ -9322,7 +9322,7 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
             <label style="display:block;font-size:0.82rem;font-weight:800;color:var(--ink);margin-bottom:6px;">
               12-Digit Aadhaar Number (आधार संख्या):
             </label>
-            <input type="text" id="input-aadhaar-number" class="aadhaar-input-box" placeholder="XXXX  XXXX  XXXX" maxlength="14" oninput="formatAadhaarInput(this)">
+            <input type="tel" id="input-aadhaar-number" class="aadhaar-input-box" placeholder="XXXX  XXXX  XXXX" maxlength="19" inputmode="numeric" oninput="formatAadhaarInput(this)">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
               <span id="aadhaar-validation-msg" style="font-size:0.75rem;font-weight:800;color:var(--ink-soft);">Enter 12 digits (Verhoeff Checksum enabled)</span>
               <span style="font-size:0.75rem;font-weight:800;color:#047857;">🔒 256-Bit SSL Secure</span>
