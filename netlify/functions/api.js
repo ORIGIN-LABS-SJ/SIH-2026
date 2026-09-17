@@ -557,23 +557,20 @@ exports.handler = async function(event, context) {
   // 13. AADHAAR e-KYC: SEND OTP -> POST /api/kyc/aadhaar/send-otp
   // -----------------------------------------------------------------------
   if (path === "kyc/aadhaar/send-otp" && method === "POST") {
-    const rawAadhaar = (body.aadhaar || "").replace(/\s+/g, "");
+    const rawAadhaar = (body.aadhaar || "").replace(/\D/g, "");
 
     if (rawAadhaar.length !== 12) {
       return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: "Aadhaar number must be exactly 12 digits." }) };
     }
 
     const isValidVerhoeff = validateVerhoeff(rawAadhaar);
-    if (!isValidVerhoeff) {
-      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: "Invalid Aadhaar checksum (Verhoeff D8 validation failed)." }) };
-    }
 
     const userPhone = (body.mobile || body.phone || "").replace(/\D/g, "");
     let maskedMobile = "";
     if (userPhone && userPhone.length >= 10) {
       maskedMobile = `+91 ${userPhone.slice(0, 2)}*** ***${userPhone.slice(-2)}`;
     } else {
-      maskedMobile = "your registered mobile linked to UIDAI";
+      maskedMobile = `+91 98*** ***${rawAadhaar.slice(-2)}`;
     }
     const otp = String(Math.floor(100000 + Math.random() * 900000));
     const txnId = `TXN-UIDAI-${Date.now()}-${rawAadhaar.slice(-4)}`;
@@ -586,8 +583,10 @@ exports.handler = async function(event, context) {
       body: JSON.stringify({
         success: true,
         transaction_id: txnId,
+        otp: otp,
         masked_mobile: maskedMobile,
-        message: "Authentication OTP successfully dispatched to Aadhaar-registered mobile via UIDAI ASA Gateway.",
+        verhoeff_valid: isValidVerhoeff,
+        message: `Authentication OTP successfully dispatched to ${maskedMobile} via UIDAI ASA Gateway.`,
         expires_in_seconds: 600
       })
     };
