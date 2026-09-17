@@ -1,4 +1,5 @@
-DEFAULT_GEMINI_KEY = "AQ.Ab8RN6LwQQew8RNo08aYnUMxVIOBLUEAJl4gIhINCRFTQ-KRlw"
+import os
+DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
 """
 Sahayak Backend - Dynamic Multilingual AI Advisor Engine (SIH26091)
 Official AI service for Sahayak under the Ministry of Social Justice and Empowerment.

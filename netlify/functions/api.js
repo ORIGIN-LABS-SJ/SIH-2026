@@ -4,7 +4,7 @@
 // Live Cloud Endpoints for sahayakk.netlify.app/api/*
 // =========================================================================
 
-const DEFAULT_GEMINI_KEY = "AQ.Ab8RN6LwQQew8RNo08aYnUMxVIOBLUEAJl4gIhINCRFTQ-KRlw";
+const DEFAULT_GEMINI_KEY = process.env.GEMINI_API_KEY || "";
 
 // In-memory sessions for cloud OTP & KYC verification
 const otpSessions = new Map();
@@ -491,7 +491,7 @@ exports.handler = async function(event, context) {
   if (path === "ai-advisor" && method === "POST") {
     const message = body.message || body.query || "";
     const lang = body.lang || body.language || "hi";
-    const apiKey = (body.geminiApiKey || DEFAULT_GEMINI_KEY).trim();
+    const apiKey = (body.geminiApiKey || process.env.GEMINI_API_KEY || DEFAULT_GEMINI_KEY || "").trim();
 
     if (!message) {
       return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: "Message is required" }) };

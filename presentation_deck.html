@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart India Hackathon 2026 - Sahayak Presentation Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --bg-card-hover: rgba(30, 41, 59, 0.85);
+      --border-card: rgba(255, 255, 255, 0.1);
+      --border-accent: rgba(56, 189, 248, 0.4);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.25);
+      --accent-emerald: #10b981;
+      --accent-emerald-glow: rgba(16, 185, 129, 0.2);
+      --accent-amber: #f59e0b;
+      --accent-amber-glow: rgba(245, 158, 11, 0.2);
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-faint: #64748b;
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+    }
+
+    /* Top Presentation Header Bar */
+    header {
+      height: 60px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-card);
+      background: rgba(7, 11, 20, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sih-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(16, 185, 129, 0.15));
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #fbbf24;
+      text-transform: uppercase;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nav:hover {
+      background: var(--primary);
+      color: #041226;
+      border-color: var(--primary);
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+
+    .slide-counter {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      padding: 0 8px;
+    }
+
+    /* Main Slide Stage */
+    #slide-viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 36px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1380px;
+      height: 100%;
+      max-height: 760px;
+      opacity: 0;
+      transform: scale(0.97) translateY(12px);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Slide Content Card Layouts */
+    .slide-header {
+      margin-bottom: 20px;
+    }
+
+    .slide-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      max-width: 900px;
+      line-height: 1.45;
+    }
+
+    /* Glass Cards / Bento Boxes */
+    .bento-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-accent);
+      box-shadow: 0 10px 30px -10px var(--primary-glow);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-icon {
+      font-size: 1.3rem;
+    }
+
+    /* SLIDE 1: Hero Cover */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 24px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .hero-brand {
+      font-family: var(--font-display);
+      font-size: 4.8rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .meta-box-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .meta-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .meta-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-faint);
+      margin-bottom: 2px;
+    }
+
+    .meta-val {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    /* SLIDE 2: 5-Stage Pipeline */
+    .pipeline-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .pipe-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pipe-step::after {
+      content: "➔";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-size: 1rem;
+      z-index: 10;
+    }
+
+    .pipe-step:last-child::after {
+      display: none;
+    }
+
+    .pipe-num {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .pipe-name {
+      font-family: var(--font-display);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .pipe-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .tech-stack-bento {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .stack-pill {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .stack-cat {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-faint);
+      margin-bottom: 4px;
+    }
+
+    .stack-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* SLIDE 3: Feasibility & Risk Mitigations */
+    .feasi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .risk-box {
+      border-left: 3px solid;
+      padding: 14px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      font-size: 0.82rem;
+    }
+
+    .risk-box.r1 { border-color: var(--accent-rose); }
+    .risk-box.r2 { border-color: var(--accent-amber); }
+    .risk-box.r3 { border-color: var(--primary); }
+
+    .risk-head {
+      font-weight: 800;
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .risk-outcome {
+      margin-top: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-weight: 700;
+      color: var(--accent-emerald);
+      font-size: 0.78rem;
+    }
+
+    /* SLIDE 4: Impact & Benefits */
+    .impact-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.5));
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .stat-big {
+      font-family: var(--font-display);
+      font-size: 3.4rem;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+    }
+
+    .stat-c1 { color: #38bdf8; }
+    .stat-c2 { color: #34d399; }
+    .stat-c3 { color: #fbbf24; }
+
+    .stat-tag {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #f8fafc;
+      margin-bottom: 6px;
+    }
+
+    .stat-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* SLIDE 5: Competitive Advantage Matrix */
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      background: var(--bg-card);
+    }
+
+    .matrix-table th {
+      background: rgba(30, 41, 59, 0.9);
+      padding: 10px 14px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-muted);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .matrix-table th.highlight {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      font-size: 0.92rem;
+      border-bottom-color: var(--primary);
+    }
+
+    .matrix-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .matrix-table td:first-child {
+      text-align: left;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    .matrix-table td.highlight {
+      background: rgba(56, 189, 248, 0.06);
+      font-weight: 800;
+      color: #34d399;
+    }
+
+    .pill-yes {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      border-radius: 50%;
+      color: #10b981;
+      font-weight: 800;
+      font-size: 0.75rem;
+    }
+
+    .pill-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 50%;
+      color: #f43f5e;
+      font-size: 0.75rem;
+    }
+
+    .pill-partial {
+      color: #94a3b8;
+      font-weight: 700;
+    }
+
+    /* SLIDE 6: References Grid */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 16px;
+      height: 100%;
+    }
+
+    .ref-item {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ref-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .ref-title {
+      font-weight: 800;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+      margin-bottom: 3px;
+    }
+
+    .ref-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Bottom Status Ribbon & Presenter Cues */
+    footer {
+      height: 48px;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-card);
+      background: rgba(7, 11, 20, 0.9);
+      font-size: 0.76rem;
+      color: var(--text-faint);
+    }
+
+    .footer-tags {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tag-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-online {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* Keyboard Help Tooltip */
+    .kbd-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <div class="sih-badge">🏆 SIH 2026 Grand Finale</div>
+      <div class="header-title">
+        <span>SAHAYAK</span>
+        <span style="color:var(--text-faint);font-weight:400;">/ PS #26091</span>
+      </div>
+    </div>
+    <div class="header-controls">
+      <span class="kbd-hint">← / → Arrow Keys</span>
+      <button class="btn-nav" onclick="prevSlide()">◀ Prev</button>
+      <span class="slide-counter" id="slide-num-badge">Slide 1 / 6</span>
+      <button class="btn-nav" onclick="nextSlide()">Next ▶</button>
+      <button class="btn-nav" onclick="toggleFullScreen()" style="margin-left:8px;">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Viewport -->
+  <main id="slide-viewport">
+
+    <!-- ==================== SLIDE 1 ==================== -->
+    <div class="slide active" id="slide-1">
+      <div class="hero-grid">
+        <div>
+          <div class="slide-tag">Ministry of Social Justice and Empowerment · MoSJE</div>
+          <h1 class="hero-brand">SAHAYAK (सहायक)</h1>
+          <h2 style="font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:#f8fafc;margin-bottom:12px;">
+            Rural Business Advisory &amp; Financial Structuring Assistant
+          </h2>
+          <p class="hero-desc">
+            Empowering <strong>63+ Million unbanked micro-enterprises</strong> with dialect-first conversational AI, dynamic scheme optimization, and verifiable bank-ready DPR appraisal dossiers.
+          </p>
+
+          <div style="display:flex;gap:12px;margin-top:16px;">
+            <span class="sih-badge" style="border-color:#38bdf8;color:#38bdf8;">✓ 100% Offline PWA Ready</span>
+            <span class="sih-badge" style="border-color:#34d399;color:#34d399;">✓ 10 Regional Dialects</span>
+            <span class="sih-badge" style="border-color:#f59e0b;color:#f59e0b;">✓ UIDAI e-KYC Integrated</span>
+          </div>
+        </div>
+
+        <div class="bento-card" style="border-color:var(--primary);box-shadow:0 0 35px rgba(56,189,248,0.12);">
+          <div class="card-title">
+            <span class="card-icon">📋</span>
+            <span>SIH 2026 Evaluation Registry</span>
+          </div>
+          <div class="meta-box-grid" style="margin-top:14px;">
+            <div class="meta-item">
+              <div class="meta-label">Problem Statement ID</div>
+              <div class="meta-val" style="color:var(--primary);">26091</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Theme</div>
+              <div class="meta-val" style="font-size:0.82rem;">Agri, FoodTech &amp; Rural Dev</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Category</div>
+              <div class="meta-val">Software Edition</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Team Name</div>
+              <div class="meta-val" style="color:var(--accent-emerald);">TEAM ALPHA</div>
+            </div>
+          </div>
+
+          <div style="margin-top:18px;padding:12px;background:rgba(56,189,248,0.06);border:1px dashed rgba(56,189,248,0.3);border-radius:8px;">
+            <div style="font-size:0.75rem;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:4px;">
+              Core Mission
+            </div>
+            <div style="font-size:0.8rem;color:#cbd5e1;line-height:1.4;">
+              Bridge the ₹14 Lakh Crore credit deficit by reducing the 40–60% bank loan rejection rate through algorithmic credit appraisal.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 2 ==================== -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <div class="slide-tag">Architecture &amp; Core Pipeline</div>
+        <h2 class="slide-title">Technical Approach &amp; System Design</h2>
+        <p class="slide-subtitle">
+          End-to-end pipeline: multilingual voice input → parallel AI &amp; deterministic engines → unified advisory dashboard.
+        </p>
+      </div>
+
+      <!-- 5-Stage Pipeline -->
+      <div class="pipeline-grid">
+        <div class="pipe-step">
+          <div>
+            <div class="pipe-num">01 // INGESTION</div>
+            <div class="pipe-name">🎙️ Voice Input</div>
+            <div class="pipe-desc">Web Speech API + Web Audio. 10 regional languages &amp; dialects (Marwari, Hindi, Gujarati) with &lt;100ms latency.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div>
+            <div class="pipe-num">02 // TELEMETRY</div>
+            <div class="pipe-name">📍 Location Data</div>
+            <div class="pipe-desc">HTML5 GPS Geolocation with mathematical nearest-city clustering &amp; hyper-local Mandi wholesale price index.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div>
+            <div class="pipe-num">03 // GATEWAY</div>
+            <div class="pipe-name">⚡ FastAPI Hub</div>
+            <div class="pipe-desc">High-concurrency async REST gateway. Idempotent offline ledger sync &amp; sub-15ms transaction routing.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div>
+            <div class="pipe-num">04 // INTELLIGENCE</div>
+            <div class="pipe-name">⚖️ Scheme Engine</div>
+            <div class="pipe-desc">Deterministic rule-engine evaluating PMEGP, NBCFDC, MUDRA. 0% AI hallucination on financial rules.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div>
+            <div class="pipe-num">05 // APPRAISAL</div>
+            <div class="pipe-name">📊 Repayment Planner</div>
+            <div class="pipe-desc">Alternative credit scoring (300–900), DSCR solvency check, and verifiable Bank Financial DPR dossier.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack Bento -->
+      <div class="tech-stack-bento">
+        <div class="stack-pill">
+          <div class="stack-cat">Frontend</div>
+          <div class="stack-name">HTML5 + Modern JS</div>
+          <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">Offline PWA / Zero CDN lag</div>
+        </div>
+        <div class="stack-pill">
+          <div class="stack-cat">Voice / Location</div>
+          <div class="stack-name">Web Speech + Geo</div>
+          <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">W3C Standard Telemetry</div>
+        </div>
+        <div class="stack-pill">
+          <div class="stack-cat">Backend Hub</div>
+          <div class="stack-name">Python FastAPI</div>
+          <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">Asynchronous REST Engine</div>
+        </div>
+        <div class="stack-pill">
+          <div class="stack-cat">AI / LLM</div>
+          <div class="stack-name">Gemini 1.5 Flash</div>
+          <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">Dialect-Tuned Vernacular</div>
+        </div>
+        <div class="stack-pill">
+          <div class="stack-cat">Database / Auth</div>
+          <div class="stack-name">SQLite + Google GIS</div>
+          <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">UIDAI Verhoeff + SHA-256</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 3 ==================== -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <div class="slide-tag">Operational &amp; Engineering Viability</div>
+        <h2 class="slide-title">Feasibility &amp; Strategic Risk Mitigations</h2>
+        <p class="slide-subtitle">
+          Engineered for real-world rural adoption: low-bandwidth, non-bureau underwriting, and zero AI hallucination.
+        </p>
+      </div>
+
+      <!-- Feasibility 3-Grid -->
+      <div class="feasi-grid">
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon" style="color:var(--primary);">01</span>
+            <span>Technical Feasibility</span>
+          </div>
+          <ul style="list-style:none;font-size:0.8rem;color:var(--text-muted);line-height:1.5;">
+            <li>• Standard web protocols &amp; lightweight REST APIs</li>
+            <li>• Pre-seeded static reference tables for rapid deployment</li>
+            <li>• Zero third-party runtime package overhead (&lt;50 KB)</li>
+          </ul>
+        </div>
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon" style="color:var(--accent-emerald);">02</span>
+            <span>Operational Feasibility</span>
+          </div>
+          <ul style="list-style:none;font-size:0.8rem;color:var(--text-muted);line-height:1.5;">
+            <li>• Zero reliance on proprietary private bank APIs</li>
+            <li>• Works on self-declared turnover &amp; seasonal spikes</li>
+            <li>• Non-bureau credit appraisal for unbanked borrowers</li>
+          </ul>
+        </div>
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon" style="color:var(--accent-amber);">03</span>
+            <span>Zero Training Cost</span>
+          </div>
+          <ul style="list-style:none;font-size:0.8rem;color:var(--text-muted);line-height:1.5;">
+            <li>• Voice-guided UI eliminates digital literacy barriers</li>
+            <li>• Visual color-coded health badges (Green, Yellow, Red)</li>
+            <li>• Native dialect prompts (Marwari, Gujarati, Hindi)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Risk Mitigations 3-Grid -->
+      <div class="risk-grid">
+        <div class="risk-box r1">
+          <div class="risk-head">
+            <span style="color:var(--accent-rose);">⚠️ Risk 1: Financial Hallucination</span>
+            <span style="font-size:0.72rem;color:var(--text-faint);">HIGH SEVERITY</span>
+          </div>
+          <div style="color:var(--text-muted);line-height:1.35;">
+            <strong>Mitigation:</strong> Decoupled architecture. LLM handles vernacular explanation; strict deterministic mathematical engine calculates EMI and interest rates.
+          </div>
+          <div class="risk-outcome">
+            ✓ Outcome: Zero financial calculation errors (100% deterministic accuracy)
+          </div>
+        </div>
+
+        <div class="risk-box r2">
+          <div class="risk-head">
+            <span style="color:var(--accent-amber);">📶 Risk 2: Rural Internet Fluctuations</span>
+            <span style="font-size:0.72rem;color:var(--text-faint);">ENVIRONMENT</span>
+          </div>
+          <div style="color:var(--text-muted);line-height:1.35;">
+            <strong>Mitigation:</strong> Progressive Web App (PWA) with client-side caching. Low-bandwidth JSON payload (&lt;50 KB) with offline queue sync.
+          </div>
+          <div class="risk-outcome">
+            ✓ Outcome: Works seamlessly offline and on 2G / fluctuating networks
+          </div>
+        </div>
+
+        <div class="risk-box r3">
+          <div class="risk-head">
+            <span style="color:var(--primary);">🤝 Risk 3: Adoption &amp; Cultural Distrust</span>
+            <span style="font-size:0.72rem;color:var(--text-faint);">BEHAVIORAL</span>
+          </div>
+          <div style="color:var(--text-muted);line-height:1.35;">
+            <strong>Mitigation:</strong> Hyper-local dialect support (Marwari, Marathi, Gujarati) + Common Service Centres (CSCs) and SHG facilitators.
+          </div>
+          <div class="risk-outcome">
+            ✓ Outcome: Community-verified trust and rapid grassroots adoption
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 4 ==================== -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <div class="slide-tag">Socio-Economic Value Proposition</div>
+        <h2 class="slide-title">Impact &amp; Measurable Benefits</h2>
+        <p class="slide-subtitle">
+          Reaching 63+ Million Rural Businesses: Empowering local artisans, small shopkeepers, and marginalized communities.
+        </p>
+      </div>
+
+      <!-- Monumental KPI Stats -->
+      <div class="impact-stat-grid">
+        <div class="stat-card">
+          <div class="stat-big stat-c1">30% – 50%</div>
+          <div class="stat-tag">🔻 Cheaper Loans</div>
+          <div class="stat-sub">
+            Moves borrowers from expensive local moneylenders (36–120% APR) to affordable, safe institutional bank loans (6–11%).
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-big stat-c2">Up to 35%</div>
+          <div class="stat-tag">🎁 Extra Savings</div>
+          <div class="stat-sub">
+            Automatically finds and applies free government grants and margin capital subsidies (PMEGP, NBCFDC) for the entrepreneur.
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-big stat-c3">63M+</div>
+          <div class="stat-tag">👥 Lives Changed</div>
+          <div class="stat-sub">
+            Focused entirely on small village shops, rural artisans, tailors, street vendors, and women entrepreneurs across India.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3-Pillar Transformation -->
+      <div class="feasi-grid" style="margin-bottom:0;">
+        <div class="bento-card" style="border-left:3px solid var(--primary);">
+          <div class="card-title" style="font-size:0.95rem;">
+            <span>📈</span> <span>Economic Growth</span>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.45;">
+            Helps rural businesses track daily cashflow so they never miss a loan repayment, build a non-bureau credit score, and stay debt-free.
+          </div>
+        </div>
+        <div class="bento-card" style="border-left:3px solid var(--accent-emerald);">
+          <div class="card-title" style="font-size:0.95rem;">
+            <span>🤝</span> <span>Social Empowerment</span>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.45;">
+            Gives free, expert financial advice to everyone, with a special affirmative focus on uplifting women, SC, ST, and OBC micro-enterprises.
+          </div>
+        </div>
+        <div class="bento-card" style="border-left:3px solid var(--accent-amber);">
+          <div class="card-title" style="font-size:0.95rem;">
+            <span>🏛️</span> <span>Better Governance</span>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.45;">
+            Helps the Government (MoSJE) ensure welfare schemes and Direct Benefit Transfers (DBT) reach the right people with zero leakage.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 5 ==================== -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <div class="slide-tag">Innovation Moat &amp; Market Positioning</div>
+        <h2 class="slide-title">Proposed Solution &amp; Innovation Matrix</h2>
+        <p class="slide-subtitle">
+          An all-in-one voice-first platform empowering rural micro-entrepreneurs to discover schemes, assess credit, and structure loans in 10 regional languages — bridging the ₹14 Lakh Crore credit deficit and reducing the 40–60% bank rejection rate.
+        </p>
+      </div>
+
+      <!-- Feature Comparison Matrix -->
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="width:30%;">Feature / Capability</th>
+            <th class="highlight" style="width:16%;">✨ Sahayak (Ours)</th>
+            <th style="width:13%;">myScheme</th>
+            <th style="width:13%;">JanSamarth</th>
+            <th style="width:13%;">PMEGP Portal</th>
+            <th style="width:13%;">e-NAM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Voice-Based Assistance (Dialect-First)</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>EMI &amp; Repayment Planning</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Cash-Flow Based Assessment</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Post-Loan Monitoring &amp; Smart Ledger</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Hyper-Local Business Analysis (Geocoded)</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Local Competitor Analysis</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Market / Price Intelligence (Mandi API)</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Financial Structuring &amp; DPR Dossier</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Scheme Matching (Consumer Favorability Ranked)</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-yes">✓</span></td>
+            <td><span class="pill-yes">✓</span></td>
+            <td><span class="pill-partial">–</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Business Viability Recommendation</td>
+            <td class="highlight"><span class="pill-yes">✓</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+            <td><span class="pill-no">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ==================== SLIDE 6 ==================== -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <div class="slide-tag">Evidence &amp; Citations</div>
+        <h2 class="slide-title">Research &amp; Institutional References</h2>
+        <p class="slide-subtitle">
+          Grounded in central monetary policy reports, academic multilingual NLP frameworks, and statutory government guidelines.
+        </p>
+      </div>
+
+      <div class="ref-grid">
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon">🏛️</span>
+            <span>Policy &amp; Institutional Research</span>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">RBI — UK Sinha Committee Report</div>
+            <div class="ref-sub">Empirical documentation of the ₹14 Lakh Crore structural MSME credit deficit in India.</div>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">World Bank Global Findex Database</div>
+            <div class="ref-sub">Analysis on informal credit traps, unbanked micro-merchants, and debt traps in South Asia.</div>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">MoMSME Annual Report 2023–24</div>
+            <div class="ref-sub">Statutory operational guidelines for PMEGP capital subsidies and MUDRA credit guarantee mechanisms.</div>
+          </div>
+        </div>
+
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon">🔬</span>
+            <span>Industry &amp; Academic References</span>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">Journal of Money &amp; Business Studies</div>
+            <div class="ref-sub">Peer-reviewed impact evaluations: Vernacular Financial Literacy and Credit Repayment Discipline.</div>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">AI4Bharat &amp; Microsoft Research</div>
+            <div class="ref-sub">Jugalbandi multilingual conversational AI architecture for Indian citizen welfare delivery.</div>
+          </div>
+        </div>
+
+        <div class="bento-card">
+          <div class="card-title">
+            <span class="card-icon">🌐</span>
+            <span>Official Portals &amp; Open Source</span>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">Statutory Scheme Portals</div>
+            <div class="ref-sub">• udyamregistration.gov.in<br>• jansamarth.in<br>• myscheme.gov.in</div>
+          </div>
+          <div class="ref-item">
+            <div class="ref-title">Production Open-Source Stack</div>
+            <div class="ref-sub">• Python FastAPI · High-Performance REST<br>• React 18 / HTML5 PWA<br>• Google Gemini 1.5 Flash API</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-tags">
+      <span class="tag-item"><span class="dot-online"></span> Prototype Live (Port 5000 / 8000)</span>
+      <span class="tag-item">⚡ MoSJE Compliant</span>
+      <span class="tag-item">🔒 Verhoeff &amp; SHA-256 Verified</span>
+    </div>
+    <div>
+      Smart India Hackathon 2026 · Team ALPHA · Confidential Presentation Deck
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function updateSlide() {
+      for (let i = 1; i <= totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        if (slide) {
+          if (i === currentSlide) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.remove('active');
+          }
+        }
+      }
+      const badge = document.getElementById('slide-num-badge');
+      if (badge) badge.textContent = `Slide ${currentSlide} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log("Fullscreen request:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard Arrow Keys
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      }
+    });
+  </script>
+</body>
+</html>
