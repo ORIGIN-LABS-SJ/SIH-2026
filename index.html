@@ -6639,12 +6639,23 @@ try {
     const modal = document.getElementById('modal-aadhaar-kyc');
     if (!modal) return;
 
-    // Pre-populate name and location from active session
+    // Pre-populate name, location, and mobile from active session
     const nameIn = document.getElementById('input-kyc-name');
-    if (nameIn && userName && userName.trim()) nameIn.value = userName.trim();
+    if (nameIn && !nameIn.value.trim() && userName && userName.trim() && !userName.startsWith('+91')) nameIn.value = userName.trim();
 
     const locIn = document.getElementById('input-kyc-location');
-    if (locIn && userLocation && userLocation.trim() && userLocation !== 'India') locIn.value = userLocation.trim();
+    if (locIn && !locIn.value.trim() && userLocation && userLocation.trim() && userLocation !== 'India') locIn.value = userLocation.trim();
+
+    const mobIn = document.getElementById('input-kyc-mobile');
+    if (mobIn && !mobIn.value.trim()) {
+      let activePhone = '';
+      try {
+        const u = JSON.parse(localStorage.getItem('khata_auth_user') || localStorage.getItem('sahayak_user_profile') || '{}');
+        activePhone = u.phone || '';
+      } catch(e){}
+      if (!activePhone && typeof userName === 'string' && userName.startsWith('+91')) activePhone = userName.replace(/\D/g, '');
+      if (activePhone) mobIn.value = activePhone.slice(-10);
+    }
 
     if (currentKycProfile && currentKycProfile.status === 'VERIFIED') {
       showKycStep(3);
@@ -6799,21 +6810,32 @@ try {
       if (btn) { btn.disabled = false; btn.textContent = '📩 Request Verification OTP'; }
     }
 
+    const mobInput = document.getElementById('input-kyc-mobile');
+    let rawMob = mobInput ? mobInput.value.trim().replace(/\D/g, '') : '';
+    if (!rawMob) {
+      try {
+        const u = JSON.parse(localStorage.getItem('khata_auth_user') || localStorage.getItem('sahayak_user_profile') || '{}');
+        rawMob = (u.phone || '').replace(/\D/g, '');
+      } catch(e){}
+    }
+    const clientMaskedMob = (rawMob.length >= 10) 
+      ? `+91 ${rawMob.slice(0, 2)}*** ***${rawMob.slice(-2)}` 
+      : 'your Aadhaar-registered mobile';
+
     fetch((API_BASE_URL || '') + '/api/kyc/aadhaar/send-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ aadhaar: aadhaarRaw })
+      body: JSON.stringify({ aadhaar: aadhaarRaw, mobile: rawMob, phone: rawMob })
     })
     .then(r => r.ok ? r.json() : null)
     .then(data => {
       const txId = data ? data.transaction_id : ('TXN-UIDAI-' + Date.now());
-      const maskedMob = data ? data.masked_mobile : ('+91 98*** ***' + aadhaarRaw.slice(-2));
+      const maskedMob = (data && data.masked_mobile) ? data.masked_mobile : clientMaskedMob;
       applyKycSessionData(txId, maskedMob);
     })
     .catch(() => {
       const txId = 'TXN-UIDAI-MOSJE-' + Date.now();
-      const maskedMob = '+91 98*** ***' + aadhaarRaw.slice(-2);
-      applyKycSessionData(txId, maskedMob);
+      applyKycSessionData(txId, clientMaskedMob);
     });
   }
 
@@ -9250,6 +9272,14 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
               <span id="aadhaar-validation-msg" style="font-size:0.75rem;font-weight:800;color:var(--ink-soft);">Enter 12 digits (Verhoeff Checksum enabled)</span>
               <span style="font-size:0.75rem;font-weight:800;color:#047857;">🔒 256-Bit SSL Secure</span>
             </div>
+
+            <div style="margin-top:12px;">
+              <label style="display:block;font-size:0.75rem;font-weight:800;color:var(--ink);margin-bottom:4px;">
+                Aadhaar-Registered Mobile Number (आधार से जुड़ा मोबाइल नंबर):
+              </label>
+              <input type="tel" id="input-kyc-mobile" placeholder="10-digit mobile number (e.g. 98XXXXXXXX)" maxlength="10" inputmode="numeric" style="width:100%;padding:8px 10px;border:1.5px solid var(--ink);border-radius:4px;font-size:0.85rem;background:#fff;">
+              <span style="font-size:0.72rem;color:var(--ink-soft);font-weight:600;">Authentication OTP will be transmitted to this registered device</span>
+            </div>
           </div>
 
           <!-- Regulatory Assurance Callout -->
@@ -9273,7 +9303,7 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
               <strong style="font-size:0.85rem;color:#1e3a8a;">Official UIDAI / MoSJE Telecom Dispatch Notice</strong>
             </div>
             <p style="font-size:0.78rem;color:#1e40af;margin:0;line-height:1.45;">
-              Authentication request transmitted via National Informatics Centre (NIC) Gateway. A secure 6-digit OTP has been dispatched to your Aadhaar-registered mobile <strong id="kyc-masked-mobile" style="color:#1e3a8a;">+91 98*** ***10</strong>. Valid for 10 minutes.
+              Authentication request transmitted via National Informatics Centre (NIC) Gateway. A secure 6-digit OTP has been dispatched to <strong id="kyc-masked-mobile" style="color:#1e3a8a;">your Aadhaar-registered mobile</strong>. Valid for 10 minutes.
             </p>
           </div>
 

@@ -568,8 +568,13 @@ exports.handler = async function(event, context) {
       return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: "Invalid Aadhaar checksum (Verhoeff D8 validation failed)." }) };
     }
 
-    const txnId = `TXN-UIDAI-${Date.now()}-${rawAadhaar.slice(-4)}`;
-    const maskedMobile = `+91 98*** ***${rawAadhaar.slice(-2)}`;
+    const userPhone = (body.mobile || body.phone || "").replace(/\D/g, "");
+    let maskedMobile = "";
+    if (userPhone && userPhone.length >= 10) {
+      maskedMobile = `+91 ${userPhone.slice(0, 2)}*** ***${userPhone.slice(-2)}`;
+    } else {
+      maskedMobile = "your registered mobile linked to UIDAI";
+    }
     const otp = String(Math.floor(100000 + Math.random() * 900000));
 
     kycSessions.set(txnId, { aadhaar: rawAadhaar, otp, createdAt: Date.now() });
