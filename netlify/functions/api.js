@@ -576,6 +576,7 @@ exports.handler = async function(event, context) {
       maskedMobile = "your registered mobile linked to UIDAI";
     }
     const otp = String(Math.floor(100000 + Math.random() * 900000));
+    const txnId = `TXN-UIDAI-${Date.now()}-${rawAadhaar.slice(-4)}`;
 
     kycSessions.set(txnId, { aadhaar: rawAadhaar, otp, createdAt: Date.now() });
 
