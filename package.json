@@ -1,0 +1,12 @@
+{
+  "name": "sahayak-platform",
+  "version": "3.2.0",
+  "private": true,
+  "description": "Sahayak AI-Driven Hyperlocal Advisory & Financial Inclusion Platform (MoSJE / SIH 2026)",
+  "scripts": {
+    "build": "echo 'Static build ready'"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
