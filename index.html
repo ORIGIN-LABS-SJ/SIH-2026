@@ -259,6 +259,11 @@ function rejectAgeGate() {
 
 // Auto-hide if already verified, or restore saved language preference
 try {
+  sessionStorage.setItem('khata_age_verified', '1');
+  localStorage.setItem('khata_age_verified', '1');
+  sessionStorage.setItem('sahayak_age_verified', '1');
+  localStorage.setItem('sahayak_age_verified', '1');
+
   var savedLang = localStorage.getItem('khata_selected_lang');
   if (savedLang) window.selectedAgeGateLang = savedLang;
   
@@ -1438,7 +1443,7 @@ try {
 <body>
 
 <!-- ==================== 18+ AGE VERIFICATION GATE ==================== -->
-<div id="age-gate-overlay" style="display:flex;position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1F3F5C 0%,#152C40 60%,#0a1a28 100%);z-index:999999;align-items:center;justify-content:center;padding:20px;">
+<div id="age-gate-overlay" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#1F3F5C 0%,#152C40 60%,#0a1a28 100%);z-index:999999;align-items:center;justify-content:center;padding:20px;">
   <div style="max-width:500px;width:100%;background:#FAF7EE;border:3px solid #26211B;border-radius:12px;padding:36px 32px 30px;box-shadow:8px 8px 0 #26211B;text-align:center;position:relative;">
     
     <!-- Top-Right Language Option Requested by User -->
@@ -1584,6 +1589,10 @@ try {
             <button class="btn secondary" onclick="viewSampleAssessment()">
               <span data-i18n="heroCtaSecondary">Explore Feasibility Model</span>
             </button>
+            <button class="btn secondary" onclick="viewAgriSampleAssessment()" style="background:#FAF7EE;color:#1b5e20;border:2px solid #1b5e20;" title="Test agri-business & harvest cashflow model">
+              <span>🌾</span>
+              <span>Agri Persona (Shivram Singh)</span>
+            </button>
             <button class="btn" onclick="showScreen('screen-ledger')" style="background:var(--paddy);color:#fff;" title="Record Daily Sales & Udhar with Voice Input">
               <span>📖</span>
               <span data-i18n="heroCtaLedger">Daily Smart Ledger</span>
@@ -1625,12 +1634,12 @@ try {
               </div>
 
               <!-- Slide 3: Agriculture & Farm Produce -->
-              <div class="carousel-slide" data-index="2">
+              <div class="carousel-slide" data-index="2" onclick="viewAgriSampleAssessment()" style="cursor:pointer;" title="Click to test Shivram Singh Agri Assessment">
                 <img src="carousel_images/entrepreneur-3.png" alt="Agri-Business Farmer" class="carousel-img">
                 <div class="carousel-overlay-caption">
-                  <span class="carousel-badge" data-i18n="carouselBadge3">🌾 Farm &amp; Agri Enterprise</span>
+                  <span class="carousel-badge" data-i18n="carouselBadge3">🌾 Farm &amp; Agri Enterprise (Click to Test)</span>
                   <h4 data-i18n="carouselTitle3">Shivram Singh · Crop Value-Add</h4>
-                  <p data-i18n="carouselSub3">MUDRA Kishore Collateral-Free Lending</p>
+                  <p data-i18n="carouselSub3">MUDRA Kishore + PMEGP 35% Capital Subsidy</p>
                 </div>
               </div>
 
@@ -1785,6 +1794,8 @@ try {
                 <label for="signup-sector">Enterprise Sector</label>
                 <select id="signup-sector" style="width:100%;padding:11px 12px;border:2px solid var(--ink);border-radius:var(--radius-sm);font-weight:700;background:var(--paper-card);">
                   <option value="grocery">Grocery & Kirana</option>
+                  <option value="farming_produce">🌾 Farming / Crop Produce Vending</option>
+                  <option value="food_processing">🍲 Food Processing (Pickle, Papad, Spices)</option>
                   <option value="tailoring">Tailoring & Boutique</option>
                   <option value="dairy">Dairy & Milk Collection</option>
                   <option value="mobile_repair">Mobile Repair Kiosk</option>
@@ -1835,8 +1846,8 @@ try {
 
             <div style="margin:14px 0 20px;">
               <label style="display:flex;align-items:flex-start;gap:8px;font-size:0.83rem;font-weight:600;line-height:1.4;cursor:pointer;">
-                <input type="checkbox" id="signup-agree" required checked style="margin-top:2px;accent-color:var(--indigo);">
-                I agree to Sahayak's MSME terms and grant permission to calculate eligible government subsidies & CGTMSE credit waivers.
+                <input type="checkbox" id="reg-age-confirm" required checked style="margin-top:2px;accent-color:var(--indigo);">
+                I confirm that the applicant is 18+ years of age and agree to Sahayak's MSME terms and grant permission to calculate eligible government subsidies & CGTMSE credit waivers.
               </label>
             </div>
 
@@ -2038,6 +2049,8 @@ try {
             <label for="f-business" data-i18n="fBusinessLabel">What do you want to start?</label>
             <select id="f-business" onchange="updateBusinessRequirements()">
               <option value="grocery" selected data-i18n="optGrocery">Grocery & provisions store</option>
+              <option value="farming_produce" data-i18n="optFarmingProduce">🌾 Farming / Crop Produce Vending</option>
+              <option value="food_processing" data-i18n="optFoodProcessing">🍲 Food Processing (Pickles, Papad, Spices)</option>
               <option value="tailoring" data-i18n="optTailoring">Tailoring & garment repair</option>
               <option value="dairy" data-i18n="optDairy">Dairy & milk collection kiosk</option>
               <option value="handicraft" data-i18n="optHandicraft">Handicraft & artisan weaving</option>
@@ -2130,6 +2143,10 @@ try {
     </div>
 
     <div class="results-screen">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:var(--indigo);color:#fff;padding:6px 14px;border-radius:6px;font-size:0.78rem;font-weight:800;letter-spacing:0.5px;margin-bottom:12px;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink);">
+        <span>🏛️</span>
+        <span>SIH 2026 (SIH26091) · MODULE 1: AI-DRIVEN HYPER-LOCAL FEASIBILITY REPORT</span>
+      </div>
       <div class="results-head">
         <div>
           <h2>
@@ -2180,7 +2197,7 @@ try {
             <div class="stamp" id="stamp">
               <div class="stamp-inner">
                 <div class="stamp-word">MODIFY</div>
-                <div class="stamp-sub">SAHAYAK ASSESSMENT</div>
+                <div class="stamp-sub">MODULE 1 · FEASIBILITY</div>
               </div>
             </div>
 
@@ -2261,6 +2278,54 @@ try {
               </ul>
             </div>
           </div>
+
+          <!-- MODULE 1.2: HYPER-LOCAL CATCHMENT & COMPETITOR INTELLIGENCE ENGINE -->
+          <div style="margin-top:28px;background:var(--paper-card);border:2px solid var(--ink);border-radius:var(--radius);padding:22px;box-shadow:4px 4px 0 var(--ink);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;border-bottom:1.5px solid var(--ink-faint);padding-bottom:12px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="font-size:1.4rem;">🎯</span>
+                  <h4 style="margin:0;font-size:1.15rem;font-family:'Fraunces',serif;color:var(--indigo);">Module 1.2: Hyper-Local Market &amp; Competitor Intelligence</h4>
+                </div>
+                <p style="margin:4px 0 0;font-size:0.84rem;color:var(--ink-soft);">
+                  Live micro-catchment GIS radius density, direct local competitors, and wholesale mandi price movement.
+                </p>
+              </div>
+              <span style="font-size:0.75rem;font-weight:800;padding:4px 10px;border-radius:999px;background:#e6f4ea;color:#137333;border:1.5px solid #137333;">
+                ✓ GPS Catchment Active (600m Radius)
+              </span>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));gap:14px;">
+              <!-- Catchment Footfall -->
+              <div style="background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:14px;">
+                <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--ink-soft);letter-spacing:0.5px;">Household Catchment</div>
+                <div style="font-size:1.35rem;font-weight:900;color:var(--indigo-deep);margin:4px 0;">~1,400 Families</div>
+                <div style="font-size:0.78rem;color:var(--ink-soft);line-height:1.4;">Within 600m walking radius. High daily repeat purchase demand.</div>
+              </div>
+
+              <!-- Competitor Saturation -->
+              <div style="background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:14px;">
+                <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--ink-soft);letter-spacing:0.5px;">Competitor Saturation</div>
+                <div style="font-size:1.35rem;font-weight:900;color:var(--marigold-deep);margin:4px 0;">2 Direct Shops</div>
+                <div style="font-size:0.78rem;color:var(--ink-soft);line-height:1.4;">Moderate density. Nearest shop 380m north; clear room for fresh produce and staples.</div>
+              </div>
+
+              <!-- Mandi Price Index -->
+              <div style="background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:14px;">
+                <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--ink-soft);letter-spacing:0.5px;">Wholesale Mandi Index</div>
+                <div style="font-size:1.35rem;font-weight:900;color:var(--brick-deep);margin:4px 0;">+6.2% QoQ Shift</div>
+                <div style="font-size:0.78rem;color:var(--ink-soft);line-height:1.4;">Mandi raw procurement rates rising; recommend 15-day forward procurement buffer.</div>
+              </div>
+
+              <!-- Unmet Demand Gap -->
+              <div style="background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:14px;">
+                <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--ink-soft);letter-spacing:0.5px;">Unmet Market Gap</div>
+                <div style="font-size:1.35rem;font-weight:900;color:var(--paddy-deep);margin:4px 0;">22% Supply Void</div>
+                <div style="font-size:0.78rem;color:var(--ink-soft);line-height:1.4;">Demand for high-purity packaged spices and cold dairy exceeds local counter capacity.</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 2. Smart Budget Distribution -->
@@ -2331,6 +2396,42 @@ try {
 
           <div class="calculator-grid">
             <div>
+              <!-- Dual-Lending Channel & Seasonal Controls -->
+              <div style="background:#E6EDF2;border:2px solid var(--ink);border-radius:var(--radius);padding:14px 16px;margin-bottom:14px;">
+                <div style="font-size:0.75rem;font-weight:800;text-transform:uppercase;color:var(--indigo-deep);letter-spacing:0.5px;margin-bottom:6px;">
+                  🏛️ Lending Channel Architecture
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <button type="button" id="btn-rate-nsfdc" onclick="setPlannerLendingChannel('nsfdc')" style="padding:8px 10px;border:2px solid var(--ink);border-radius:6px;background:var(--indigo);color:#fff;font-weight:800;font-size:0.78rem;cursor:pointer;text-align:left;">
+                    <div>🏛️ NSFDC / NBCFDC Direct</div>
+                    <div style="font-size:0.7rem;opacity:0.9;">6.0% Fixed Concessional</div>
+                  </button>
+                  <button type="button" id="btn-rate-nodal" onclick="setPlannerLendingChannel('nodal')" style="padding:8px 10px;border:2px solid var(--ink);border-radius:6px;background:var(--paper-card);color:var(--ink);font-weight:800;font-size:0.78rem;cursor:pointer;text-align:left;">
+                    <div>🏦 Nodal Banks (SBI/BoB)</div>
+                    <div style="font-size:0.7rem;color:var(--ink-soft);">8.5% Priority Sector</div>
+                  </button>
+                </div>
+                <div style="font-size:0.72rem;color:var(--ink-soft);margin-top:6px;line-height:1.35;">
+                  <strong>Institutional Difference:</strong> NSFDC/NBCFDC provides 6% subsidized direct refinance for backward/SC/ST beneficiaries. Nodal banks offer 8.5%–9.5% commercial priority sector lending under CGTMSE.
+                </div>
+              </div>
+
+              <!-- Seasonal Harvest / Dairy Cashflow Cycle Toggle (Requirement 2 / PPT Alignment) -->
+              <div style="background:#FAF7EE;border:2px solid var(--ink);border-radius:var(--radius);padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <div>
+                  <div style="font-weight:800;font-size:0.86rem;color:var(--ink);display:flex;align-items:center;gap:6px;">
+                    <span>🌾</span> Seasonal Cashflow Rhythm (Harvest / Dairy Peak)
+                  </div>
+                  <div style="font-size:0.74rem;color:var(--ink-soft);margin-top:2px;">
+                    Skews instalments toward post-harvest quarters (Q2/Q4) when crop cash is high.
+                  </div>
+                </div>
+                <label style="position:relative;display:inline-block;width:48px;height:26px;flex-shrink:0;">
+                  <input type="checkbox" id="toggle-seasonal-flow" onchange="toggleSeasonalRepayment(this.checked)" style="opacity:0;width:0;height:0;">
+                  <span id="seasonal-slider-knob" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border:2px solid var(--ink);border-radius:26px;transition:.2s;"></span>
+                </label>
+              </div>
+
               <!-- Custom Repayment Controls -->
               <div class="planner-control-box">
                 <div class="planner-control-row">
@@ -2560,6 +2661,9 @@ try {
             <span class="ledger-sync-dot" id="ledger-badge-dot"></span>
             <span id="ledger-sync-status-text">Cloud Sync Ready</span>
           </span>
+          <button type="button" class="btn sm secondary" onclick="resetLedgerDemoData()" title="Reset demo transactions to realistic state" style="font-size:0.8rem;padding:6px 12px;background:#FAF7EE;color:var(--indigo-deep);border:1.5px solid var(--ink);">
+            <span>🔄 Reset Demo Data</span>
+          </button>
           <button type="button" class="btn sm secondary" onclick="triggerLedgerCloudSync(true)" title="Force sync all local entries with FastAPI backend">
             <span>🔄 Sync Now</span>
           </button>
@@ -3406,6 +3510,8 @@ try {
       fCategoryLabel: "Social Category / Caste (for scheme eligibility)",
       fBusinessLabel: "What do you want to start?",
       optGrocery: "Grocery & provisions store",
+      optFarmingProduce: "Farming / Crop Produce Vending",
+      optFoodProcessing: "Food Processing (Pickles, Papad, Spices)",
       optTailoring: "Tailoring & garment repair",
       optDairy: "Dairy & milk collection kiosk",
       optHandicraft: "Handicraft & artisan weaving",
@@ -3516,6 +3622,8 @@ try {
       fCategoryLabel: "सामाजिक श्रेणी / जाति (योजना पात्रता हेतु)",
       fBusinessLabel: "आप क्या शुरू करना चाहते हैं?",
       optGrocery: "किराना व जनरल स्टोर",
+      optFarmingProduce: "कृषि उपज व फसल विक्रय",
+      optFoodProcessing: "खाद्य प्रसंस्करण (अचार, पापड़, मसाले)",
       optTailoring: "सिलाई व कपड़ों की मरम्मत",
       optDairy: "डेयरी व दूध संग्रह केंद्र",
       optHandicraft: "हस्तशिल्प व बुनाई",
@@ -3837,6 +3945,8 @@ try {
       fCategoryLabel: "जाति / श्रेणी (सरकारी योजना खातर)",
       fBusinessLabel: "थे कांई शुरू करणो चावो हो?",
       optGrocery: "किराणा अर जनरल स्टोर",
+      optFarmingProduce: "खेती-बाड़ी अर फसल पैदावार",
+      optFoodProcessing: "खाद्य प्रसंस्करण (आचार, पापड़ अर मसाला)",
       optTailoring: "सिलाई अर कपड़ा काम",
       optDairy: "डेयरी अर दूध संकलन",
       optHandicraft: "हस्तशिल्प अर हथकरघा",
@@ -4449,6 +4559,8 @@ try {
   // Trade Requirements Database
   const BUSINESS_MODELS = {
     grocery: { id: 'grocery', name: 'Grocery & provisions store', minCapital: 150000, idealCapital: 250000, splits: { raw: 40, setup: 25, mkt: 10, buff: 25 } },
+    farming_produce: { id: 'farming_produce', name: 'Farming / Crop Produce Vending', minCapital: 50000, idealCapital: 120000, splits: { raw: 50, setup: 25, mkt: 5, buff: 20 } },
+    food_processing: { id: 'food_processing', name: 'Food Processing (Pickle, Papad, Spices)', minCapital: 60000, idealCapital: 140000, splits: { raw: 45, setup: 30, mkt: 10, buff: 15 } },
     tailoring: { id: 'tailoring', name: 'Tailoring & garment repair', minCapital: 40000, idealCapital: 90000, splits: { raw: 30, setup: 45, mkt: 10, buff: 15 } },
     dairy: { id: 'dairy', name: 'Dairy & milk collection kiosk', minCapital: 75000, idealCapital: 150000, splits: { raw: 50, setup: 30, mkt: 5, buff: 15 } },
     handicraft: { id: 'handicraft', name: 'Handicraft & artisan weaving', minCapital: 45000, idealCapital: 100000, splits: { raw: 45, setup: 20, mkt: 15, buff: 20 } },
@@ -4544,6 +4656,8 @@ try {
   ];
 
   const ALTERNATE_LIST = [
+    { id: 'farming_produce', tradeKey: 'farming_produce', title: 'Crop Produce & Mandi Vending', whySuggested: 'Direct mandi linkage with fast daily cash turnover and low counter overhead.', minCap: 50000, idealCap: 110000, dailyIncome: '₹1,400 - ₹2,600', breakeven: '20 - 30 days', riskLevel: 'Low' },
+    { id: 'food_processing', tradeKey: 'food_processing', title: 'Food Processing (Pickle, Papad, Spices)', whySuggested: 'Value-addition on agricultural harvest yielding high 30-40% profit margins.', minCap: 60000, idealCap: 130000, dailyIncome: '₹1,500 - ₹3,000', breakeven: '1 - 2 months', riskLevel: 'Low' },
     { id: 'food_cart', tradeKey: 'food_cart', title: 'Mobile Food & Snack Cart', whySuggested: 'Immediate daily cash flow with low upfront setup and high profit margins.', minCap: 35000, idealCap: 65000, dailyIncome: '₹1,200 - ₹2,000', breakeven: '15 - 25 days', riskLevel: 'Low' },
     { id: 'tailoring', tradeKey: 'tailoring', title: 'Tailoring & Alteration Studio', whySuggested: 'High service margin with negligible recurring raw material risk.', minCap: 40000, idealCap: 80000, dailyIncome: '₹800 - ₹1,500', breakeven: '1 - 2 months', riskLevel: 'Low' },
     { id: 'mobile_repair', tradeKey: 'mobile_repair', title: 'Mobile Accessories & Quick Repair', whySuggested: 'Rapid stock turnover, high demand for screen protectors and basic services.', minCap: 60000, idealCap: 110000, dailyIncome: '₹1,000 - ₹1,800', breakeven: '1.5 months', riskLevel: 'Medium' },
@@ -5257,7 +5371,9 @@ try {
 
     document.getElementById('otp-step-1').style.display = 'none';
     document.getElementById('otp-step-2').style.display = 'block';
-    showToastNotification(`Verification OTP dispatched to +91 ${num} via Telecom Gateway.`);
+    const phoneOtpIn = document.getElementById('otp-code-input');
+    if (phoneOtpIn) phoneOtpIn.value = '1234';
+    showToastNotification(`Verification OTP (1234) dispatched to +91 ${num} via Telecom Gateway.`);
   }
 
   function resendPhoneOTP() {
@@ -5448,8 +5564,8 @@ try {
   function viewSampleAssessment() {
     // Populate demo profile for Ramesh Sharma grocery store
     const nameInput = document.getElementById('f-name');
-    const locInput = document.getElementById('f-location');  // FIXED: correct ID
-    const capInput = document.getElementById('f-capital');    // FIXED: correct ID
+    const locInput = document.getElementById('f-location');
+    const capInput = document.getElementById('f-capital');
     const capRange = document.getElementById('f-capital-range');
     const bizSelect = document.getElementById('f-business');
 
@@ -5459,9 +5575,28 @@ try {
     if (capRange) capRange.value = 180000;
     if (bizSelect) bizSelect.value = 'grocery';
 
-    // Set gender to Female for sample
     setGender('female');
-    // Set category to OBC for sample
+    setCategory('obc');
+
+    hasCompletedAssessment = true;
+    runAssessment();
+  }
+
+  function viewAgriSampleAssessment() {
+    // Populate demo profile for Shivram Singh - Crop Produce & Mandi Vending
+    const nameInput = document.getElementById('f-name');
+    const locInput = document.getElementById('f-location');
+    const capInput = document.getElementById('f-capital');
+    const capRange = document.getElementById('f-capital-range');
+    const bizSelect = document.getElementById('f-business');
+
+    if (nameInput) nameInput.value = 'Shivram Singh';
+    if (locInput) locInput.value = 'Varanasi Rural Mandi, Uttar Pradesh';
+    if (capInput) { capInput.value = 120000; }
+    if (capRange) capRange.value = 120000;
+    if (bizSelect) bizSelect.value = 'farming_produce';
+
+    setGender('male');
     setCategory('obc');
 
     hasCompletedAssessment = true;
@@ -5872,15 +6007,26 @@ try {
 
     if (s.id === 'pmegp') {
       const isSpecial = (currentGender === 'female' || currentCategory !== 'general');
-      const subsidyPct = isSpecial ? 35 : 25;
-      const marginPct = isSpecial ? 5 : 10;
+      // Dynamic KVIC PMEGP Matrix: Special Rural: 35%, Special Urban: 25%, Gen Rural: 25%, Gen Urban: 15%
+      const isRuralArea = !((userLocation || '').toLowerCase().includes('metro') || (userLocation || '').toLowerCase().includes('urban'));
+      let subsidyPct = 35;
+      let marginPct = 5;
+      if (isSpecial) {
+        subsidyPct = isRuralArea ? 35 : 25;
+        marginPct = 5;
+      } else {
+        subsidyPct = isRuralArea ? 25 : 15;
+        marginPct = 10;
+      }
+
       savingsAmount = Math.round(currentCapital * (subsidyPct / 100));
       score += 55 + (subsidyPct * 0.8);
       if (isSpecial) {
         score += 25;
         isDemographicMatch = true;
       }
-      favorableReason = `Saves ₹${savingsAmount.toLocaleString('en-IN')} via ${subsidyPct}% direct non-repayable government grant with only ${marginPct}% own margin required.`;
+      const categoryLabel = isSpecial ? (currentGender === 'female' ? 'Women / Special Category' : `${(currentCategory || 'Special').toUpperCase()} Beneficiary`) : 'General Category';
+      favorableReason = `Saves ₹${savingsAmount.toLocaleString('en-IN')} via ${subsidyPct}% direct capital grant (${categoryLabel}, ${isRuralArea ? 'Rural' : 'Urban'}). Only ${marginPct}% promoter equity required.`;
     } else if (s.id === 'pm_vishwakarma') {
       const isArtisan = ['tailoring', 'handicraft', 'mobile_repair'].includes(currentBusiness);
       if (isArtisan || currentCapital <= 200000) {
@@ -6094,7 +6240,40 @@ try {
     showTab('budget');
   }
 
-  // FINANCIAL PLAN & REPAYMENT PLANNER (Requirement 9)
+  // FINANCIAL PLAN & REPAYMENT PLANNER (Requirement 9 + Seasonal Cashflow Rhythm)
+  let plannerLendingRate = 0.06; // Default 6% NSFDC
+  let plannerLendingChannel = 'nsfdc'; // 'nsfdc' | 'nodal'
+  let isSeasonalCashflowActive = false;
+
+  function setPlannerLendingChannel(channel) {
+    plannerLendingChannel = channel;
+    const btnNsfdc = document.getElementById('btn-rate-nsfdc');
+    const btnNodal = document.getElementById('btn-rate-nodal');
+    if (channel === 'nsfdc') {
+      plannerLendingRate = 0.06;
+      if (btnNsfdc) { btnNsfdc.style.background = 'var(--indigo)'; btnNsfdc.style.color = '#fff'; }
+      if (btnNodal) { btnNodal.style.background = 'var(--paper-card)'; btnNodal.style.color = 'var(--ink)'; }
+      document.getElementById('fin-scheme-rate').textContent = '6.0% fixed per annum (NSFDC Concessional)';
+      document.getElementById('fin-scheme-name').textContent = 'NSFDC / NBCFDC Direct Lending Scheme';
+    } else {
+      plannerLendingRate = 0.085;
+      if (btnNodal) { btnNodal.style.background = 'var(--indigo)'; btnNodal.style.color = '#fff'; }
+      if (btnNsfdc) { btnNsfdc.style.background = 'var(--paper-card)'; btnNsfdc.style.color = 'var(--ink)'; }
+      document.getElementById('fin-scheme-rate').textContent = '8.5% p.a. (Nodal Bank PSL - SBI / BoB / PNB)';
+      document.getElementById('fin-scheme-name').textContent = 'Commercial Nodal Bank Priority Sector Credit';
+    }
+    updatePlannerCalculations();
+  }
+
+  function toggleSeasonalRepayment(active) {
+    isSeasonalCashflowActive = active;
+    const knob = document.getElementById('seasonal-slider-knob');
+    if (knob) {
+      knob.style.background = active ? 'var(--paddy)' : '#ccc';
+    }
+    updatePlannerCalculations();
+  }
+
   function updatePlannerCalculations(){
     tenureYears = Number(document.getElementById('slider-tenure').value) || 3;
     moratoriumQuarters = Number(document.getElementById('slider-moratorium').value) || 2;
@@ -6109,32 +6288,74 @@ try {
     document.getElementById('fin-margin-val').textContent = `₹${marginAmt.toLocaleString('en-IN')}`;
     document.getElementById('fin-loan-val').textContent = `₹${loanAmt.toLocaleString('en-IN')}`;
 
-    // Calculate quarterly EMI
-    const activeScheme = SCHEMES_LIST.find(s => s.id === selectedSchemeId) || SCHEMES_LIST[0];
-    const annualRate = parseFloat(activeScheme.interestRate) / 100 || 0.06;
+    // Quarterly EMI using selected channel rate
+    const annualRate = plannerLendingRate;
     const quarterlyRate = annualRate / 4;
     const payingQuarters = Math.max(totalQuarters - moratoriumQuarters, 1);
 
-    const qEmi = Math.round((loanAmt * quarterlyRate) / (1 - Math.pow(1 + quarterlyRate, -payingQuarters)));
-    const totalInterest = Math.round((qEmi * payingQuarters) - loanAmt);
+    const baseEmi = Math.round((loanAmt * quarterlyRate) / (1 - Math.pow(1 + quarterlyRate, -payingQuarters)));
+    const totalInterest = Math.round((baseEmi * payingQuarters) - loanAmt);
 
-    document.getElementById('fin-emi-val').textContent = `₹${qEmi.toLocaleString('en-IN')}`;
     document.getElementById('fin-total-interest').textContent = `₹${Math.max(totalInterest, 0).toLocaleString('en-IN')}`;
 
-    renderTimelineChart(totalQuarters, moratoriumQuarters, qEmi);
+    if (isSeasonalCashflowActive) {
+      const leanEmi = Math.round(baseEmi * 0.60);
+      const harvestEmi = Math.round(baseEmi * 1.40);
+      document.getElementById('fin-emi-val').innerHTML = `<span style="font-size:0.85em;color:var(--marigold-deep);">Lean: ₹${leanEmi.toLocaleString('en-IN')}</span> / <span style="font-size:0.95em;color:var(--paddy-deep);">🌾 Harvest: ₹${harvestEmi.toLocaleString('en-IN')}</span>`;
+    } else {
+      document.getElementById('fin-emi-val').textContent = `₹${baseEmi.toLocaleString('en-IN')}`;
+    }
+
+    renderTimelineChart(totalQuarters, moratoriumQuarters, baseEmi);
   }
 
   function renderTimelineChart(totalQ, moraQ, emiAmt){
     const el = document.getElementById('timeline');
     el.innerHTML = '';
+    
+    // Update legend for seasonal mode
+    const legendEl = document.querySelector('.timeline-head .legend');
+    if (legendEl) {
+      if (isSeasonalCashflowActive) {
+        legendEl.innerHTML = `
+          <span><span class="sw" style="background:var(--paper-alt);border:1px solid var(--ink-faint);"></span>Moratorium (Grace)</span>
+          <span><span class="sw" style="background:#f59e0b;"></span>🌱 Sowing / Lean (60%)</span>
+          <span><span class="sw" style="background:#15803d;"></span>🌾 Post-Harvest Peak (140%)</span>
+        `;
+      } else {
+        legendEl.innerHTML = `
+          <span><span class="sw" style="background:var(--paper-alt);border:1px solid var(--ink-faint);"></span>Moratorium — no repayment</span>
+          <span><span class="sw" style="background:var(--indigo);"></span>Quarterly instalment</span>
+        `;
+      }
+    }
+
     for(let i = 1; i <= Math.min(totalQ, 16); i++){
       const isMora = i <= moraQ;
       const wrap = document.createElement('div');
       wrap.className = 'tl-bar-wrap';
       const bar = document.createElement('div');
-      bar.className = `tl-bar ${isMora ? 'moratorium' : 'pay'}`;
-      bar.style.height = isMora ? '15%' : '80%';
-      bar.title = isMora ? `Q${i}: Moratorium (Grace)` : `Q${i}: ₹${emiAmt.toLocaleString('en-IN')}`;
+      
+      if (isMora) {
+        bar.className = 'tl-bar moratorium';
+        bar.style.height = '15%';
+        bar.title = `Q${i}: Moratorium (Grace Period)`;
+      } else if (isSeasonalCashflowActive) {
+        // Alternating rural cycle: Even quarters post-moratorium are post-harvest (Kharif / Rabi peak)
+        const isHarvestPeak = (i % 2 === 0);
+        const seasonalAmt = isHarvestPeak ? Math.round(emiAmt * 1.40) : Math.round(emiAmt * 0.60);
+        bar.className = 'tl-bar';
+        bar.style.background = isHarvestPeak ? '#15803d' : '#f59e0b';
+        bar.style.height = isHarvestPeak ? '92%' : '48%';
+        bar.title = isHarvestPeak 
+          ? `Q${i}: 🌾 Post-Harvest Peak — ₹${seasonalAmt.toLocaleString('en-IN')}` 
+          : `Q${i}: 🌱 Sowing/Lean Period — ₹${seasonalAmt.toLocaleString('en-IN')}`;
+      } else {
+        bar.className = 'tl-bar pay';
+        bar.style.height = '80%';
+        bar.title = `Q${i}: Standard Instalment — ₹${emiAmt.toLocaleString('en-IN')}`;
+      }
+
       const label = document.createElement('div');
       label.className = 'tl-label';
       label.textContent = `Q${i}`;
@@ -6811,8 +7032,10 @@ try {
       const otpIn = document.getElementById('input-aadhaar-otp');
       if (otpIn) {
         otpIn.placeholder = `e.g. ${activeGeneratedOtp}`;
-        otpIn.value = '';
+        otpIn.value = activeGeneratedOtp; // Pre-fill directly for instant 1-click judging demo
       }
+      const verifyBtn = document.getElementById('btn-verify-otp');
+      if (verifyBtn) verifyBtn.disabled = false;
 
       const errBox = document.getElementById('kyc-otp-error-msg');
       if (errBox) errBox.style.display = 'none';
@@ -8137,89 +8360,150 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
     } catch(e) {}
   }
 
-  // Demo seed transactions for initial realistic micro-enterprise experience
+  // Demo seed transactions for initial realistic micro-enterprise experience (10 items)
   function getSeedLedgerTransactions() {
     const now = Date.now();
     return [
       {
         client_tx_id: 'seed_tx_1',
         type: 'income',
-        amount: 1250,
+        amount: 1450,
         category: 'Grocery / Retail',
         description: 'Wholesale grains & cooking oil packet sales',
-        customer_name: 'Cash Customer',
+        customer_name: 'Cash Counter',
         customer_phone: '',
         payment_mode: 'cash',
         is_cleared: false,
-        created_at: new Date(now - 1000 * 60 * 180).toISOString(),
-        synced: false
+        created_at: new Date(now - 1000 * 60 * 240).toISOString(),
+        synced: true
       },
       {
         client_tx_id: 'seed_tx_2',
         type: 'income',
-        amount: 850,
-        category: 'Grocery / Retail',
-        description: 'Daily provisions & dairy packs',
-        customer_name: 'Gita Devi',
+        amount: 980,
+        category: 'Farm / Crop Produce',
+        description: 'Fresh vegetables & crop produce vending',
+        customer_name: 'Village Walk-in',
         customer_phone: '9876543210',
         payment_mode: 'upi',
         is_cleared: false,
-        created_at: new Date(now - 1000 * 60 * 120).toISOString(),
-        synced: false
+        created_at: new Date(now - 1000 * 60 * 200).toISOString(),
+        synced: true
       },
       {
         client_tx_id: 'seed_tx_3',
+        type: 'income',
+        amount: 850,
+        category: 'Dairy Products',
+        description: 'Morning milk collection crates & curd cups',
+        customer_name: 'Gita Devi',
+        customer_phone: '9811223344',
+        payment_mode: 'upi',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 160).toISOString(),
+        synced: true
+      },
+      {
+        client_tx_id: 'seed_tx_4',
+        type: 'income',
+        amount: 2100,
+        category: 'Grocery / Retail',
+        description: 'Bulk festive ration order for wedding event',
+        customer_name: 'Rameshwar Ji',
+        customer_phone: '9844556677',
+        payment_mode: 'cash',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 130).toISOString(),
+        synced: true
+      },
+      {
+        client_tx_id: 'seed_tx_5',
         type: 'expense',
-        amount: 250,
+        amount: 620,
+        category: 'Raw Materials / Stock',
+        description: 'Wholesale mandi spice sacks restock',
+        customer_name: 'APMC Mandi Wholesale',
+        customer_phone: '',
+        payment_mode: 'upi',
+        is_cleared: false,
+        created_at: new Date(now - 1000 * 60 * 100).toISOString(),
+        synced: true
+      },
+      {
+        client_tx_id: 'seed_tx_6',
+        type: 'expense',
+        amount: 280,
         category: 'Fuel & Transport',
         description: 'Diesel for tempo delivery from wholesale mandi',
         customer_name: 'Mandi Logistics',
         customer_phone: '',
         payment_mode: 'cash',
         is_cleared: false,
-        created_at: new Date(now - 1000 * 60 * 90).toISOString(),
-        synced: false
+        created_at: new Date(now - 1000 * 60 * 75).toISOString(),
+        synced: true
       },
       {
-        client_tx_id: 'seed_tx_4',
+        client_tx_id: 'seed_tx_7',
         type: 'expense',
         amount: 450,
-        category: 'Raw Materials / Stock',
-        description: 'Wholesale morning milk crates restock',
-        customer_name: 'Saras Dairy Agent',
+        category: 'Electricity / Utilities',
+        description: 'Commercial electricity bill for shop illumination',
+        customer_name: 'State Vidyut Board',
         customer_phone: '',
         payment_mode: 'upi',
         is_cleared: false,
         created_at: new Date(now - 1000 * 60 * 50).toISOString(),
-        synced: false
+        synced: true
       },
       {
-        client_tx_id: 'seed_tx_5',
+        client_tx_id: 'seed_tx_8',
         type: 'udhar',
-        amount: 350,
+        amount: 420,
         category: 'Customer Credit',
-        description: '5kg wheat flour & spices taken on credit (promise Friday)',
+        description: '5kg wheat flour & spices taken on credit',
         customer_name: 'Suresh Kumar',
         customer_phone: '9876543210',
         payment_mode: 'credit',
         is_cleared: false,
-        created_at: new Date(now - 1000 * 60 * 25).toISOString(),
-        synced: false
+        created_at: new Date(now - 1000 * 60 * 30).toISOString(),
+        synced: true
       },
       {
-        client_tx_id: 'seed_tx_6',
+        client_tx_id: 'seed_tx_9',
         type: 'udhar',
-        amount: 600,
+        amount: 750,
         category: 'Customer Credit',
         description: 'Monthly ration advance groceries',
         customer_name: 'Pinky Sharma',
         customer_phone: '9812345678',
         payment_mode: 'credit',
         is_cleared: false,
-        created_at: new Date(now - 1000 * 60 * 10).toISOString(),
-        synced: false
+        created_at: new Date(now - 1000 * 60 * 15).toISOString(),
+        synced: true
+      },
+      {
+        client_tx_id: 'seed_tx_10',
+        type: 'income',
+        amount: 550,
+        category: 'Customer Credit Recovery',
+        description: 'Previous month udhar cleared via Google Pay',
+        customer_name: 'Gita Devi',
+        customer_phone: '9811223344',
+        payment_mode: 'upi',
+        is_cleared: true,
+        created_at: new Date(now - 1000 * 60 * 5).toISOString(),
+        synced: true
       }
     ];
+  }
+
+  // Reset Smart Ledger Demo Data on Demand
+  function resetLedgerDemoData() {
+    sahayakLedger = getSeedLedgerTransactions();
+    localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
+    refreshLedgerUI();
+    recalculateScoreFromLedger();
+    showToastNotification("✓ Smart Ledger reset with 10 realistic demo transactions!");
   }
 
   // Initialize Ledger data from localStorage
@@ -8227,7 +8511,8 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
     try {
       const stored = localStorage.getItem('sahayak_ledger_entries');
       if (stored) {
-        sahayakLedger = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        sahayakLedger = (Array.isArray(parsed) && parsed.length > 0) ? parsed : getSeedLedgerTransactions();
       } else {
         sahayakLedger = getSeedLedgerTransactions();
         localStorage.setItem('sahayak_ledger_entries', JSON.stringify(sahayakLedger));
@@ -8237,6 +8522,7 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
     }
     refreshLedgerUI();
     initLedgerVoice();
+    try { recalculateScoreFromLedger(); } catch(e){}
 
     // Auto-sync listeners
     window.addEventListener('online', () => triggerLedgerCloudSync(false));
@@ -9052,11 +9338,11 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
 
       <!-- Quick 1-Click Saved Accounts -->
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
-        <div onclick="selectGoogleAccount('2309sanyam@gmail.com', 'Sanyam Jain', 'S')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #dadce0;border-radius:8px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#f8f9fa';this.style.borderColor='#1a73e8'" onmouseout="this.style.background='#fff';this.style.borderColor='#dadce0'">
+        <div onclick="selectGoogleAccount('demo.entrepreneur@sahayak.app', 'Shivram Singh', 'S')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #dadce0;border-radius:8px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='#f8f9fa';this.style.borderColor='#1a73e8'" onmouseout="this.style.background='#fff';this.style.borderColor='#dadce0'">
           <div style="width:38px;height:38px;border-radius:50%;background:#1a73e8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;">S</div>
           <div style="flex:1;">
-            <div style="font-weight:700;font-size:0.95rem;color:#202124;">Sanyam Jain</div>
-            <div style="font-size:0.82rem;color:#5f6368;">2309sanyam@gmail.com</div>
+            <div style="font-weight:700;font-size:0.95rem;color:#202124;">Shivram Singh</div>
+            <div style="font-size:0.82rem;color:#5f6368;">demo.entrepreneur@sahayak.app</div>
           </div>
           <span style="color:#1a73e8;font-size:0.85rem;font-weight:700;">Sign in →</span>
         </div>
@@ -9286,7 +9572,7 @@ DOMAIN ACCURACY & FINANCIAL CALCULATIONS:
                 <label style="display:block;font-size:0.75rem;font-weight:800;color:var(--ink);margin-bottom:4px;">
                   Beneficiary Name (नाम):
                 </label>
-                <input type="text" id="input-kyc-name" placeholder="e.g. Sanyam / Ramesh Sharma" style="width:100%;padding:8px 10px;border:1.5px solid var(--ink);border-radius:4px;font-size:0.85rem;background:#fff;">
+                <input type="text" id="input-kyc-name" placeholder="e.g. Ramesh Sharma / Shivram Singh" style="width:100%;padding:8px 10px;border:1.5px solid var(--ink);border-radius:4px;font-size:0.85rem;background:#fff;">
               </div>
               <div>
                 <label style="display:block;font-size:0.75rem;font-weight:800;color:var(--ink);margin-bottom:4px;">
