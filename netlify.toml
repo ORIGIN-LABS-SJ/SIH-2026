@@ -13,6 +13,11 @@
   status = 200
 
 [[redirects]]
+  from = "/prd"
+  to = "/prd.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

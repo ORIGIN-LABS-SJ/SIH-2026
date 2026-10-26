@@ -5,6 +5,7 @@
 [![Problem Statement ID](https://img.shields.io/badge/PS_ID-SIH26091-blue.svg)](https://sih.gov.in/)
 [![Ministry](https://img.shields.io/badge/Ministry-Social_Justice_%26_Empowerment_(MoSJE)-green.svg)](https://socialjustice.gov.in/)
 [![Live Production](https://img.shields.io/badge/Live_Demo-sahayakk.netlify.app-emerald.svg)](https://sahayakk.netlify.app/)
+[![Official PRD](https://img.shields.io/badge/PRD-Product_Requirements-blue.svg)](PRD.md)
 [![PWA Ready](https://img.shields.io/badge/Offline_PWA-%3C50KB_Payload-purple.svg)](https://sahayakk.netlify.app/)
 
 ---
@@ -123,4 +124,5 @@ python verify_punchlist_suite.py
 * **Theme:** Agriculture, FoodTech & Rural Development
 * **Category:** Software Edition
 * **Target Ministry:** Ministry of Social Justice and Empowerment (MoSJE), Government of India
+* **Product Requirement Document (PRD):** [`PRD.md`](PRD.md) | [Interactive Web PRD](https://sahayakk.netlify.app/prd.html)
 * **Presentation PDF:** [`SIH_2026_Hackathon_Winning_Presentation.pdf`](SIH_2026_Hackathon_Winning_Presentation.pdf)
